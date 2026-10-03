@@ -58,3 +58,6 @@ SSH password/private key یا secret در Git قرار نگیرد. Vite env عم
 
 دمو هر مرورگر در حافظه و `/api/demo/` جداست؛ restart آن را پاک می‌کند و بکاپ production شامل دمو نیست. فونت Vazirmatn نسخه `v33.003` با مجوز OFL در `public/fonts/` محلی است. آمار request پنل admin فقط ۱۰۰ مورد اخیر همان برنامه و audit فقط رویدادهای کاربردی است؛ لاگ OS از طریق wrapper عملیات خوانده می‌شود.
 
+## آموزش مرجع بدون سرویس و پورت جدید
+
+`remote.ps1 -Action train -Sha <pushed full SHA>` فقط در release checkout متعلق به همان SHA، اسکریپت Node با سقف ۱۸۰ ثانیه و اولویت پایین را اجرا می‌کند. ZIP رسمی UCI با کنترل اندازه و hash خوانده می‌شود؛ داده و وزن در `shared/models/<SHA>` با مجوز خصوصی قرار می‌گیرند. هیچ listener ساخته نمی‌شود. خروجی JSON مدل، تقسیم و ارزیابی پس از پایان موفق استخراج و در سورس محلی ثبت می‌شود؛ سپس SHA جدید محصول باید validate/deploy شود. فایل‌های دیتاست مرجع با سوابق عملیاتی SQLite ادغام نمی‌شوند.

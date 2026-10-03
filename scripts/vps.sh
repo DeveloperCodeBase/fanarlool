@@ -33,7 +33,7 @@ install() { mutable; (cd "$CANDIDATE"; timeout 300 bun install --frozen-lockfile
 build() { (cd "$CANDIDATE"; timeout 300 bun run lint; timeout 300 bun run build); }
 tests() {
   if python3 -c 'import json,sys; sys.exit(0 if json.load(open(sys.argv[1])).get("scripts",{}).get("test") else 1)' "$CANDIDATE/package.json"; then
-    (cd "$CANDIDATE"; timeout 300 bun run test)
+    (cd "$CANDIDATE"; timeout 300 bun run test; timeout 120 bun test tests/economics.test.ts)
   else echo 'TEST=SKIP (no test script)'; fi
 }
 bundle() {
@@ -108,7 +108,7 @@ opener=client();first=None
 for role in ['admin','executive','production','quality','maintenance','energy','engineering','auditor']:
     status,login=call(opener,'/api/demo/auth/login','POST',{'username':'demo.'+role,'password':'FanarDemo-2026!'})
     assert status==200 and login['user']['role']==role,(role,status)
-    status,workspace=call(opener,'/api/demo/workspace');assert status==200 and workspace['mode']=='demo' and len(workspace['records'])==27
+    status,workspace=call(opener,'/api/demo/workspace');assert status==200 and workspace['mode']=='demo' and len(workspace['records'])==len(workspace['catalog'])*3
     status,profile=call(opener,'/api/demo/profile');assert status==200 and profile['user']['id']==login['user']['id']
     status,activity=call(opener,'/api/demo/activity');assert status==200 and all(e['actor']==login['user']['id'] for e in activity['events'])
     status,monitor=call(opener,'/api/demo/system');assert status==(200 if role=='admin' else 403)
@@ -125,6 +125,10 @@ PY
     if sudo -n ss -Hltnp | grep -q "pid=$api_pid,"; then fail 'Unexpected API TCP listener'; fi
     echo 'API_TCP_LISTENER=NONE'
   fi
+  for neighbor in vistapower.ir refah.vistapower.ir; do
+    status=$(curl -sS --max-time 30 -o /dev/null -w '%{http_code}' "https://$neighbor/")
+    echo "NEIGHBOR_DOMAIN=$neighbor STATUS=$status"
+  done
   echo "HEALTH=PASS SHA=$actual"
 }
 case "$ACTION" in

@@ -1,0 +1,2692 @@
+{
+  "فنر لول ایران": [
+    "Fanar Lool Iran",
+    "فنر لول إيران",
+    "Fanar Lool İran"
+  ],
+  "فنر لول": [
+    "Fanar Lool",
+    "فنر لول",
+    "Fanar Lool"
+  ],
+  "پلتفرم تولید هوشمند": [
+    "Smart manufacturing platform",
+    "منصة التصنيع الذكي",
+    "Akıllı üretim platformu"
+  ],
+  "زبان": [
+    "Language",
+    "اللغة",
+    "Dil"
+  ],
+  "پلتفرم": [
+    "Platform",
+    "المنصة",
+    "Platform"
+  ],
+  "مسیر عملیات": [
+    "Operations workflow",
+    "مسار العمليات",
+    "Operasyon akışı"
+  ],
+  "قابلیت‌ها": [
+    "Capabilities",
+    "الإمكانات",
+    "Yetenekler"
+  ],
+  "ناوبری اصلی": [
+    "Main navigation",
+    "التنقل الرئيسي",
+    "Ana gezinme"
+  ],
+  "ورود به فضای کارخانه": [
+    "Enter factory workspace",
+    "دخول مساحة المصنع",
+    "Fabrika alanına giriş"
+  ],
+  "ورود به پلتفرم": [
+    "Sign in to the platform",
+    "الدخول إلى المنصة",
+    "Platforma giriş"
+  ],
+  "آشنایی با سامانه": [
+    "Explore the platform",
+    "استكشاف المنصة",
+    "Platformu keşfedin"
+  ],
+  "از دادهٔ خط تا تصمیم مدیریت": [
+    "From line data to management decisions",
+    "من بيانات الخط إلى قرارات الإدارة",
+    "Hat verisinden yönetim kararlarına"
+  ],
+  "کارخانه‌ای که": [
+    "A factory that",
+    "مصنع",
+    "Verilerle"
+  ],
+  "با داده": [
+    "moves forward",
+    "يتقدم",
+    "ilerleyen"
+  ],
+  "پیش می‌رود.": [
+    "with data.",
+    "بالبيانات.",
+    "bir fabrika."
+  ],
+  "دسترسی سازمانی": [
+    "Organizational access",
+    "وصول مؤسسي",
+    "Kurumsal erişim"
+  ],
+  "اطلاعات پایدار": [
+    "Persistent records",
+    "سجلات دائمة",
+    "Kalıcı kayıtlar"
+  ],
+  "طراحی برای کارخانه": [
+    "Built for the factory",
+    "مصممة للمصنع",
+    "Fabrika için tasarlandı"
+  ],
+  "طرح مفهومی": [
+    "Concept design",
+    "تصميم مفاهيمي",
+    "Kavramsal tasarım"
+  ],
+  "مواد اولیه": [
+    "Raw materials",
+    "المواد الخام",
+    "Hammaddeler"
+  ],
+  "فرم‌دهی": [
+    "Forming",
+    "التشكيل",
+    "Şekillendirme"
+  ],
+  "عملیات حرارتی": [
+    "Heat treatment",
+    "المعالجة الحرارية",
+    "Isıl işlem"
+  ],
+  "کنترل کیفیت": [
+    "Quality control",
+    "مراقبة الجودة",
+    "Kalite kontrol"
+  ],
+  "ردیابی بچ · نسخه ساخت · بررسی مستقل": [
+    "Batch traceability · recipe version · independent review",
+    "تتبع الدفعة · إصدار التصنيع · مراجعة مستقلة",
+    "Parti izlenebilirliği · reçete sürümü · bağımsız inceleme"
+  ],
+  "یک فضای کاری برای همهٔ تیم‌ها": [
+    "One workspace for every team",
+    "مساحة عمل واحدة لجميع الفرق",
+    "Tüm ekipler için tek çalışma alanı"
+  ],
+  "هر نقش، دید دقیق‌تر.": [
+    "A clearer view for every role.",
+    "رؤية أوضح لكل دور.",
+    "Her rol için daha net görünüm."
+  ],
+  "هر فرآیند، پیگیری روشن‌تر.": [
+    "Every process, easier to track.",
+    "كل عملية أسهل في المتابعة.",
+    "Her süreç için daha kolay takip."
+  ],
+  "مدیریت کارخانه": [
+    "Factory management",
+    "إدارة المصنع",
+    "Fabrika yönetimi"
+  ],
+  "تولید": [
+    "Production",
+    "الإنتاج",
+    "Üretim"
+  ],
+  "کیفیت": [
+    "Quality",
+    "الجودة",
+    "Kalite"
+  ],
+  "نگهداری": [
+    "Maintenance",
+    "الصيانة",
+    "Bakım"
+  ],
+  "انرژی": [
+    "Energy",
+    "الطاقة",
+    "Enerji"
+  ],
+  "مهندسی": [
+    "Engineering",
+    "الهندسة",
+    "Mühendislik"
+  ],
+  "نظارت": [
+    "Oversight",
+    "الرقابة",
+    "Denetim"
+  ],
+  "کیفیت قابل ردیابی": [
+    "Traceable quality",
+    "جودة قابلة للتتبع",
+    "İzlenebilir kalite"
+  ],
+  "تولید مبتنی بر داده": [
+    "Data driven production",
+    "إنتاج قائم على البيانات",
+    "Veriye dayalı üretim"
+  ],
+  "نگهداری برنامه‌پذیر": [
+    "Planned maintenance",
+    "صيانة مخططة",
+    "Planlı bakım"
+  ],
+  "انرژی و تاب‌آوری": [
+    "Energy and resilience",
+    "الطاقة والمرونة",
+    "Enerji ve dayanıklılık"
+  ],
+  "مهندسی یکپارچه": [
+    "Integrated engineering",
+    "هندسة متكاملة",
+    "Bütünleşik mühendislik"
+  ],
+  "مدیریت مسئولانه": [
+    "Accountable management",
+    "إدارة مسؤولة",
+    "Sorumlu yönetim"
+  ],
+  "چرخه‌ای که بسته می‌شود": [
+    "Closing the operational loop",
+    "إغلاق دورة العمليات",
+    "Operasyon döngüsünü tamamlama"
+  ],
+  "ثبت، بررسی، اقدام.": [
+    "Record, review, act.",
+    "تسجيل، مراجعة، إجراء.",
+    "Kaydet, incele, uygula."
+  ],
+  "با مسئولیت مشخص.": [
+    "With clear ownership.",
+    "بمسؤولية واضحة.",
+    "Açık sorumluluklarla."
+  ],
+  "ثبت در محل عملیات": [
+    "Record at the point of work",
+    "التسجيل في موقع العمل",
+    "İş yerinde kayıt"
+  ],
+  "بچ، شیفت، بازرسی یا درخواست تعمیر": [
+    "Batch, shift, inspection or maintenance request",
+    "دفعة أو وردية أو فحص أو طلب صيانة",
+    "Parti, vardiya, muayene veya bakım talebi"
+  ],
+  "بررسی مستقل": [
+    "Independent review",
+    "مراجعة مستقلة",
+    "Bağımsız inceleme"
+  ],
+  "نقش مجاز، کنترل حدود و ثبت تصمیم": [
+    "Authorized role, limit checks and decision record",
+    "دور مخول وفحص الحدود وتسجيل القرار",
+    "Yetkili rol, sınır kontrolleri ve karar kaydı"
+  ],
+  "اقدام و گزارش": [
+    "Action and reporting",
+    "الإجراء والتقارير",
+    "İşlem ve raporlama"
+  ],
+  "داشبورد نقش، CSV و تاریخچه تغییر": [
+    "Role dashboard, CSV and change history",
+    "لوحة الدور وCSV وسجل التغييرات",
+    "Rol paneli, CSV ve değişiklik geçmişi"
+  ],
+  "دادهٔ درست، تصمیم قابل دفاع.": [
+    "Reliable data, defensible decisions.",
+    "بيانات موثوقة وقرارات قابلة للتبرير.",
+    "Güvenilir veri, savunulabilir kararlar."
+  ],
+  "فضای کاری تیم کارخانه آماده است.": [
+    "Your factory team workspace is ready.",
+    "مساحة فريق المصنع جاهزة.",
+    "Fabrika ekibinin çalışma alanı hazır."
+  ],
+  "ورود کارکنان": [
+    "Employee sign in",
+    "دخول الموظفين",
+    "Çalışan girişi"
+  ],
+  "ورود با حساب فعال سازمانی؛ ثبت‌نام عمومی وجود ندارد.": [
+    "Use an active employee account. Public registration is unavailable.",
+    "استخدم حساباً مؤسسياً فعالاً. التسجيل العام غير متاح.",
+    "Aktif kurumsal hesabınızı kullanın. Genel kayıt mevcut değildir."
+  ],
+  "کارخانه فنر لول ایران · پلتفرم تولید هوشمند": [
+    "Fanar Lool Iran · smart manufacturing platform",
+    "مصنع فنر لول إيران · منصة التصنيع الذكي",
+    "Fanar Lool İran · akıllı üretim platformu"
+  ],
+  "طراحی و توسعه: شبکه هوشمند ابتکار ویستا": [
+    "Designed and developed by Vista Innovative Smart Network",
+    "تصميم وتطوير: شبكة فيستا الذكية المبتكرة",
+    "Tasarım ve geliştirme: Vista Innovative Smart Network"
+  ],
+  "درباره پلتفرم": [
+    "About the platform",
+    "عن المنصة",
+    "Platform hakkında"
+  ],
+  "فضای کاری سازمانی": [
+    "Organizational workspace",
+    "مساحة العمل المؤسسية",
+    "Kurumsal çalışma alanı"
+  ],
+  "هر تیم، یک مسیر روشن": [
+    "A clear workflow for every team",
+    "مسار واضح لكل فريق",
+    "Her ekip için açık bir iş akışı"
+  ],
+  "دسترسی درست.": [
+    "The right access.",
+    "الصلاحيات المناسبة.",
+    "Doğru erişim."
+  ],
+  "مدیریت": [
+    "Management",
+    "الإدارة",
+    "Yönetim"
+  ],
+  "شاخص‌های تأییدشده": [
+    "Approved indicators",
+    "مؤشرات معتمدة",
+    "Onaylı göstergeler"
+  ],
+  "شیفت و بچ": [
+    "Shift and batch",
+    "الوردية والدفعة",
+    "Vardiya ve parti"
+  ],
+  "بازرسی و کالیبراسیون": [
+    "Inspection and calibration",
+    "الفحص والمعايرة",
+    "Muayene ve kalibrasyon"
+  ],
+  "تجهیزات و دستورکار": [
+    "Assets and work orders",
+    "المعدات وأوامر العمل",
+    "Ekipman ve iş emirleri"
+  ],
+  "قرائت و شدت مصرف": [
+    "Readings and consumption intensity",
+    "القراءات وكثافة الاستهلاك",
+    "Okumalar ve tüketim yoğunluğu"
+  ],
+  "دستور ساخت و تحلیل": [
+    "Recipes and analysis",
+    "وصفات التصنيع والتحليل",
+    "Üretim reçeteleri ve analiz"
+  ],
+  "شبکه هوشمند ابتکار ویستا · کارخانه فنر لول ایران": [
+    "Vista Innovative Smart Network · Fanar Lool Iran",
+    "شبكة فيستا الذكية المبتكرة · مصنع فنر لول إيران",
+    "Vista Innovative Smart Network · Fanar Lool İran"
+  ],
+  "شناسه سازمانی": [
+    "Employee ID",
+    "المعرف المؤسسي",
+    "Kurumsal kimlik"
+  ],
+  "شناسه حساب کارکنان": [
+    "Employee account ID",
+    "معرف حساب الموظف",
+    "Çalışan hesap kimliği"
+  ],
+  "رمز عبور": [
+    "Password",
+    "كلمة المرور",
+    "Parola"
+  ],
+  "رمز جدید": [
+    "New password",
+    "كلمة المرور الجديدة",
+    "Yeni parola"
+  ],
+  "در حال بررسی…": [
+    "Checking…",
+    "جارٍ التحقق…",
+    "Kontrol ediliyor…"
+  ],
+  "تغییر رمز و خروج": [
+    "Change password and sign out",
+    "تغيير كلمة المرور والخروج",
+    "Parolayı değiştir ve çık"
+  ],
+  "ورود امن": [
+    "Secure sign in",
+    "دخول آمن",
+    "Güvenli giriş"
+  ],
+  "بازگشت به داشبورد": [
+    "Back to dashboard",
+    "العودة إلى لوحة التحكم",
+    "Panele dön"
+  ],
+  "خروج": [
+    "Sign out",
+    "تسجيل الخروج",
+    "Çıkış"
+  ],
+  "بازگشت به معرفی پلتفرم": [
+    "Back to platform overview",
+    "العودة إلى تعريف المنصة",
+    "Platform tanıtımına dön"
+  ],
+  "تجربه پلتفرم با نقش سازمانی": [
+    "Explore the platform by role",
+    "استكشاف المنصة حسب الدور",
+    "Platformu role göre keşfedin"
+  ],
+  "دمو": [
+    "Trial workspace",
+    "مساحة تجريبية",
+    "Deneme alanı"
+  ],
+  "ادمین سامانه": [
+    "System administrator",
+    "مسؤول النظام",
+    "Sistem yöneticisi"
+  ],
+  "مدیر سامانه": [
+    "System administrator",
+    "مسؤول النظام",
+    "Sistem yöneticisi"
+  ],
+  "مدیر کارخانه": [
+    "Factory director",
+    "مدير المصنع",
+    "Fabrika müdürü"
+  ],
+  "مسئول تولید": [
+    "Production supervisor",
+    "مشرف الإنتاج",
+    "Üretim sorumlusu"
+  ],
+  "نگهداری و تعمیرات": [
+    "Maintenance and repair",
+    "الصيانة والإصلاح",
+    "Bakım ve onarım"
+  ],
+  "کارشناس انرژی": [
+    "Energy specialist",
+    "اختصاصي الطاقة",
+    "Enerji uzmanı"
+  ],
+  "مهندسی و توسعه": [
+    "Engineering and development",
+    "الهندسة والتطوير",
+    "Mühendislik ve geliştirme"
+  ],
+  "ناظر و ارزیاب": [
+    "Auditor and evaluator",
+    "المراقب والمقيّم",
+    "Denetçi ve değerlendirici"
+  ],
+  "ورود با حساب واقعی کارخانه": [
+    "Sign in with a factory account",
+    "الدخول بحساب المصنع الفعلي",
+    "Gerçek fabrika hesabıyla giriş"
+  ],
+  "نمای کلی": [
+    "Overview",
+    "نظرة عامة",
+    "Genel bakış"
+  ],
+  "دانش و برنامهٔ توسعه": [
+    "Knowledge and development plan",
+    "المعرفة وخطة التطوير",
+    "Bilgi ve geliştirme planı"
+  ],
+  "آزمایشگاه مهندسی": [
+    "Engineering laboratory",
+    "المختبر الهندسي",
+    "Mühendislik laboratuvarı"
+  ],
+  "کاربران و دسترسی": [
+    "Users and access",
+    "المستخدمون والصلاحيات",
+    "Kullanıcılar ve erişim"
+  ],
+  "ردپای رویدادها": [
+    "Audit trail",
+    "سجل التدقيق",
+    "Denetim izi"
+  ],
+  "پروفایل من": [
+    "My profile",
+    "ملفي الشخصي",
+    "Profilim"
+  ],
+  "تنظیمات من": [
+    "My settings",
+    "إعداداتي",
+    "Ayarlarım"
+  ],
+  "فعالیت‌های من": [
+    "My activity",
+    "أنشطتي",
+    "Etkinliklerim"
+  ],
+  "مانیتورینگ سامانه": [
+    "System monitoring",
+    "مراقبة النظام",
+    "Sistem izleme"
+  ],
+  "فضای عملیات کارخانه": [
+    "Factory operations workspace",
+    "مساحة عمليات المصنع",
+    "Fabrika operasyon alanı"
+  ],
+  "فضای کاری شما": [
+    "Your workspace",
+    "مساحة عملك",
+    "Çalışma alanınız"
+  ],
+  "داشبورد نقش": [
+    "Role dashboard",
+    "لوحة الدور",
+    "Rol paneli"
+  ],
+  "فضای شخصی": [
+    "Personal workspace",
+    "المساحة الشخصية",
+    "Kişisel alan"
+  ],
+  "دانش و راهبری": [
+    "Knowledge and guidance",
+    "المعرفة والإرشاد",
+    "Bilgi ve rehberlik"
+  ],
+  "اسناد و نقشه راه": [
+    "Documents and roadmap",
+    "الوثائق وخارطة الطريق",
+    "Belgeler ve yol haritası"
+  ],
+  "آزمایشگاه و شبیه‌ساز": [
+    "Laboratory and simulator",
+    "المختبر والمحاكي",
+    "Laboratuvar ve simülatör"
+  ],
+  "رویدادها": [
+    "Events",
+    "الأحداث",
+    "Olaylar"
+  ],
+  "ارتباط برقرار": [
+    "Connected",
+    "متصل",
+    "Bağlı"
+  ],
+  "ارتباط قطع": [
+    "Disconnected",
+    "غير متصل",
+    "Bağlantı kesildi"
+  ],
+  "ثبت مستند · تجهیزات متصل نیستند": [
+    "Recorded operations · equipment not connected",
+    "عمليات موثقة · المعدات غير متصلة",
+    "Belgeli işlemler · ekipman bağlı değil"
+  ],
+  "باز کردن منو": [
+    "Open menu",
+    "فتح القائمة",
+    "Menüyü aç"
+  ],
+  "کارخانه فنر لول ایران": [
+    "Fanar Lool Iran factory",
+    "مصنع فنر لول إيران",
+    "Fanar Lool İran fabrikası"
+  ],
+  "تغییر رمز": [
+    "Change password",
+    "تغيير كلمة المرور",
+    "Parolayı değiştir"
+  ],
+  "به‌روزرسانی": [
+    "Refresh",
+    "تحديث",
+    "Yenile"
+  ],
+  "محیط دمو ·": [
+    "Trial workspace ·",
+    "مساحة تجريبية ·",
+    "Deneme alanı ·"
+  ],
+  "تولید سالم تأییدشده": [
+    "Approved good production",
+    "إنتاج سليم معتمد",
+    "Onaylı sağlam üretim"
+  ],
+  "قطعه ثبت‌شده": [
+    "Recorded parts",
+    "قطع مسجلة",
+    "Kayıtlı parçalar"
+  ],
+  "بهره‌وری OEE": [
+    "Overall equipment effectiveness",
+    "الفعالية الإجمالية للمعدات",
+    "Toplam ekipman etkinliği"
+  ],
+  "فقط شیفت‌های تأییدشده": [
+    "Approved shifts only",
+    "الورديات المعتمدة فقط",
+    "Yalnızca onaylı vardiyalar"
+  ],
+  "منتظر بررسی": [
+    "Awaiting review",
+    "بانتظار المراجعة",
+    "İnceleme bekliyor"
+  ],
+  "در محدوده دسترسی شما": [
+    "Within your access scope",
+    "ضمن نطاق صلاحياتك",
+    "Erişim kapsamınızda"
+  ],
+  "دستورکارهای باز": [
+    "Open work orders",
+    "أوامر العمل المفتوحة",
+    "Açık iş emirleri"
+  ],
+  "نیازمند پیگیری": [
+    "Follow up required",
+    "تحتاج متابعة",
+    "Takip gerekiyor"
+  ],
+  "مسیرهای کاری شما": [
+    "Your workflows",
+    "مسارات عملك",
+    "İş akışlarınız"
+  ],
+  "بخش": [
+    "Sections",
+    "أقسام",
+    "Bölüm"
+  ],
+  "ثبت و پیگیری": [
+    "Record and track",
+    "تسجيل ومتابعة",
+    "Kaydet ve takip et"
+  ],
+  "مشاهده و بررسی": [
+    "View and review",
+    "عرض ومراجعة",
+    "Görüntüle ve incele"
+  ],
+  "کیفیت داده": [
+    "Data quality",
+    "جودة البيانات",
+    "Veri kalitesi"
+  ],
+  "ثبت دستی مستند": [
+    "Documented manual records",
+    "تسجيل يدوي موثق",
+    "Belgeli manuel kayıt"
+  ],
+  "شاخص بدون داده، عدد ندارد.": [
+    "No data means no calculated indicator.",
+    "لا قيمة للمؤشر دون بيانات.",
+    "Veri olmadan gösterge hesaplanmaz."
+  ],
+  "دسترس‌پذیری": [
+    "Availability",
+    "الإتاحة",
+    "Kullanılabilirlik"
+  ],
+  "عملکرد": [
+    "Performance",
+    "الأداء",
+    "Performans"
+  ],
+  "داده تأییدشده ندارد": [
+    "No approved data",
+    "لا بيانات معتمدة",
+    "Onaylı veri yok"
+  ],
+  "اتصال صنعتی در پایلوت میدانی": [
+    "Industrial integration in the field pilot",
+    "ربط صناعي في التجربة الميدانية",
+    "Saha pilotunda endüstriyel entegrasyon"
+  ],
+  "آخرین سوابق در دسترس": [
+    "Latest accessible records",
+    "أحدث السجلات المتاحة",
+    "En son erişilebilir kayıtlar"
+  ],
+  "آمادهٔ نخستین رکورد": [
+    "Ready for the first record",
+    "جاهز لأول سجل",
+    "İlk kayıt için hazır"
+  ],
+  "جستجوی رکورد": [
+    "Search records",
+    "البحث في السجلات",
+    "Kayıtları ara"
+  ],
+  "جستجو در شناسه، خط یا شرح…": [
+    "Search ID, line or description…",
+    "بحث بالمعرف أو الخط أو الوصف…",
+    "Kimlik, hat veya açıklama ara…"
+  ],
+  "فیلتر وضعیت": [
+    "Status filter",
+    "تصفية الحالة",
+    "Durum filtresi"
+  ],
+  "همه وضعیت‌ها": [
+    "All statuses",
+    "جميع الحالات",
+    "Tüm durumlar"
+  ],
+  "ثبت جدید": [
+    "New record",
+    "سجل جديد",
+    "Yeni kayıt"
+  ],
+  "ثبت‌کننده": [
+    "Created by",
+    "المسجّل",
+    "Kaydeden"
+  ],
+  "وضعیت": [
+    "Status",
+    "الحالة",
+    "Durum"
+  ],
+  "عملیات": [
+    "Actions",
+    "الإجراءات",
+    "İşlemler"
+  ],
+  "جزئیات": [
+    "Details",
+    "التفاصيل",
+    "Ayrıntılar"
+  ],
+  "ارسال بررسی": [
+    "Submit for review",
+    "إرسال للمراجعة",
+    "İncelemeye gönder"
+  ],
+  "تأیید": [
+    "Approve",
+    "اعتماد",
+    "Onayla"
+  ],
+  "رد": [
+    "Reject",
+    "رفض",
+    "Reddet"
+  ],
+  "صفحه قبل": [
+    "Previous page",
+    "الصفحة السابقة",
+    "Önceki sayfa"
+  ],
+  "صفحه بعد": [
+    "Next page",
+    "الصفحة التالية",
+    "Sonraki sayfa"
+  ],
+  "هنوز رکوردی ثبت نشده": [
+    "No records yet",
+    "لا سجلات بعد",
+    "Henüz kayıt yok"
+  ],
+  "کاربر جدید": [
+    "New user",
+    "مستخدم جديد",
+    "Yeni kullanıcı"
+  ],
+  "نام": [
+    "Name",
+    "الاسم",
+    "Ad"
+  ],
+  "شناسه": [
+    "ID",
+    "المعرف",
+    "Kimlik"
+  ],
+  "نقش": [
+    "Role",
+    "الدور",
+    "Rol"
+  ],
+  "اقدام": [
+    "Action",
+    "الإجراء",
+    "İşlem"
+  ],
+  "فعال": [
+    "Active",
+    "فعال",
+    "Aktif"
+  ],
+  "غیرفعال": [
+    "Inactive",
+    "غير فعال",
+    "Pasif"
+  ],
+  "· رمز موقت": [
+    "· temporary password",
+    "· كلمة مرور مؤقتة",
+    "· geçici parola"
+  ],
+  "غیرفعال کردن": [
+    "Deactivate",
+    "تعطيل",
+    "Devre dışı bırak"
+  ],
+  "فعال کردن": [
+    "Activate",
+    "تفعيل",
+    "Etkinleştir"
+  ],
+  "رویدادهای سامانه": [
+    "System events",
+    "أحداث النظام",
+    "Sistem olayları"
+  ],
+  "۳۰۰ رویداد آخر · فقط خواندنی": [
+    "Last 300 events · read only",
+    "آخر ٣٠٠ حدث · للقراءة فقط",
+    "Son 300 olay · salt okunur"
+  ],
+  "شبکه هوشمند ابتکار ویستا · ثبت مستند عملیات": [
+    "Vista Innovative Smart Network · documented operations",
+    "شبكة فيستا الذكية المبتكرة · عمليات موثقة",
+    "Vista Innovative Smart Network · belgeli işlemler"
+  ],
+  "حساب جدید": [
+    "New account",
+    "حساب جديد",
+    "Yeni hesap"
+  ],
+  "بستن": [
+    "Close",
+    "إغلاق",
+    "Kapat"
+  ],
+  "نام و نام خانوادگی": [
+    "Full name",
+    "الاسم الكامل",
+    "Ad ve soyad"
+  ],
+  "شناسه لاتین": [
+    "Latin account ID",
+    "معرف الحساب اللاتيني",
+    "Latin hesap kimliği"
+  ],
+  "رمز موقت": [
+    "Temporary password",
+    "كلمة مرور مؤقتة",
+    "Geçici parola"
+  ],
+  "ایجاد حساب": [
+    "Create account",
+    "إنشاء حساب",
+    "Hesap oluştur"
+  ],
+  "جزئیات رکورد": [
+    "Record details",
+    "تفاصيل السجل",
+    "Kayıt ayrıntıları"
+  ],
+  "بستن فرم": [
+    "Close form",
+    "إغلاق النموذج",
+    "Formu kapat"
+  ],
+  "نسخه": [
+    "Version",
+    "الإصدار",
+    "Sürüm"
+  ],
+  "ذخیره پیش‌نویس": [
+    "Save draft",
+    "حفظ المسودة",
+    "Taslağı kaydet"
+  ],
+  "پیش‌نویس": [
+    "Draft",
+    "مسودة",
+    "Taslak"
+  ],
+  "در انتظار بررسی": [
+    "Submitted for review",
+    "بانتظار المراجعة",
+    "İncelemeye gönderildi"
+  ],
+  "تأیید شده": [
+    "Approved",
+    "معتمد",
+    "Onaylandı"
+  ],
+  "رد شده": [
+    "Rejected",
+    "مرفوض",
+    "Reddedildi"
+  ],
+  "زمان": [
+    "Time",
+    "الوقت",
+    "Zaman"
+  ],
+  "عامل": [
+    "Actor",
+    "المنفّذ",
+    "İşlemi yapan"
+  ],
+  "فعالیت": [
+    "Activity",
+    "النشاط",
+    "Etkinlik"
+  ],
+  "سامانه": [
+    "System",
+    "النظام",
+    "Sistem"
+  ],
+  "نمایش مرجع": [
+    "Show reference",
+    "عرض المرجع",
+    "Referansı göster"
+  ],
+  "هنوز فعالیتی ثبت نشده است": [
+    "No activity recorded yet",
+    "لم يُسجل نشاط بعد",
+    "Henüz etkinlik kaydedilmedi"
+  ],
+  "حساب سازمانی فعال": [
+    "Active employee account",
+    "حساب مؤسسي فعال",
+    "Aktif kurumsal hesap"
+  ],
+  "اطلاعات فردی و سازمانی": [
+    "Personal and organizational information",
+    "المعلومات الشخصية والمؤسسية",
+    "Kişisel ve kurumsal bilgiler"
+  ],
+  "عنوان شغلی": [
+    "Job title",
+    "المسمى الوظيفي",
+    "İş unvanı"
+  ],
+  "واحد سازمانی": [
+    "Department",
+    "القسم",
+    "Birim"
+  ],
+  "ایمیل": [
+    "Email",
+    "البريد الإلكتروني",
+    "E-posta"
+  ],
+  "شماره تماس": [
+    "Phone number",
+    "رقم الهاتف",
+    "Telefon numarası"
+  ],
+  "نقش و سطح دسترسی": [
+    "Role and permissions",
+    "الدور والصلاحيات",
+    "Rol ve izinler"
+  ],
+  "تنظیمات فضای کاری من": [
+    "My workspace settings",
+    "إعدادات مساحة عملي",
+    "Çalışma alanı ayarlarım"
+  ],
+  "تراکم نمایش": [
+    "Display density",
+    "كثافة العرض",
+    "Görünüm yoğunluğu"
+  ],
+  "خوانا و استاندارد": [
+    "Comfortable",
+    "مريح وواضح",
+    "Rahat görünüm"
+  ],
+  "فشرده برای نمایشگر عملیات": [
+    "Compact for operations screens",
+    "مضغوط لشاشات العمليات",
+    "Operasyon ekranları için kompakt"
+  ],
+  "صفحه شروع پس از ورود": [
+    "Start page after sign in",
+    "صفحة البداية بعد الدخول",
+    "Giriş sonrası başlangıç sayfası"
+  ],
+  "پیام تأیید عملیات": [
+    "Operation confirmations",
+    "تأكيدات العمليات",
+    "İşlem onayları"
+  ],
+  "نمایش پیام موفقیت": [
+    "Show success messages",
+    "عرض رسائل النجاح",
+    "Başarı mesajlarını göster"
+  ],
+  "بدون پیام موفقیت": [
+    "Hide success messages",
+    "إخفاء رسائل النجاح",
+    "Başarı mesajlarını gizle"
+  ],
+  "زبان و منطقه زمانی": [
+    "Language and time zone",
+    "اللغة والمنطقة الزمنية",
+    "Dil ve saat dilimi"
+  ],
+  "ذخیره تغییرات": [
+    "Save changes",
+    "حفظ التغييرات",
+    "Değişiklikleri kaydet"
+  ],
+  "در حال دریافت پروفایل…": [
+    "Loading profile…",
+    "جارٍ تحميل الملف…",
+    "Profil yükleniyor…"
+  ],
+  "مانیتورینگ اختصاصی پلتفرم": [
+    "Platform monitoring",
+    "مراقبة المنصة",
+    "Platform izleme"
+  ],
+  "دریافت وضعیت": [
+    "Get status",
+    "جلب الحالة",
+    "Durumu al"
+  ],
+  "کاربران فعال": [
+    "Active users",
+    "المستخدمون النشطون",
+    "Aktif kullanıcılar"
+  ],
+  "نشست‌های معتبر": [
+    "Valid sessions",
+    "الجلسات الصالحة",
+    "Geçerli oturumlar"
+  ],
+  "رکوردهای سامانه": [
+    "System records",
+    "سجلات النظام",
+    "Sistem kayıtları"
+  ],
+  "رویدادهای ثبت‌شده": [
+    "Recorded events",
+    "الأحداث المسجلة",
+    "Kayıtlı olaylar"
+  ],
+  "دیتابیس": [
+    "Database",
+    "قاعدة البيانات",
+    "Veritabanı"
+  ],
+  "سالم": [
+    "Healthy",
+    "سليمة",
+    "Sağlıklı"
+  ],
+  "حافظه فرآیند": [
+    "Process memory",
+    "ذاكرة العملية",
+    "İşlem belleği"
+  ],
+  "زمان فعالیت": [
+    "Uptime",
+    "مدة التشغيل",
+    "Çalışma süresi"
+  ],
+  "اتصال API": [
+    "API transport",
+    "نقل API",
+    "API bağlantısı"
+  ],
+  "متد": [
+    "Method",
+    "الطريقة",
+    "Yöntem"
+  ],
+  "مسیر": [
+    "Path",
+    "المسار",
+    "Yol"
+  ],
+  "پاسخ": [
+    "Response",
+    "الاستجابة",
+    "Yanıt"
+  ],
+  "زمان پاسخ": [
+    "Response time",
+    "زمن الاستجابة",
+    "Yanıt süresi"
+  ],
+  "در حال دریافت وضعیت…": [
+    "Loading status…",
+    "جارٍ تحميل الحالة…",
+    "Durum yükleniyor…"
+  ],
+  "میز کار": [
+    "Work desk",
+    "مكتب العمل",
+    "Çalışma masası"
+  ],
+  "وظایف و فعالیت‌های مرتبط با حساب شما": [
+    "Tasks and activity for your account",
+    "المهام والأنشطة المتعلقة بحسابك",
+    "Hesabınızla ilgili görevler ve etkinlikler"
+  ],
+  "پیش‌نویس‌های من": [
+    "My drafts",
+    "مسوداتي",
+    "Taslaklarım"
+  ],
+  "ارسال‌های من در انتظار بررسی": [
+    "My submissions awaiting review",
+    "إرسالاتي بانتظار المراجعة",
+    "İnceleme bekleyen gönderimlerim"
+  ],
+  "نیازمند بررسی توسط من": [
+    "Awaiting my review",
+    "بانتظار مراجعتي",
+    "İncelememi bekleyenler"
+  ],
+  "تأییدشده ·": [
+    "Approved ·",
+    "معتمد ·",
+    "Onaylandı ·"
+  ],
+  "خارج از محدوده است": [
+    "is out of range",
+    "خارج النطاق",
+    "aralık dışında"
+  ],
+  "انتخاب معتبر نیست": [
+    "has an invalid selection",
+    "اختيار غير صالح",
+    "geçersiz seçim"
+  ],
+  "تاریخ معتبر نیست": [
+    "has an invalid date",
+    "تاريخ غير صالح",
+    "geçersiz tarih"
+  ],
+  "معتبر نیست": [
+    "is invalid",
+    "غير صالح",
+    "geçersiz"
+  ],
+  "سلام،": [
+    "Hello,",
+    "مرحباً،",
+    "Merhaba,"
+  ],
+  "ثبت": [
+    "Create",
+    "تسجيل",
+    "Kaydet"
+  ],
+  "ثبت ": [
+    "Create ",
+    "تسجيل ",
+    "Kaydet "
+  ],
+  "داده و مدل مرجع": [
+    "Reference data and model",
+    "البيانات والنموذج المرجعي",
+    "Referans veri ve model"
+  ],
+  "منطقه زمانی تهران": [
+    "Tehran time zone",
+    "المنطقة الزمنية لطهران",
+    "Tahran saat dilimi"
+  ],
+  "در حال بارگذاری ابزار…": [
+    "Loading tool…",
+    "جارٍ تحميل الأداة…",
+    "Araç yükleniyor…"
+  ],
+  "کیفیت در هر مرحله": [
+    "Quality at every stage",
+    "الجودة في كل مرحلة",
+    "Her aşamada kalite"
+  ],
+  "برآورد بر اساس مفروضات": [
+    "Estimate based on assumptions",
+    "تقدير مبني على الافتراضات",
+    "Varsayımlara dayalı tahmin"
+  ],
+  " · رمز موقت": [
+    " · temporary password",
+    " · كلمة مرور مؤقتة",
+    " · geçici parola"
+  ],
+  " ماه": [
+    " months",
+    " أشهر",
+    " ay"
+  ],
+  " میلیون": [
+    " million",
+    " مليون",
+    " milyon"
+  ],
+  "۰۱": [
+    "01",
+    "٠١",
+    "01"
+  ],
+  "۰۲": [
+    "02",
+    "٠٢",
+    "02"
+  ],
+  "۰۳": [
+    "03",
+    "٠٣",
+    "03"
+  ],
+  "آخرین سرویس": [
+    "Last service",
+    "آخر صيانة",
+    "Son bakım"
+  ],
+  "آزمایشگاه": [
+    "Laboratory",
+    "المختبر",
+    "Laboratuvar"
+  ],
+  "آماده‌سازی نمونه آموزشی": [
+    "Preparing training examples",
+    "تجهيز أمثلة تدريبية",
+    "Eğitim örnekleri hazırlanıyor"
+  ],
+  "ابتدا رمز موقت را تغییر دهید": [
+    "Change your temporary password first",
+    "غيّر كلمة المرور المؤقتة أولاً",
+    "Önce geçici parolanızı değiştirin"
+  ],
+  "اتصال قطع است؛ داده‌ها آخرین دریافت هستند. هیچ تغییر آفلاینی ارسال نمی‌شود.": [
+    "Connection lost; data is from the last successful fetch. Offline changes are not submitted.",
+    "انقطع الاتصال؛ البيانات من آخر تحديث ناجح. لا تُرسل التغييرات دون اتصال.",
+    "Bağlantı kesildi; veriler son başarılı alımdandır. Çevrimdışı değişiklikler gönderilmez."
+  ],
+  "اجازه ثبت در این بخش ندارید": [
+    "You cannot create records in this section",
+    "لا تملك صلاحية التسجيل في هذا القسم",
+    "Bu bölümde kayıt oluşturma yetkiniz yok"
+  ],
+  "اجازه مدیریت کاربران ندارید": [
+    "You cannot manage users",
+    "لا تملك صلاحية إدارة المستخدمين",
+    "Kullanıcı yönetme yetkiniz yok"
+  ],
+  "اجازه مشاهده رویدادها ندارید": [
+    "You cannot view events",
+    "لا تملك صلاحية عرض الأحداث",
+    "Olayları görüntüleme yetkiniz yok"
+  ],
+  "اجزای منفعت و شیوه اثبات": [
+    "Benefit components and verification",
+    "عناصر المنفعة وطريقة إثباتها",
+    "Fayda bileşenleri ve doğrulama"
+  ],
+  "ارتباط با سرویس ورود برقرار نیست؛ معرفی سامانه در دسترس است.": [
+    "The sign-in service is unavailable; platform information remains accessible.",
+    "خدمة الدخول غير متاحة؛ يظل التعريف بالمنصة متاحاً.",
+    "Giriş hizmetine ulaşılamıyor; platform tanıtımı erişilebilir."
+  ],
+  "ارتباط قطع است. تغییرات ارسال نشده‌اند.": [
+    "Connection lost. Changes were not submitted.",
+    "انقطع الاتصال. لم تُرسل التغييرات.",
+    "Bağlantı kesildi. Değişiklikler gönderilmedi."
+  ],
+  "ارزش بهره‌وری؛ خودبه‌خود صرفه‌جویی نقدی نیست": [
+    "Productivity value; not automatically a cash saving",
+    "قيمة إنتاجية؛ لا تعني تلقائياً وفراً نقدياً",
+    "Verimlilik değeri; otomatik olarak nakit tasarrufu değildir"
+  ],
+  "ارزش فرصت نیروی انسانی": [
+    "Workforce opportunity value",
+    "قيمة الفرصة للموارد البشرية",
+    "İşgücü fırsat değeri"
+  ],
+  "ارزش نیروی آزادشده واقعاً هزینه نقدی قابل اجتناب است و در ROI منظور شود.": [
+    "Released workforce value is an avoidable cash expense and should count toward ROI.",
+    "قيمة العمل المتاح تمثل تكلفة نقدية يمكن تجنبها وتُحتسب ضمن العائد على الاستثمار.",
+    "Serbest kalan işgücü değeri kaçınılabilir nakit gideridir ve ROI hesabına katılsın."
+  ],
+  "ارزش هر ساعت آزادشده": [
+    "Value per released hour",
+    "قيمة كل ساعة عمل متاحة",
+    "Serbest kalan saat başına değer"
+  ],
+  "از تعداد معیوب تأییدشده، قبل از اجرای طرح": [
+    "From approved defective counts before implementation",
+    "من عدد القطع المعيبة المعتمد قبل التنفيذ",
+    "Uygulama öncesi onaylı kusurlu parça sayısından"
+  ],
+  "از مسیر کاری خود شروع کنید. داده نمونه وارد سوابق کارخانه نمی‌شود.": [
+    "Start with your own workflow. Example data is not added to factory records.",
+    "ابدأ بمسار عملك. لا تُضاف بيانات المثال إلى سجلات المصنع.",
+    "Kendi iş akışınızdan başlayın. Örnek veriler fabrika kayıtlarına eklenmez."
+  ],
+  "اطلاعات به‌روز شد.": [
+    "Information updated.",
+    "تم تحديث المعلومات.",
+    "Bilgiler güncellendi."
+  ],
+  "اطلاعات پروفایل معتبر نیست": [
+    "Invalid profile information",
+    "بيانات الملف الشخصي غير صالحة",
+    "Profil bilgileri geçersiz"
+  ],
+  "اطلاعات ذخیره شد. برای بررسی مستقل آن را ارسال کنید.": [
+    "Information saved. Submit it for independent review.",
+    "تم حفظ المعلومات. أرسلها للمراجعة المستقلة.",
+    "Bilgiler kaydedildi. Bağımsız inceleme için gönderin."
+  ],
+  "اطلاعات شخصی شما ذخیره شد.": [
+    "Your personal information was saved.",
+    "تم حفظ معلوماتك الشخصية.",
+    "Kişisel bilgileriniz kaydedildi."
+  ],
+  "اطلاعات ورود معتبر نیست": [
+    "Invalid sign-in information",
+    "بيانات الدخول غير صالحة",
+    "Giriş bilgileri geçersiz"
+  ],
+  "اعتبار باید پس از کالیبراسیون باشد": [
+    "Expiry must be after calibration",
+    "يجب أن تنتهي الصلاحية بعد المعايرة",
+    "Geçerlilik bitişi kalibrasyondan sonra olmalı"
+  ],
+  "اعتبار تا": [
+    "Valid until",
+    "صالح حتى",
+    "Geçerlilik bitişi"
+  ],
+  "اعداد اولیه یک مثال قابل تغییرند. مبنا را از اسناد کارخانه وارد کنید؛ نتیجه، برآورد همان مفروضات است و تعهد صرفه‌جویی محسوب نمی‌شود.": [
+    "Initial values are editable examples. Enter the baseline from factory records; results estimate those assumptions and do not guarantee savings.",
+    "القيم الأولية مثال قابل للتعديل. أدخل خط الأساس من سجلات المصنع؛ النتائج تقدير لتلك الافتراضات ولا تضمن الوفورات.",
+    "Başlangıç değerleri düzenlenebilir örneklerdir. Fabrika kayıtlarından temel değerleri girin; sonuçlar varsayımlara dayalıdır ve tasarruf garantisi değildir."
+  ],
+  "اقدام اصلاحی": [
+    "Corrective action",
+    "إجراء تصحيحي",
+    "Düzeltici faaliyet"
+  ],
+  "اقدام مهار و قرنطینه": [
+    "Containment and quarantine action",
+    "إجراء الاحتواء والحجر",
+    "Sınırlama ve karantina işlemi"
+  ],
+  "اندازه‌گیری دستی مستند؛ پذیرش توسط شخص دوم و حفظ ردیابی بچ": [
+    "Documented manual measurement; second-person acceptance and batch traceability",
+    "قياس يدوي موثق؛ قبول من شخص ثانٍ مع تتبع الدفعة",
+    "Belgeli manuel ölçüm; ikinci kişi kabulü ve parti izlenebilirliği"
+  ],
+  "اولویت": [
+    "Priority",
+    "الأولوية",
+    "Öncelik"
+  ],
+  "ایجاد حساب واقعی در دمو فعال نیست؛ حساب‌های هر هشت نقش آماده‌اند": [
+    "Real account creation is disabled in the demo; all eight role accounts are available",
+    "إنشاء الحسابات الفعلية غير متاح في التجربة؛ حسابات الأدوار الثمانية جاهزة",
+    "Demoda gerçek hesap oluşturulamaz; sekiz rolün hesapları hazırdır"
+  ],
+  "با حساب شخصی وارد شوید؛ نقش و مجوزها توسط مدیر سامانه تخصیص داده می‌شوند.": [
+    "Use your personal account; roles and permissions are assigned by the administrator.",
+    "ادخل بحسابك الشخصي؛ يخصص مسؤول النظام الأدوار والصلاحيات.",
+    "Kişisel hesabınızla giriş yapın; roller ve izinler sistem yöneticisi tarafından atanır."
+  ],
+  "با رخدادنامه و خط مبنا صحه‌گذاری شود": [
+    "Validate against event records and baseline",
+    "يُتحقق منها باستخدام سجل الأحداث وخط الأساس",
+    "Olay kayıtları ve temel durumla doğrulayın"
+  ],
+  "با فرض رسیدن به نرخ هدف": [
+    "Assuming the target rate is achieved",
+    "بافتراض تحقيق المعدل المستهدف",
+    "Hedef orana ulaşıldığı varsayımıyla"
+  ],
+  "بازرسی قطعه، بچ مواد، کالیبراسیون ابزار و گردش عدم انطباق در یک مسیر مشخص.": [
+    "Part inspection, material batches, instrument calibration and nonconformity workflow in one clear process.",
+    "فحص القطع ودفعات المواد ومعايرة الأدوات ومسار عدم المطابقة ضمن عملية واضحة.",
+    "Parça kontrolü, malzeme partileri, cihaz kalibrasyonu ve uygunsuzluk akışı tek bir süreçte."
+  ],
+  "بازرسی کیفیت و ردیابی": [
+    "Quality inspection and traceability",
+    "فحص الجودة والتتبع",
+    "Kalite kontrolü ve izlenebilirlik"
+  ],
+  "بازگشت ساده سرمایه": [
+    "Simple payback",
+    "فترة الاسترداد البسيطة",
+    "Basit geri ödeme süresi"
+  ],
+  "بازنگری": [
+    "Revision",
+    "المراجعة",
+    "Revizyon"
+  ],
+  "بالا": [
+    "High",
+    "مرتفع",
+    "Yüksek"
+  ],
+  "بچ یا شماره ذوب": [
+    "Batch or heat number",
+    "رقم الدفعة أو الصهرة",
+    "Parti veya döküm numarası"
+  ],
+  "بحرانی": [
+    "Critical",
+    "حرج",
+    "Kritik"
+  ],
+  "بحرانی بودن": [
+    "Criticality",
+    "درجة الخطورة",
+    "Kritiklik"
+  ],
+  "برای ادامه وارد سامانه شوید": [
+    "Sign in to continue",
+    "ادخل إلى النظام للمتابعة",
+    "Devam etmek için giriş yapın"
+  ],
+  "برای ارائه به ناظر: خط مبنا، بازه، خانواده قطعه، سند هزینه، تغییر mix محصول و ساعات واقعی را پیوست کنید. روش بازگشت ساده، ارزش زمانی پول، مالیات و جریان نقد ماهانه را لحاظ نمی‌کند.": [
+    "For reviewer submission, attach the baseline, period, product family, cost evidence, product mix changes and actual hours. Simple payback excludes time value of money, taxes and monthly cash flow.",
+    "للعرض على المراجع، أرفق خط الأساس والفترة وعائلة المنتج ومستند التكلفة وتغير مزيج المنتجات والساعات الفعلية. الاسترداد البسيط لا يشمل القيمة الزمنية للنقود والضرائب والتدفق النقدي الشهري.",
+    "İnceleme için temel durumu, dönemi, ürün ailesini, maliyet belgelerini, ürün karması değişimini ve gerçek saatleri ekleyin. Basit geri ödeme, paranın zaman değerini, vergileri ve aylık nakit akışını içermez."
+  ],
+  "برای نخستین ورود رمز موقت را تغییر دهید.": [
+    "Change your temporary password on first sign-in.",
+    "غيّر كلمة المرور المؤقتة عند أول دخول.",
+    "İlk girişte geçici parolanızı değiştirin."
+  ],
+  "برق kWh": [
+    "Electricity kWh",
+    "الكهرباء kWh",
+    "Elektrik kWh"
+  ],
+  "بهبود انرژی": [
+    "Energy improvement",
+    "تحسين الطاقة",
+    "Enerji iyileştirmesi"
+  ],
+  "به‌روزرسانی را انتخاب کنید؛ خطای ارتباط باعث تولید داده نمونه نمی‌شود.": [
+    "Select refresh; connection errors do not generate example data.",
+    "اختر التحديث؛ لا يؤدي خطأ الاتصال إلى إنشاء بيانات تجريبية.",
+    "Yenilemeyi seçin; bağlantı hataları örnek veri üretmez."
+  ],
+  "پارامتر اندازه‌گیری": [
+    "Measured parameter",
+    "المتغير المقاس",
+    "Ölçülen parametre"
+  ],
+  "پارامترهای فرآیند و محدودیت": [
+    "Process parameters and constraints",
+    "معلمات العملية والقيود",
+    "Süreç parametreleri ve kısıtlar"
+  ],
+  "پایش انرژی": [
+    "Energy monitoring",
+    "مراقبة الطاقة",
+    "Enerji izleme"
+  ],
+  "پس از تعدیل حجم و ترکیب محصول": [
+    "After adjusting for volume and product mix",
+    "بعد تعديل حجم الإنتاج ومزيج المنتجات",
+    "Hacim ve ürün karması düzeltildikten sonra"
+  ],
+  "پس از ضریب تحقق": [
+    "After the realization factor",
+    "بعد معامل التحقق",
+    "Gerçekleşme katsayısından sonra"
+  ],
+  "پس از هزینه بهره‌برداری": [
+    "After operating costs",
+    "بعد تكاليف التشغيل",
+    "İşletme maliyetlerinden sonra"
+  ],
+  "پلتفرم یکپارچه تولید هوشمند مبتنی بر هوش مصنوعی برای صنایع ایران؛ با تمرکز بر کنترل ابعادی و کیفیت بصری قطعات، پایش تجهیزات و انرژی در کارخانه فنر لول ایران و توسعه در استان سمنان.": [
+    "An integrated AI-powered smart manufacturing platform for Iranian industries, focusing on dimensional and visual quality control, equipment and energy monitoring at Fanar Lool Iran and expansion in Semnan Province.",
+    "منصة متكاملة للتصنيع الذكي بالذكاء الاصطناعي للصناعات الإيرانية، تركز على ضبط الأبعاد والجودة البصرية ومراقبة المعدات والطاقة في مصنع فنر لول إيران والتوسع في محافظة سمنان.",
+    "İran sanayisi için yapay zekâ destekli bütünleşik akıllı üretim platformu; Fanar Lool İran fabrikasında boyutsal ve görsel kalite kontrolü, ekipman ve enerji izleme ile Semnan ilinde yaygınlaşmaya odaklanır."
+  ],
+  "پیش‌نویس قابل ویرایش است. رکورد ارسال‌شده به شخص مجاز دیگری سپرده می‌شود؛ داده تأییدشده وارد شاخص‌ها می‌شود.": [
+    "Drafts can be edited. Submitted records go to another authorized person; approved data enters the indicators.",
+    "يمكن تعديل المسودة. يُحال السجل المرسل إلى شخص مخول آخر؛ تدخل البيانات المعتمدة في المؤشرات.",
+    "Taslaklar düzenlenebilir. Gönderilen kayıtlar başka bir yetkiliye yönlendirilir; onaylı veriler göstergelere katılır."
+  ],
+  "تاریخ اعتبار ابزار و مرجع گواهی؛ جلوگیری از ادعای گواهی خودکار": [
+    "Instrument validity and certificate reference; prevent unsupported automatic certification",
+    "صلاحية الأداة ومرجع الشهادة؛ منع ادعاء إصدار شهادات تلقائية غير مدعومة",
+    "Cihaz geçerliliği ve sertifika referansı; dayanaksız otomatik belgelendirmeyi önleme"
+  ],
+  "تاریخ شیفت": [
+    "Shift date",
+    "تاريخ الوردية",
+    "Vardiya tarihi"
+  ],
+  "تاریخ قرائت": [
+    "Reading date",
+    "تاريخ القراءة",
+    "Okuma tarihi"
+  ],
+  "تاریخ کالیبراسیون": [
+    "Calibration date",
+    "تاريخ المعايرة",
+    "Kalibrasyon tarihi"
+  ],
+  "تأمین‌کننده": [
+    "Supplier",
+    "المورد",
+    "Tedarikçi"
+  ],
+  "تحقق مفروضات": [
+    "Assumption realization",
+    "تحقق الافتراضات",
+    "Varsayımların gerçekleşmesi"
+  ],
+  "تصویر یکپارچه از تولید، کیفیت و اقدامات کارخانه.": [
+    "An integrated view of factory production, quality and actions.",
+    "رؤية متكاملة لإنتاج المصنع وجودته وإجراءاته.",
+    "Fabrika üretimi, kalitesi ve faaliyetlerinin bütünleşik görünümü."
+  ],
+  "تعداد تولید": [
+    "Production count",
+    "عدد الإنتاج",
+    "Üretim adedi"
+  ],
+  "تعداد تولید همان خانواده محصول و بازه": [
+    "Production count for the same product family and period",
+    "عدد الإنتاج لعائلة المنتج والفترة نفسها",
+    "Aynı ürün ailesi ve dönem için üretim adedi"
+  ],
+  "تعداد حلقه فعال": [
+    "Active coil count",
+    "عدد اللفات الفعالة",
+    "Aktif sarım sayısı"
+  ],
+  "تعداد سالم": [
+    "Good count",
+    "عدد القطع السليمة",
+    "Sağlam parça adedi"
+  ],
+  "تعداد سالم، زمان کارکرد یا سیکل ایده‌آل با تولید سازگار نیست": [
+    "Good count, runtime or ideal cycle is inconsistent with production",
+    "عدد القطع السليمة أو وقت التشغيل أو الدورة المثالية لا يتوافق مع الإنتاج",
+    "Sağlam adet, çalışma süresi veya ideal çevrim üretimle tutarsız"
+  ],
+  "تعداد معیوب": [
+    "Defective count",
+    "عدد القطع المعيبة",
+    "Kusurlu parça adedi"
+  ],
+  "تعداد معیوب بیش از نمونه است": [
+    "Defective count exceeds sample size",
+    "عدد القطع المعيبة أكبر من حجم العينة",
+    "Kusurlu adet örneklem büyüklüğünü aşıyor"
+  ],
+  "تعداد نمونه": [
+    "Sample count",
+    "عدد العينات",
+    "Örnek sayısı"
+  ],
+  "تغییر دسترسی حساب": [
+    "Account access change",
+    "تغيير صلاحيات الحساب",
+    "Hesap erişim değişikliği"
+  ],
+  "تغییر سطح یا غیرفعال کردن خودتان مجاز نیست": [
+    "You cannot change your own role or deactivate your account",
+    "لا يمكنك تغيير دورك أو تعطيل حسابك",
+    "Kendi rolünüzü değiştiremez veya hesabınızı devre dışı bırakamazsınız"
+  ],
+  "تغییر نقش فقط توسط مدیر سامانه انجام می‌شود.": [
+    "Only the administrator can change roles.",
+    "لا يغير الأدوار إلا مسؤول النظام.",
+    "Rolleri yalnızca sistem yöneticisi değiştirebilir."
+  ],
+  "تغییر یا بررسی رکورد": [
+    "Record change or review",
+    "تعديل السجل أو مراجعته",
+    "Kayıt değişikliği veya incelemesi"
+  ],
+  "تلاش ورود ناموفق": [
+    "Failed sign-in attempt",
+    "محاولة دخول فاشلة",
+    "Başarısız giriş denemesi"
+  ],
+  "تلرانس ± mm": [
+    "Tolerance ± mm",
+    "التفاوت ± mm",
+    "Tolerans ± mm"
+  ],
+  "تمام مراحل و تجهیزات، از جمله اعتبار قبلی": [
+    "All phases and equipment, including previous funding",
+    "جميع المراحل والمعدات، بما فيها التمويل السابق",
+    "Önceki finansman dahil tüm aşamalar ve ekipman"
+  ],
+  "تناژ تولید": [
+    "Production tonnage",
+    "حمولة الإنتاج بالطن",
+    "Üretim tonajı"
+  ],
+  "تنظیمات به حساب شما وابسته است و برای کاربران دیگر تغییر نمی‌کند.": [
+    "Settings belong to your account and do not affect other users.",
+    "الإعدادات تخص حسابك ولا تؤثر على المستخدمين الآخرين.",
+    "Ayarlar hesabınıza özeldir ve diğer kullanıcıları etkilemez."
+  ],
+  "تنظیمات شخصی معتبر نیست": [
+    "Invalid personal settings",
+    "الإعدادات الشخصية غير صالحة",
+    "Kişisel ayarlar geçersiz"
+  ],
+  "توقف غیر برنامه‌ریزی‌شده مرتبط با طرح": [
+    "Project-related unplanned downtime",
+    "توقف غير مخطط مرتبط بالمشروع",
+    "Projeyle ilgili plansız duruş"
+  ],
+  "توقف قابل بهبود سالانه": [
+    "Annual avoidable downtime",
+    "التوقف السنوي القابل للتحسين",
+    "Yıllık iyileştirilebilir duruş"
+  ],
+  "تولید × اختلاف نرخ × زیان خالص قطعه": [
+    "Production × rate difference × net loss per part",
+    "الإنتاج × فرق المعدل × الخسارة الصافية للقطعة",
+    "Üretim × oran farkı × parça başına net kayıp"
+  ],
+  "تولید سالانه": [
+    "Annual production",
+    "الإنتاج السنوي",
+    "Yıllık üretim"
+  ],
+  "تولید و بهره‌وری": [
+    "Production and productivity",
+    "الإنتاج والإنتاجية",
+    "Üretim ve verimlilik"
+  ],
+  "تومان": [
+    "toman",
+    "تومان",
+    "tümen"
+  ],
+  "ثبت بچ و شیفت، زمان کار و ضایعات؛ محاسبه OEE از داده ثبت‌شده": [
+    "Record batches, shifts, working time and scrap; calculate OEE from recorded data",
+    "تسجيل الدفعات والورديات ووقت العمل والهدر؛ حساب OEE من البيانات المسجلة",
+    "Parti, vardiya, çalışma süresi ve fire kaydı; kayıtlı verilerden OEE hesaplama"
+  ],
+  "ثبت جدید را انتخاب کنید؛ اطلاعات پس از بررسی مستقل تأیید می‌شوند.": [
+    "Select a new record; information is approved after independent review.",
+    "اختر سجلاً جديداً؛ تُعتمد المعلومات بعد مراجعة مستقلة.",
+    "Yeni kayıt seçin; bilgiler bağımsız inceleme sonrasında onaylanır."
+  ],
+  "ثبت درخواست، اولویت و اقدام؛ بدون پیش‌بینی ساختگی عمر تجهیز": [
+    "Record requests, priorities and actions without fabricated equipment life predictions",
+    "تسجيل الطلبات والأولويات والإجراءات دون تنبؤات مختلقة بعمر المعدات",
+    "Talep, öncelik ve işlem kaydı; uydurma ekipman ömrü tahmini olmadan"
+  ],
+  "ثبت رکورد": [
+    "Create record",
+    "تسجيل سجل",
+    "Kayıt oluştur"
+  ],
+  "ثبت شیفت و توقف، محاسبه OEE و فرصت‌های بهبود از داده تأییدشده.": [
+    "Record shifts and downtime, calculate OEE and identify improvement opportunities from approved data.",
+    "تسجيل الورديات والتوقفات وحساب OEE وفرص التحسين من البيانات المعتمدة.",
+    "Vardiya ve duruşları kaydedin; onaylı verilerden OEE ve iyileştirme fırsatlarını hesaplayın."
+  ],
+  "جدا از جریان نقدی": [
+    "Separate from cash flow",
+    "منفصلة عن التدفق النقدي",
+    "Nakit akışından ayrı"
+  ],
+  "جزئی": [
+    "Minor",
+    "طفيف",
+    "Küçük"
+  ],
+  "حاشیه مشارکت از دست رفته؛ هزینه ثابت را دوباره نشمارید": [
+    "Lost contribution margin; do not count fixed costs twice",
+    "هامش المساهمة المفقود؛ لا تحسب التكاليف الثابتة مرتين",
+    "Kaybedilen katkı payı; sabit maliyetleri iki kez saymayın"
+  ],
+  "حامل": [
+    "Energy carrier",
+    "حامل الطاقة",
+    "Enerji türü"
+  ],
+  "حد سفارش": [
+    "Reorder level",
+    "حد إعادة الطلب",
+    "Yeniden sipariş seviyesi"
+  ],
+  "حداقل ۱۲ نویسه؛ یک عبارت طولانی و اختصاصی انتخاب کنید.": [
+    "At least 12 characters; choose a long, unique passphrase.",
+    "١٢ محرفاً على الأقل؛ اختر عبارة طويلة وفريدة.",
+    "En az 12 karakter; uzun ve benzersiz bir parola seçin."
+  ],
+  "حساب تازه باید رمز موقت را تغییر دهد. تغییر نقش یا غیرفعال کردن، نشست‌های کاربر را باطل می‌کند.": [
+    "New accounts must change their temporary password. Role changes or deactivation revoke user sessions.",
+    "يجب على الحساب الجديد تغيير كلمة المرور المؤقتة. تغيير الدور أو تعطيل الحساب يُبطل جلسات المستخدم.",
+    "Yeni hesaplar geçici parolayı değiştirmelidir. Rol değişikliği veya devre dışı bırakma oturumları iptal eder."
+  ],
+  "حساب شما باید توسط مدیر سامانه فعال شده باشد.": [
+    "Your account must be activated by the administrator.",
+    "يجب أن يفعّل مسؤول النظام حسابك.",
+    "Hesabınız sistem yöneticisi tarafından etkinleştirilmiş olmalı."
+  ],
+  "حساب‌های شخصی کارکنان": [
+    "Employee personal accounts",
+    "حسابات الموظفين الشخصية",
+    "Çalışanların kişisel hesapları"
+  ],
+  "خروج از سامانه": [
+    "Sign out",
+    "تسجيل الخروج",
+    "Çıkış yap"
+  ],
+  "خروجی سناریو": [
+    "Scenario export",
+    "تصدير السيناريو",
+    "Senaryo dışa aktarımı"
+  ],
+  "خط تولید": [
+    "Production line",
+    "خط الإنتاج",
+    "Üretim hattı"
+  ],
+  "خط و محل": [
+    "Line and location",
+    "الخط والموقع",
+    "Hat ve konum"
+  ],
+  "خط یا مصرف‌کننده": [
+    "Line or consumer",
+    "الخط أو المستهلك",
+    "Hat veya tüketici"
+  ],
+  "خطاها و پیام‌های امنیتی همیشه نمایش داده می‌شوند.": [
+    "Errors and security messages are always shown.",
+    "تُعرض الأخطاء والرسائل الأمنية دائماً.",
+    "Hata ve güvenlik mesajları her zaman gösterilir."
+  ],
+  "خطای داخلی؛ دوباره تلاش کنید": [
+    "Internal error; try again",
+    "خطأ داخلي؛ حاول مجدداً",
+    "İç hata; tekrar deneyin"
+  ],
+  "داده‌ها آموزشی و مختص این مرورگرند؛ تغییرات به کارخانه واقعی منتقل نمی‌شوند. حساب‌های نمونه ثابت‌اند و داده‌ها پس از پایان فضای دمو پاک می‌شوند.": [
+    "Data is for training and isolated to this browser; changes do not reach the real factory. Example accounts are fixed and data is cleared when the demo space expires.",
+    "البيانات تعليمية ومعزولة لهذا المتصفح؛ لا تنتقل التغييرات إلى المصنع الفعلي. الحسابات التجريبية ثابتة وتُمسح البيانات عند انتهاء مساحة التجربة.",
+    "Veriler eğitim içindir ve bu tarayıcıya özeldir; değişiklikler gerçek fabrikaya aktarılmaz. Örnek hesaplar sabittir ve demo alanı sona erdiğinde veriler silinir."
+  ],
+  "دارایی و دستور ساخت را با بازنگری مشخص مدیریت کنید.": [
+    "Manage assets and manufacturing recipes with defined revisions.",
+    "أدر الأصول ووصفات التصنيع بإصدارات مراجعة واضحة.",
+    "Varlıkları ve üretim reçetelerini belirli revizyonlarla yönetin."
+  ],
+  "دارایی، ریسک، محل نصب و دوره سرویس با قابلیت تأمین داخل": [
+    "Assets, risk, installation location and service interval with local sourcing",
+    "الأصول والمخاطر وموقع التركيب وفترة الصيانة مع إمكان التوريد المحلي",
+    "Varlık, risk, kurulum yeri ve bakım aralığı; yerel tedarik olanağı"
+  ],
+  "در جریان نقدی منظور شده": [
+    "Included in cash flow",
+    "محتسبة ضمن التدفق النقدي",
+    "Nakit akışına dahil"
+  ],
+  "در حال آماده‌سازی آزمایشگاه…": [
+    "Preparing laboratory…",
+    "جارٍ تجهيز المختبر…",
+    "Laboratuvar hazırlanıyor…"
+  ],
+  "در حال آماده‌سازی فضای کارخانه…": [
+    "Preparing factory workspace…",
+    "جارٍ تجهيز مساحة المصنع…",
+    "Fabrika alanı hazırlanıyor…"
+  ],
+  "درخواست بزرگ است": [
+    "Request is too large",
+    "الطلب كبير جداً",
+    "İstek çok büyük"
+  ],
+  "درخواست تأیید امنیتی ندارد": [
+    "Request lacks security verification",
+    "الطلب يفتقر إلى التحقق الأمني",
+    "İstek güvenlik doğrulaması içermiyor"
+  ],
+  "درخواست معتبر نیست": [
+    "Invalid request",
+    "الطلب غير صالح",
+    "Geçersiz istek"
+  ],
+  "درخواست‌ها و سوابق تجهیزات را به اقدام قابل پیگیری تبدیل کنید.": [
+    "Turn equipment requests and history into trackable actions.",
+    "حوّل طلبات المعدات وسجلاتها إلى إجراءات قابلة للتتبع.",
+    "Ekipman taleplerini ve geçmişini izlenebilir işlemlere dönüştürün."
+  ],
+  "درصد": [
+    "percent",
+    "بالمئة",
+    "yüzde"
+  ],
+  "درصد تحقق سناریو": [
+    "Scenario realization percentage",
+    "نسبة تحقق السيناريو",
+    "Senaryo gerçekleşme yüzdesi"
+  ],
+  "دستور ساخت و نسخه مهندسی": [
+    "Manufacturing recipe and engineering revision",
+    "وصفة التصنيع والإصدار الهندسي",
+    "Üretim reçetesi ve mühendislik revizyonu"
+  ],
+  "دستورکار نگهداری": [
+    "Maintenance work order",
+    "أمر عمل الصيانة",
+    "Bakım iş emri"
+  ],
+  "دوره سرویس روز": [
+    "Service interval, days",
+    "فترة الصيانة بالأيام",
+    "Bakım aralığı, gün"
+  ],
+  "ذخیره انجام نشد": [
+    "Save failed",
+    "تعذر الحفظ",
+    "Kaydedilemedi"
+  ],
+  "ردیابی بازرسی و تصمیم کیفیت از ابزار تا بچ محصول.": [
+    "Trace inspection and quality decisions from the instrument to the product batch.",
+    "تتبع الفحص وقرارات الجودة من الأداة إلى دفعة المنتج.",
+    "Cihazdan ürün partisine kontrol ve kalite kararlarını izleyin."
+  ],
+  "رکورد پیدا نشد": [
+    "Record not found",
+    "السجل غير موجود",
+    "Kayıt bulunamadı"
+  ],
+  "رکورد هم‌زمان تغییر کرده؛ صفحه را به‌روز کنید": [
+    "Record changed concurrently; refresh the page",
+    "تغير السجل بالتزامن؛ حدّث الصفحة",
+    "Kayıt eş zamanlı değiştirildi; sayfayı yenileyin"
+  ],
+  "رمز باید ۱۲ تا ۱۲۸ نویسه باشد": [
+    "Password must contain 12–128 characters",
+    "يجب أن تحتوي كلمة المرور على ١٢ إلى ١٢٨ محرفاً",
+    "Parola 12–128 karakter olmalı"
+  ],
+  "رمز تغییر کرد. با رمز جدید وارد شوید.": [
+    "Password changed. Sign in with your new password.",
+    "تم تغيير كلمة المرور. ادخل بالكلمة الجديدة.",
+    "Parola değiştirildi. Yeni parolanızla giriş yapın."
+  ],
+  "رمز را فراموش کرده‌اید؟ به مدیر سامانه مراجعه کنید. ثبت‌نام عمومی فعال نیست.": [
+    "Forgot your password? Contact the administrator. Public registration is disabled.",
+    "نسيت كلمة المرور؟ راجع مسؤول النظام. التسجيل العام غير متاح.",
+    "Parolanızı mı unuttunuz? Sistem yöneticisine başvurun. Genel kayıt açık değildir."
+  ],
+  "رمز فعلی صحیح نیست": [
+    "Current password is incorrect",
+    "كلمة المرور الحالية غير صحيحة",
+    "Mevcut parola yanlış"
+  ],
+  "رمزهای دمو ثابت‌اند؛ تغییر رمز در حساب واقعی انجام می‌شود": [
+    "Demo passwords are fixed; change passwords in a real account",
+    "كلمات مرور التجربة ثابتة؛ يتم تغييرها في الحساب الفعلي",
+    "Demo parolaları sabittir; parola değişikliği gerçek hesapta yapılır"
+  ],
+  "رویدادهای حساب شما پس از انجام عملیات در اینجا ثبت می‌شوند.": [
+    "Your account events appear here after operations are performed.",
+    "تظهر أحداث حسابك هنا بعد تنفيذ العمليات.",
+    "Hesap olaylarınız işlemlerden sonra burada kaydedilir."
+  ],
+  "زمان برنامه‌ریزی‌شده دقیقه": [
+    "Planned time, minutes",
+    "الوقت المخطط بالدقائق",
+    "Planlanan süre, dakika"
+  ],
+  "زمان کارکرد دقیقه": [
+    "Runtime, minutes",
+    "وقت التشغيل بالدقائق",
+    "Çalışma süresi, dakika"
+  ],
+  "زیاد": [
+    "High",
+    "مرتفع",
+    "Yüksek"
+  ],
+  "زیان خالص هر قطعه معیوب": [
+    "Net loss per defective part",
+    "الخسارة الصافية لكل قطعة معيبة",
+    "Kusurlu parça başına net kayıp"
+  ],
+  "زیان قابل اجتناب هر ساعت توقف": [
+    "Avoidable loss per downtime hour",
+    "الخسارة القابلة للتجنب لكل ساعة توقف",
+    "Duruş saati başına önlenebilir kayıp"
+  ],
+  "سازنده": [
+    "Manufacturer",
+    "المصنّع",
+    "Üretici"
+  ],
+  "ساعت": [
+    "hours",
+    "ساعات",
+    "saat"
+  ],
+  "ساعت توقف × درصد کاهش × زیان هر ساعت": [
+    "Downtime hours × reduction rate × loss per hour",
+    "ساعات التوقف × نسبة الانخفاض × خسارة الساعة",
+    "Duruş saatleri × azalma oranı × saat başına kayıp"
+  ],
+  "ساعت کنترل کیفیت آزادشده": [
+    "Released quality-control hours",
+    "ساعات ضبط الجودة المتاحة",
+    "Serbest kalan kalite kontrol saatleri"
+  ],
+  "سامانه از ثبت دستی مستند شروع می‌کند. اتصال تجهیزات و مدل‌های هوش مصنوعی پس از انتخاب خط پایلوت و اعتبارسنجی میدانی تکمیل می‌شود.": [
+    "The platform starts with documented manual entry. Equipment connections and AI models are completed after pilot line selection and field validation.",
+    "تبدأ المنصة بالتسجيل اليدوي الموثق. تُستكمل اتصالات المعدات ونماذج الذكاء الاصطناعي بعد اختيار خط تجريبي والتحقق الميداني.",
+    "Platform belgeli manuel kayıtla başlar. Ekipman bağlantıları ve yapay zekâ modelleri pilot hat seçimi ve saha doğrulamasından sonra tamamlanır."
+  ],
+  "سرمایه‌گذاری ÷ منفعت خالص": [
+    "Investment ÷ net benefit",
+    "الاستثمار ÷ المنفعة الصافية",
+    "Yatırım ÷ net fayda"
+  ],
+  "سرمایه‌گذاری کل پروژه": [
+    "Total project investment",
+    "إجمالي استثمار المشروع",
+    "Toplam proje yatırımı"
+  ],
+  "سرور، پشتیبانی، کالیبراسیون و اجاره مداوم": [
+    "Server, support, calibration and recurring rental",
+    "الخادم والدعم والمعايرة والإيجار المستمر",
+    "Sunucu, destek, kalibrasyon ve sürekli kiralama"
+  ],
+  "سقف ۲۰۰ رکورد این فضای آموزشی تکمیل شده است": [
+    "This training space has reached its 200-record limit",
+    "بلغت المساحة التعليمية حدها البالغ ٢٠٠ سجل",
+    "Bu eğitim alanının 200 kayıt sınırına ulaşıldı"
+  ],
+  "سناریو یا نتیجه اندازه‌گیری‌شده بعد از پایلوت": [
+    "Scenario or measured result after the pilot",
+    "سيناريو أو نتيجة مقاسة بعد التجربة الميدانية",
+    "Senaryo veya pilot sonrasında ölçülen sonuç"
+  ],
+  "سنجش ارزش اقتصادی طرح": [
+    "Project economic value assessment",
+    "تقييم القيمة الاقتصادية للمشروع",
+    "Projenin ekonomik değer değerlendirmesi"
+  ],
+  "سوابق تیم مسئول در اینجا نمایش داده می‌شوند.": [
+    "The responsible team's records appear here.",
+    "تظهر هنا سجلات الفريق المسؤول.",
+    "Sorumlu ekibin kayıtları burada görüntülenir."
+  ],
+  "سوابق شیفت و بچ را ثبت و آماده بررسی کنید.": [
+    "Record shift and batch history and prepare it for review.",
+    "سجل بيانات الوردية والدفعة وجهزها للمراجعة.",
+    "Vardiya ve parti kayıtlarını girip incelemeye hazırlayın."
+  ],
+  "سیکل ایده‌آل ثانیه": [
+    "Ideal cycle, seconds",
+    "الدورة المثالية بالثواني",
+    "İdeal çevrim, saniye"
+  ],
+  "شب": [
+    "Night",
+    "ليلية",
+    "Gece"
+  ],
+  "شدت": [
+    "Severity",
+    "الشدة",
+    "Önem derecesi"
+  ],
+  "شرح رفع عیب": [
+    "Repair description",
+    "وصف إصلاح العطل",
+    "Arıza giderme açıklaması"
+  ],
+  "شرح عیب و روش": [
+    "Fault and method description",
+    "وصف العيب والطريقة",
+    "Kusur ve yöntem açıklaması"
+  ],
+  "شرح کنترل": [
+    "Control description",
+    "وصف الضبط",
+    "Kontrol açıklaması"
+  ],
+  "شرح وضعیت": [
+    "Condition description",
+    "وصف الحالة",
+    "Durum açıklaması"
+  ],
+  "شماره گواهی آزمایشگاه": [
+    "Laboratory certificate number",
+    "رقم شهادة المختبر",
+    "Laboratuvar sertifika numarası"
+  ],
+  "شناسنامه تجهیزات": [
+    "Equipment register",
+    "سجل المعدات",
+    "Ekipman sicili"
+  ],
+  "شناسنامه تجهیزات، درخواست تعمیر، قطعات یدکی و سابقه قابل پیگیری.": [
+    "Equipment records, repair requests, spare parts and traceable history.",
+    "سجلات المعدات وطلبات الإصلاح وقطع الغيار وسجل قابل للتتبع.",
+    "Ekipman kayıtları, onarım talepleri, yedek parçalar ve izlenebilir geçmiş."
+  ],
+  "شناسه ابزار": [
+    "Instrument ID",
+    "معرف الأداة",
+    "Cihaz kimliği"
+  ],
+  "شناسه ابزار کالیبره": [
+    "Calibrated instrument ID",
+    "معرف الأداة المعايرة",
+    "Kalibre cihaz kimliği"
+  ],
+  "شناسه بچ": [
+    "Batch ID",
+    "معرف الدفعة",
+    "Parti kimliği"
+  ],
+  "شناسه تجهیز": [
+    "Equipment ID",
+    "معرف المعدة",
+    "Ekipman kimliği"
+  ],
+  "شناسه تکراری است": [
+    "Duplicate identifier",
+    "المعرف مكرر",
+    "Kimlik zaten mevcut"
+  ],
+  "شناسه کنتور": [
+    "Meter ID",
+    "معرف العداد",
+    "Sayaç kimliği"
+  ],
+  "شناسه یا رمز عبور صحیح نیست": [
+    "Incorrect username or password",
+    "اسم المستخدم أو كلمة المرور غير صحيح",
+    "Kullanıcı adı veya parola yanlış"
+  ],
+  "شیفت": [
+    "Shift",
+    "الوردية",
+    "Vardiya"
+  ],
+  "صبح": [
+    "Morning",
+    "صباحية",
+    "Sabah"
+  ],
+  "صورتحساب هم‌بازه و هم‌دامنه با تولید": [
+    "Bill covering the same period and scope as production",
+    "فاتورة للفترة والنطاق نفسيهما للإنتاج",
+    "Üretimle aynı dönem ve kapsamı içeren fatura"
+  ],
+  "ضایعات خط مبنا": [
+    "Baseline scrap rate",
+    "نسبة الهدر الأساسية",
+    "Temel fire oranı"
+  ],
+  "ضایعات هدف": [
+    "Target scrap rate",
+    "نسبة الهدر المستهدفة",
+    "Hedef fire oranı"
+  ],
+  "طول آزاد mm": [
+    "Free length mm",
+    "الطول الحر mm",
+    "Serbest boy mm"
+  ],
+  "عادی": [
+    "Normal",
+    "عادي",
+    "Normal"
+  ],
+  "عدد": [
+    "units",
+    "وحدات",
+    "adet"
+  ],
+  "عدم انطباق و اقدام اصلاحی": [
+    "Nonconformity and corrective action",
+    "عدم المطابقة والإجراء التصحيحي",
+    "Uygunsuzluk ve düzeltici faaliyet"
+  ],
+  "عدم قطعیت و واحد": [
+    "Uncertainty and unit",
+    "عدم اليقين والوحدة",
+    "Belirsizlik ve birim"
+  ],
+  "عصر": [
+    "Evening",
+    "مسائية",
+    "Akşam"
+  ],
+  "علائم و اقدام پیشنهادی": [
+    "Symptoms and proposed action",
+    "الأعراض والإجراء المقترح",
+    "Belirtiler ve önerilen işlem"
+  ],
+  "علت توقف": [
+    "Downtime reason",
+    "سبب التوقف",
+    "Duruş nedeni"
+  ],
+  "علت ریشه‌ای": [
+    "Root cause",
+    "السبب الجذري",
+    "Kök neden"
+  ],
+  "عمده": [
+    "Major",
+    "جسيم",
+    "Büyük"
+  ],
+  "عملیات انجام نشد": [
+    "Operation failed",
+    "تعذر تنفيذ العملية",
+    "İşlem tamamlanamadı"
+  ],
+  "عنوان درخواست": [
+    "Request title",
+    "عنوان الطلب",
+    "Talep başlığı"
+  ],
+  "عنوان عدم انطباق": [
+    "Nonconformity title",
+    "عنوان عدم المطابقة",
+    "Uygunsuzluk başlığı"
+  ],
+  "فاقد بازگشت مثبت": [
+    "No positive payback",
+    "لا يوجد استرداد إيجابي",
+    "Pozitif geri ödeme yok"
+  ],
+  "فرمت درخواست باید JSON باشد": [
+    "Request format must be JSON",
+    "يجب أن يكون تنسيق الطلب JSON",
+    "İstek biçimi JSON olmalı"
+  ],
+  "فضای کاری دریافت نشد": [
+    "Workspace could not be loaded",
+    "تعذر تحميل مساحة العمل",
+    "Çalışma alanı yüklenemedi"
+  ],
+  "فعالیت‌های حساب من": [
+    "My account activity",
+    "أنشطة حسابي",
+    "Hesap etkinliklerim"
+  ],
+  "فقط پیش‌نویس خودتان قابل ویرایش است": [
+    "Only your own drafts can be edited",
+    "يمكن تعديل مسوداتك فقط",
+    "Yalnızca kendi taslaklarınız düzenlenebilir"
+  ],
+  "فقط رکوردهای تأییدشده در OEE محاسبه می‌شوند. تأیید باید توسط شخص مجاز دیگری انجام شود. داده واقعی به ابزار کالیبره و ثبت مسئول نیاز دارد.": [
+    "Only approved records contribute to OEE. Another authorized person must approve them. Real data requires calibrated instruments and an identified recorder.",
+    "تدخل السجلات المعتمدة فقط في حساب OEE. يجب أن يعتمدها شخص مخول آخر. تتطلب البيانات الفعلية أدوات معايرة ومسؤولاً محدداً عن التسجيل.",
+    "OEE hesabına yalnız onaylı kayıtlar katılır. Başka bir yetkili onay vermelidir. Gerçek veri kalibre cihaz ve belirli kayıt sorumlusu gerektirir."
+  ],
+  "قرائت ابتدا": [
+    "Start reading",
+    "القراءة الأولى",
+    "Başlangıç okuması"
+  ],
+  "قرائت انتها": [
+    "End reading",
+    "القراءة النهائية",
+    "Bitiş okuması"
+  ],
+  "قرائت انتها کمتر از ابتدا است": [
+    "End reading is below start reading",
+    "القراءة النهائية أقل من الأولى",
+    "Bitiş okuması başlangıçtan düşük"
+  ],
+  "قرائت برق و گاز، شدت مصرف و محدودیت انرژی متناسب با شرایط کارخانه.": [
+    "Electricity and gas readings, consumption intensity and energy constraints suited to factory conditions.",
+    "قراءات الكهرباء والغاز وشدة الاستهلاك وقيود الطاقة وفق ظروف المصنع.",
+    "Fabrika koşullarına uygun elektrik ve gaz okumaları, tüketim yoğunluğu ve enerji kısıtları."
+  ],
+  "قرائت واقعی کنتور؛ تفکیک برق، گاز و هوای فشرده و شدت مصرف": [
+    "Actual meter readings; electricity, gas, compressed air and consumption intensity",
+    "قراءات فعلية للعداد؛ فصل الكهرباء والغاز والهواء المضغوط وشدة الاستهلاك",
+    "Gerçek sayaç okumaları; elektrik, gaz, basınçlı hava ve tüketim yoğunluğu ayrımı"
+  ],
+  "قرائت‌ها و محدودیت انرژی را ثبت و بررسی کنید.": [
+    "Record and review readings and energy constraints.",
+    "سجل القراءات وقيود الطاقة وراجعها.",
+    "Okumaları ve enerji kısıtlarını kaydedip inceleyin."
+  ],
+  "قرنطینه، علت ریشه‌ای و اثربخشی اقدام اصلاحی با مسئول مشخص": [
+    "Quarantine, root cause and corrective-action effectiveness with an assigned owner",
+    "الحجر والسبب الجذري وفعالية الإجراء التصحيحي مع مسؤول محدد",
+    "Belirli sorumluyla karantina, kök neden ve düzeltici faaliyet etkinliği"
+  ],
+  "قطر حلقه باید بیش از قطر مفتول باشد": [
+    "Coil diameter must exceed wire diameter",
+    "يجب أن يكون قطر اللفة أكبر من قطر السلك",
+    "Sarım çapı tel çapından büyük olmalı"
+  ],
+  "قطر مفتول mm": [
+    "Wire diameter mm",
+    "قطر السلك mm",
+    "Tel çapı mm"
+  ],
+  "قطر میانگین حلقه mm": [
+    "Mean coil diameter mm",
+    "متوسط قطر اللفة mm",
+    "Ortalama sarım çapı mm"
+  ],
+  "قطعه": [
+    "parts",
+    "قطع",
+    "parça"
+  ],
+  "قطعه معیوب قابل اجتناب": [
+    "Avoidable defective parts",
+    "القطع المعيبة القابلة للتجنب",
+    "Önlenebilir kusurlu parçalar"
+  ],
+  "قطعی یا محدودیت دقیقه": [
+    "Outage or curtailment, minutes",
+    "الانقطاع أو التقييد بالدقائق",
+    "Kesinti veya kısıtlama, dakika"
+  ],
+  "کار دقیق‌تر.": [
+    "More precise work.",
+    "عمل أدق.",
+    "Daha hassas çalışma."
+  ],
+  "کاربر ایجاد شد؛ رمز موقت را از مسیر امن به همان شخص تحویل دهید.": [
+    "User created; deliver the temporary password securely to that person.",
+    "تم إنشاء المستخدم؛ سلّم كلمة المرور المؤقتة إلى الشخص عبر قناة آمنة.",
+    "Kullanıcı oluşturuldu; geçici parolayı güvenli bir kanalla ilgili kişiye iletin."
+  ],
+  "کاربر پیدا نشد": [
+    "User not found",
+    "المستخدم غير موجود",
+    "Kullanıcı bulunamadı"
+  ],
+  "کاربران، دسترسی و سلامت سامانه را مدیریت کنید.": [
+    "Manage users, access and system health.",
+    "أدر المستخدمين والصلاحيات وسلامة النظام.",
+    "Kullanıcıları, erişimi ve sistem sağlığını yönetin."
+  ],
+  "کاهش توقف": [
+    "Downtime reduction",
+    "تقليل التوقف",
+    "Duruş azaltma"
+  ],
+  "کاهش توقف هدف": [
+    "Target downtime reduction",
+    "الانخفاض المستهدف للتوقف",
+    "Hedef duruş azalması"
+  ],
+  "کاهش ضایعات": [
+    "Scrap reduction",
+    "تقليل الهدر",
+    "Fire azaltma"
+  ],
+  "کاهش هزینه انرژی هدف": [
+    "Target energy cost reduction",
+    "الانخفاض المستهدف لتكلفة الطاقة",
+    "Hedef enerji maliyeti azalması"
+  ],
+  "کد قطعه": [
+    "Part code",
+    "رمز القطعة",
+    "Parça kodu"
+  ],
+  "کد قلم": [
+    "Item code",
+    "رمز الصنف",
+    "Kalem kodu"
+  ],
+  "کد محصول": [
+    "Product code",
+    "رمز المنتج",
+    "Ürün kodu"
+  ],
+  "کم": [
+    "Low",
+    "منخفض",
+    "Düşük"
+  ],
+  "کنترل کالیبراسیون": [
+    "Calibration control",
+    "ضبط المعايرة",
+    "Kalibrasyon kontrolü"
+  ],
+  "گاز m³": [
+    "Gas m³",
+    "الغاز m³",
+    "Gaz m³"
+  ],
+  "گذار وضعیت یا تأیید توسط همان ثبت‌کننده مجاز نیست": [
+    "Invalid status transition or self-approval",
+    "انتقال الحالة غير صالح أو الاعتماد الذاتي غير مسموح",
+    "Geçersiz durum geçişi veya kendi kaydını onaylama"
+  ],
+  "گرید مفتول": [
+    "Wire grade",
+    "درجة السلك",
+    "Tel kalitesi"
+  ],
+  "لیتر": [
+    "litres",
+    "لترات",
+    "litre"
+  ],
+  "مانیتورینگ سامانه فقط برای مدیر سامانه است": [
+    "System monitoring is administrator-only",
+    "مراقبة النظام خاصة بمسؤول النظام",
+    "Sistem izleme yalnız yöneticilere açıktır"
+  ],
+  "مبدأ درخواست مجاز نیست": [
+    "Request origin is not allowed",
+    "مصدر الطلب غير مسموح",
+    "İstek kaynağına izin verilmiyor"
+  ],
+  "متوسط": [
+    "Medium",
+    "متوسط",
+    "Orta"
+  ],
+  "محل نگهداری": [
+    "Storage location",
+    "مكان التخزين",
+    "Depolama yeri"
+  ],
+  "مدت توقف دقیقه": [
+    "Downtime, minutes",
+    "مدة التوقف بالدقائق",
+    "Duruş süresi, dakika"
+  ],
+  "مدیریت کاربران فقط برای مدیر سامانه است": [
+    "User management is administrator-only",
+    "إدارة المستخدمين خاصة بمسؤول النظام",
+    "Kullanıcı yönetimi yalnız sistem yöneticisine açıktır"
+  ],
+  "مرجع معیار پذیرش": [
+    "Acceptance criterion reference",
+    "مرجع معيار القبول",
+    "Kabul ölçütü referansı"
+  ],
+  "مسئول پیگیری": [
+    "Action owner",
+    "مسؤول المتابعة",
+    "Takip sorumlusu"
+  ],
+  "مسیر پیدا نشد": [
+    "Route not found",
+    "المسار غير موجود",
+    "Yol bulunamadı"
+  ],
+  "مشخصات کاربر یا رمز موقت معتبر نیست": [
+    "Invalid user information or temporary password",
+    "بيانات المستخدم أو كلمة المرور المؤقتة غير صالحة",
+    "Kullanıcı bilgileri veya geçici parola geçersiz"
+  ],
+  "مقدار اسمی mm": [
+    "Nominal value mm",
+    "القيمة الاسمية mm",
+    "Nominal değer mm"
+  ],
+  "منبع قطعات یدکی": [
+    "Spare-parts source",
+    "مصدر قطع الغيار",
+    "Yedek parça kaynağı"
+  ],
+  "منفعت خالص سالانه": [
+    "Annual net benefit",
+    "المنفعة الصافية السنوية",
+    "Yıllık net fayda"
+  ],
+  "منفعت نقدی ناخالص سالانه": [
+    "Annual gross cash benefit",
+    "المنفعة النقدية الإجمالية السنوية",
+    "Yıllık brüt nakit faydası"
+  ],
+  "مواد و فرآوری قابل اجتناب منهای بازیافت؛ قیمت فروش نیست": [
+    "Avoidable material and processing costs less recovery; not the selling price",
+    "تكلفة المواد والمعالجة القابلة للتجنب مطروحاً منها الاسترداد؛ ليست سعر البيع",
+    "Önlenebilir malzeme ve işleme maliyeti eksi geri kazanım; satış fiyatı değildir"
+  ],
+  "مواد و قطعات یدکی": [
+    "Materials and spare parts",
+    "المواد وقطع الغيار",
+    "Malzemeler ve yedek parçalar"
+  ],
+  "موجودی": [
+    "Stock quantity",
+    "المخزون",
+    "Stok miktarı"
+  ],
+  "موجودی ثبت‌شده، حد سفارش و ردیابی ذوب؛ بدون اتصال ادعایی ERP": [
+    "Recorded stock, reorder level and heat traceability; no claimed ERP connection",
+    "مخزون مسجل وحد إعادة الطلب وتتبع الصهرة؛ دون ادعاء اتصال ERP",
+    "Kayıtlı stok, yeniden sipariş seviyesi ve döküm izlenebilirliği; ERP bağlantısı iddiası yok"
+  ],
+  "موعد رسیدگی": [
+    "Action due date",
+    "موعد المعالجة",
+    "İşlem vadesi"
+  ],
+  "مهلت": [
+    "Due date",
+    "الموعد النهائي",
+    "Son tarih"
+  ],
+  "میانگین اندازه‌گیری mm": [
+    "Mean measurement mm",
+    "متوسط القياس mm",
+    "Ortalama ölçüm mm"
+  ],
+  "نام ابزار": [
+    "Instrument name",
+    "اسم الأداة",
+    "Cihaz adı"
+  ],
+  "نام تجهیز": [
+    "Equipment name",
+    "اسم المعدة",
+    "Ekipman adı"
+  ],
+  "نام قلم": [
+    "Item name",
+    "اسم الصنف",
+    "Kalem adı"
+  ],
+  "نسخه دستور ساخت، هندسه فنر، مواد اولیه و معیارهای کنترل کیفیت.": [
+    "Manufacturing recipe revision, spring geometry, raw materials and quality-control criteria.",
+    "إصدار وصفة التصنيع وهندسة النابض والمواد الخام ومعايير ضبط الجودة.",
+    "Üretim reçetesi revizyonu, yay geometrisi, hammaddeler ve kalite kontrol ölçütleri."
+  ],
+  "نسخه‌های ثبت‌شده و رویدادها را بدون تغییر بررسی کنید.": [
+    "Review recorded revisions and events without modification.",
+    "راجع الإصدارات والأحداث المسجلة دون تعديل.",
+    "Kayıtlı revizyonları ve olayları değiştirmeden inceleyin."
+  ],
+  "نشست تغییر کرده؛ دوباره وارد شوید": [
+    "Session changed; sign in again",
+    "تغيرت الجلسة؛ ادخل مجدداً",
+    "Oturum değişti; tekrar giriş yapın"
+  ],
+  "نقش یا وضعیت معتبر نیست": [
+    "Invalid role or status",
+    "الدور أو الحالة غير صالح",
+    "Rol veya durum geçersiz"
+  ],
+  "نمایش ابزار با خطا مواجه شد؛ صفحه را دوباره بارگذاری کنید.": [
+    "Tool display failed; reload the page.",
+    "تعذر عرض الأداة؛ أعد تحميل الصفحة.",
+    "Araç görüntülenemedi; sayfayı yeniden yükleyin."
+  ],
+  "نمایش و شاخص‌ها به ۲۰۰۰ رکورد آخر محدود است.": [
+    "Display and indicators are limited to the latest 2,000 records.",
+    "العرض والمؤشرات محدودة بآخر ٢٠٠٠ سجل.",
+    "Görünüm ve göstergeler son 2.000 kayıtla sınırlıdır."
+  ],
+  "نمودار مفهومی تولید و کنترل کیفیت فنر": [
+    "Conceptual spring production and quality-control diagram",
+    "مخطط مفاهيمي لإنتاج النوابض وضبط جودتها",
+    "Yay üretimi ve kalite kontrolü kavramsal şeması"
+  ],
+  "نوع یا محتوای رکورد معتبر نیست": [
+    "Invalid record type or content",
+    "نوع السجل أو محتواه غير صالح",
+    "Kayıt türü veya içeriği geçersiz"
+  ],
+  "واحد": [
+    "Unit",
+    "الوحدة",
+    "Birim"
+  ],
+  "ورود به سامانه": [
+    "Sign in",
+    "الدخول إلى النظام",
+    "Sisteme giriş"
+  ],
+  "ورود شخصی، نقش سازمانی، بررسی مستقل و ثبت رویدادهای مهم.": [
+    "Personal sign-in, organizational roles, independent review and key event logging.",
+    "دخول شخصي وأدوار مؤسسية ومراجعة مستقلة وتسجيل الأحداث المهمة.",
+    "Kişisel giriş, kurumsal roller, bağımsız inceleme ve önemli olayların kaydı."
+  ],
+  "ورود موقتاً محدود شده؛ چند دقیقه بعد تلاش کنید": [
+    "Sign-in is temporarily limited; retry in a few minutes",
+    "الدخول مقيد مؤقتاً؛ حاول بعد بضع دقائق",
+    "Giriş geçici olarak sınırlı; birkaç dakika sonra tekrar deneyin"
+  ],
+  "وضعیت رکورد به‌روز شد.": [
+    "Record status updated.",
+    "تم تحديث حالة السجل.",
+    "Kayıt durumu güncellendi."
+  ],
+  "وضعیت فرآیند پلتفرم و ۱۰۰ درخواست اخیر همین فضای کاری. لاگ خام میزبان و سرویس‌های سایر پروژه‌ها از وب ارائه نمی‌شود.": [
+    "Platform process status and the latest 100 requests in this workspace. Raw host and other project service logs are not exposed on the web.",
+    "حالة عملية المنصة وآخر ١٠٠ طلب في مساحة العمل. لا تُعرض سجلات المضيف الخام أو خدمات المشاريع الأخرى عبر الويب.",
+    "Platform süreç durumu ve bu alandaki son 100 istek. Sunucunun ham kayıtları ve diğer projelerin hizmet kayıtları web üzerinden sunulmaz."
+  ],
+  "ویرایش پروفایل و تنظیمات": [
+    "Edit profile and settings",
+    "تعديل الملف الشخصي والإعدادات",
+    "Profil ve ayar düzenleme"
+  ],
+  "هر مرورگر فضای نمونهٔ مستقل دارد. اطلاعات این محیط به داده‌های واقعی کارخانه دسترسی ندارد.": [
+    "Each browser has an independent example workspace. This environment cannot access real factory data.",
+    "لكل متصفح مساحة تجريبية مستقلة. لا تصل هذه البيئة إلى بيانات المصنع الفعلية.",
+    "Her tarayıcının bağımsız örnek çalışma alanı vardır. Bu ortam gerçek fabrika verilerine erişmez."
+  ],
+  "هزینه انرژی × درصد کاهش": [
+    "Energy cost × reduction rate",
+    "تكلفة الطاقة × نسبة الانخفاض",
+    "Enerji maliyeti × azalma oranı"
+  ],
+  "هزینه انرژی سالانه": [
+    "Annual energy cost",
+    "تكلفة الطاقة السنوية",
+    "Yıllık enerji maliyeti"
+  ],
+  "هزینه بهره‌برداری سالانه": [
+    "Annual operating cost",
+    "تكلفة التشغيل السنوية",
+    "Yıllık işletme maliyeti"
+  ],
+  "هزینه یا ارزش فرصت تأییدشده سازمان": [
+    "Organization-approved cost or opportunity value",
+    "تكلفة أو قيمة فرصة معتمدة من المؤسسة",
+    "Kurumca onaylı maliyet veya fırsat değeri"
+  ],
+  "هندسه فنر، شناسه مواد و بازنگری؛ انتشار با تأیید مستقل": [
+    "Spring geometry, material identifier and revision; release after independent approval",
+    "هندسة النابض ومعرف المواد والمراجعة؛ إصدار باعتماد مستقل",
+    "Yay geometrisi, malzeme kimliği ve revizyon; bağımsız onayla yayın"
+  ],
+  "هوای فشرده m³": [
+    "Compressed air m³",
+    "الهواء المضغوط m³",
+    "Basınçlı hava m³"
+  ],
+  "هویت و نقش حساب‌های آموزشی ثابت است": [
+    "Training account identities and roles are fixed",
+    "هويات الحسابات التعليمية وأدوارها ثابتة",
+    "Eğitim hesaplarının kimlikleri ve rolleri sabittir"
+  ],
+  "یک نقش را انتخاب کنید؛ نام کاربری و رمز نمونه در فرم پر می‌شود.": [
+    "Choose a role; the example username and password will fill the form.",
+    "اختر دوراً؛ يُملأ النموذج باسم المستخدم وكلمة المرور التجريبيين.",
+    "Bir rol seçin; örnek kullanıcı adı ve parola forma doldurulur."
+  ],
+  "ثبت من": [
+    "My record",
+    "سجلي",
+    "Kaydım"
+  ],
+  "برای بررسی مستقل": [
+    "For independent review",
+    "للمراجعة المستقلة",
+    "Bağımsız inceleme için"
+  ],
+  "تأییدشده": [
+    "approved",
+    "معتمد",
+    "onaylı"
+  ],
+  "در بررسی": [
+    "under review",
+    "قيد المراجعة",
+    "incelemede"
+  ],
+  "رکورد": [
+    "records",
+    "سجلات",
+    "kayıt"
+  ],
+  "ثانیه": [
+    "seconds",
+    "ثوانٍ",
+    "saniye"
+  ],
+  "در حال ذخیره…": [
+    "Saving…",
+    "جارٍ الحفظ…",
+    "Kaydediliyor…"
+  ],
+  "ذخیره…": [
+    "Save…",
+    "حفظ…",
+    "Kaydet…"
+  ],
+  "تغییر رمز عبور": [
+    "Change password",
+    "تغيير كلمة المرور",
+    "Parolayı değiştir"
+  ],
+  "رمز فعلی": [
+    "Current password",
+    "كلمة المرور الحالية",
+    "Mevcut parola"
+  ],
+  "رکورد مطابق جستجو یافت نشد": [
+    "No records match the search",
+    "لا توجد سجلات تطابق البحث",
+    "Aramayla eşleşen kayıt bulunamadı"
+  ],
+  "۲۰۰ رویداد آخر حساب شما؛ سوابق سایر کاربران در این بخش نمایش داده نمی‌شوند.": [
+    "The latest 200 events for your account; other users' records are not shown here.",
+    "آخر ٢٠٠ حدث لحسابك؛ لا تُعرض سجلات المستخدمين الآخرين هنا.",
+    "Hesabınızın son 200 olayı; diğer kullanıcıların kayıtları burada gösterilmez."
+  ],
+  "فارسی · تهران": [
+    "Persian · Tehran",
+    "الفارسية · طهران",
+    "Farsça · Tahran"
+  ],
+  "٪": [
+    "%",
+    "٪",
+    "%"
+  ],
+  "ماه": [
+    "months",
+    "أشهر",
+    "ay"
+  ],
+  "میلیون تومان": [
+    "million toman",
+    "مليون تومان",
+    "milyon tümen"
+  ],
+  "نسخه عملیاتی نرم‌افزار · گردش تولید، کیفیت و تصمیم مدیریتی": [
+    "Operational software · production, quality and management decisions",
+    "برمجيات تشغيلية · الإنتاج والجودة والقرارات الإدارية",
+    "Operasyon yazılımı · üretim, kalite ve yönetim kararları"
+  ],
+  "دوقلوی دیجیتال": [
+    "Digital twin",
+    "التوأم الرقمي",
+    "Dijital ikiz"
+  ],
+  "بینایی ماشین": [
+    "Machine vision",
+    "الرؤية الآلية",
+    "Makine görüşü"
+  ],
+  "پروفیل‌سنجی": [
+    "Profile metrology",
+    "قياس الملامح",
+    "Profil ölçümü"
+  ],
+  "کیفیت مرکزی": [
+    "Central quality",
+    "الجودة المركزية",
+    "Merkezi kalite"
+  ],
+  "نگهداری پیش‌بینانه": [
+    "Predictive maintenance",
+    "الصيانة التنبؤية",
+    "Kestirimci bakım"
+  ],
+  "بهره‌وری": [
+    "Productivity",
+    "الإنتاجية",
+    "Verimlilik"
+  ],
+  "محاسبه‌گر فنر": [
+    "Spring calculator",
+    "حاسبة النوابض",
+    "Yay hesaplayıcı"
+  ],
+  "متالورژی": [
+    "Metallurgy",
+    "علم المعادن",
+    "Metalurji"
+  ],
+  "کنترل آماری": [
+    "Statistical process control",
+    "الضبط الإحصائي للعملية",
+    "İstatistiksel süreç kontrolü"
+  ],
+  "توپولوژی خط": [
+    "Line topology",
+    "طوبولوجيا الخط",
+    "Hat topolojisi"
+  ],
+  "سناریوی اقتصادی": [
+    "Economic scenario",
+    "السيناريو الاقتصادي",
+    "Ekonomik senaryo"
+  ],
+  "آزمایش دوربین": [
+    "Camera test",
+    "اختبار الكاميرا",
+    "Kamera testi"
+  ]
+}

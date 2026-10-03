@@ -1,0 +1,2513 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "FanarLool factory platform",
+    "version": "2.0",
+    "description": "Manual operational API; ISO dates are canonical exchange data, human document dates use Jalali. Demo uses an isolated ephemeral database and a separate session cookie. See SRS for cross-field and workflow rules."
+  },
+  "servers": [
+    {
+      "url": "/api",
+      "description": "Factory workspace"
+    },
+    {
+      "url": "/api/demo",
+      "description": "Isolated public role demo; cookie name differs"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "GET /health",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "const": "ok"
+                    },
+                    "sha": {
+                      "type": "string"
+                    },
+                    "schema": {
+                      "const": 2
+                    },
+                    "demo": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission, Origin, CSRF or mandatory password change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate or demo capacity limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "POST /auth/login",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/UserView"
+                    },
+                    "csrf": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission, Origin, CSRF or mandatory password change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate or demo capacity limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Exact configured HTTPS origin; body limit 32 KiB."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "username",
+                  "password"
+                ],
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "maxLength": 100
+                  },
+                  "password": {
+                    "type": "string",
+                    "maxLength": 128
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "summary": "GET /auth/me",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/UserView"
+                    },
+                    "csrf": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission, Origin, CSRF or mandatory password change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate or demo capacity limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieSession": []
+          }
+        ]
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "POST /auth/logout",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission, Origin, CSRF or mandatory password change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate or demo capacity limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Exact configured HTTPS origin; body limit 32 KiB."
+          }
+        ]
+      }
+    },
+    "/auth/password": {
+      "post": {
+        "summary": "POST /auth/password",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission, Origin, CSRF or mandatory password change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate or demo capacity limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Exact configured HTTPS origin; body limit 32 KiB."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "current",
+                  "password"
+                ],
+                "properties": {
+                  "current": {
+                    "type": "string",
+                    "maxLength": 128
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 12,
+                    "maxLength": 128
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspace": {
+      "get": {
+        "summary": "GET /workspace",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "records": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Record"
+                      }
+                    },
+                    "catalog": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "kpis": {
+                      "type": "object"
+                    },
+                    "roles": {
+                      "type": "object"
+                    },
+                    "sha": {
+                      "type": "string"
+                    },
+                    "mode": {
+                      "enum": [
+                        "manual",
+                        "demo"
+                      ]
+                    },
+                    "limited": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission, Origin, CSRF or mandatory password change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate or demo capacity limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieSession": []
+          }
+        ]
+      }
+    },
+    "/records": {
+      "post": {
+        "summary": "POST /records",
+        "responses": {
+          "400": {
+            "description": "Invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission, Origin, CSRF or mandatory password change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate or demo capacity limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Exact configured HTTPS origin; body limit 32 KiB."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "kind",
+                      "data"
+                    ],
+                    "properties": {
+                      "kind": {
+                        "const": "production"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/production"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "kind",
+                      "data"
+                    ],
+                    "properties": {
+                      "kind": {
+                        "const": "inspection"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/inspection"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "kind",
+                      "data"
+                    ],
+                    "properties": {
+                      "kind": {
+                        "const": "maintenance"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/maintenance"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "kind",
+                      "data"
+                    ],
+                    "properties": {
+                      "kind": {
+                        "const": "energy"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/energy"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "kind",
+                      "data"
+                    ],
+                    "properties": {
+                      "kind": {
+                        "const": "asset"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/asset"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "kind",
+                      "data"
+                    ],
+                    "properties": {
+                      "kind": {
+                        "const": "recipe"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/recipe"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "kind",
+                      "data"
+                    ],
+                    "properties": {
+                      "kind": {
+                        "const": "calibration"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/calibration"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "kind",
+                      "data"
+                    ],
+                    "properties": {
+                      "kind": {
+                        "const": "ncr"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/ncr"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "kind",
+                      "data"
+                    ],
+                    "properties": {
+                      "kind": {
+                        "const": "inventory"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/inventory"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/records/{id}": {
+      "patch": {
+        "summary": "PATCH /records/{id}",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission, Origin, CSRF or mandatory password change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate or demo capacity limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Version or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Exact configured HTTPS origin; body limit 32 KiB."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "version"
+                ],
+                "properties": {
+                  "version": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "status": {
+                    "enum": [
+                      "draft",
+                      "submitted",
+                      "approved",
+                      "rejected"
+                    ]
+                  },
+                  "data": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/production"
+                      },
+                      {
+                        "$ref": "#/components/schemas/inspection"
+                      },
+                      {
+                        "$ref": "#/components/schemas/maintenance"
+                      },
+                      {
+                        "$ref": "#/components/schemas/energy"
+                      },
+                      {
+                        "$ref": "#/components/schemas/asset"
+                      },
+                      {
+                        "$ref": "#/components/schemas/recipe"
+                      },
+                      {
+                        "$ref": "#/components/schemas/calibration"
+                      },
+                      {
+                        "$ref": "#/components/schemas/ncr"
+                      },
+                      {
+                        "$ref": "#/components/schemas/inventory"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "GET /users",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission, Origin, CSRF or mandatory password change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate or demo capacity limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieSession": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "POST /users",
+        "responses": {
+          "400": {
+            "description": "Invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission, Origin, CSRF or mandatory password change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate or demo capacity limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Exact configured HTTPS origin; body limit 32 KiB."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "username",
+                  "name",
+                  "role",
+                  "password"
+                ],
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9._-]{3,64}$"
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 100
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "admin",
+                      "executive",
+                      "production",
+                      "quality",
+                      "maintenance",
+                      "energy",
+                      "engineering",
+                      "auditor"
+                    ]
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 12,
+                    "maxLength": 128
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "patch": {
+        "summary": "PATCH /users/{id}",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission, Origin, CSRF or mandatory password change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate or demo capacity limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Version or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Exact configured HTTPS origin; body limit 32 KiB."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "role",
+                  "active"
+                ],
+                "properties": {
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "admin",
+                      "executive",
+                      "production",
+                      "quality",
+                      "maintenance",
+                      "energy",
+                      "engineering",
+                      "auditor"
+                    ]
+                  },
+                  "active": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/audit": {
+      "get": {
+        "summary": "GET /audit",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "events": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission, Origin, CSRF or mandatory password change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate or demo capacity limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieSession": []
+          }
+        ]
+      }
+    },
+    "/profile": {
+      "get": {
+        "summary": "GET /profile",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Profile"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission, Origin, CSRF or mandatory password change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate or demo capacity limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieSession": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "PATCH /profile",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Profile"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission, Origin, CSRF or mandatory password change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate or demo capacity limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Exact configured HTTPS origin; body limit 32 KiB."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "department",
+                  "jobTitle",
+                  "email",
+                  "phone",
+                  "preferences"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 2
+                  },
+                  "department": {
+                    "type": "string",
+                    "maxLength": 100
+                  },
+                  "jobTitle": {
+                    "type": "string",
+                    "maxLength": 100
+                  },
+                  "email": {
+                    "type": "string",
+                    "maxLength": 120
+                  },
+                  "phone": {
+                    "type": "string",
+                    "maxLength": 30
+                  },
+                  "preferences": {
+                    "type": "object",
+                    "required": [
+                      "density",
+                      "startPage",
+                      "notifications"
+                    ],
+                    "properties": {
+                      "density": {
+                        "enum": [
+                          "comfortable",
+                          "compact"
+                        ]
+                      },
+                      "startPage": {
+                        "enum": [
+                          "overview",
+                          "production",
+                          "inspection",
+                          "maintenance",
+                          "energy",
+                          "asset",
+                          "recipe",
+                          "calibration",
+                          "ncr",
+                          "inventory"
+                        ],
+                        "description": "Must also be readable by current role."
+                      },
+                      "notifications": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/activity": {
+      "get": {
+        "summary": "GET /activity",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "events": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission, Origin, CSRF or mandatory password change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate or demo capacity limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieSession": []
+          }
+        ]
+      }
+    },
+    "/system": {
+      "get": {
+        "summary": "GET /system",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sha": {
+                      "type": "string"
+                    },
+                    "demo": {
+                      "type": "boolean"
+                    },
+                    "startedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "uptimeSeconds": {
+                      "type": "integer"
+                    },
+                    "memoryMb": {
+                      "type": "integer"
+                    },
+                    "database": {
+                      "type": "string"
+                    },
+                    "transport": {
+                      "const": "Unix socket"
+                    },
+                    "counts": {
+                      "type": "object"
+                    },
+                    "statuses": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "requests": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission, Origin, CSRF or mandatory password change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate or demo capacity limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieSession": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "cookieSession": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "__Host-fanar_session",
+        "description": "Demo uses __Host-fanar_demo_session; mutations require same Origin and X-CSRF-Token."
+      }
+    },
+    "schemas": {
+      "production": {
+        "type": "object",
+        "properties": {
+          "batch": {
+            "title": "شناسه بچ",
+            "type": "string",
+            "maxLength": 250
+          },
+          "line": {
+            "title": "خط تولید",
+            "type": "string",
+            "maxLength": 250
+          },
+          "product": {
+            "title": "کد محصول",
+            "type": "string",
+            "maxLength": 250
+          },
+          "date": {
+            "title": "تاریخ شیفت",
+            "type": "string",
+            "maxLength": 250,
+            "format": "date"
+          },
+          "shift": {
+            "title": "شیفت",
+            "type": "string",
+            "maxLength": 250,
+            "enum": [
+              "صبح",
+              "عصر",
+              "شب"
+            ]
+          },
+          "plannedMinutes": {
+            "title": "زمان برنامه‌ریزی‌شده دقیقه",
+            "type": "number",
+            "minimum": 1,
+            "maximum": 1440
+          },
+          "runMinutes": {
+            "title": "زمان کارکرد دقیقه",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1440
+          },
+          "idealCycleSeconds": {
+            "title": "سیکل ایده‌آل ثانیه",
+            "type": "number",
+            "minimum": 0.01,
+            "maximum": 86400
+          },
+          "total": {
+            "title": "تعداد تولید",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000000
+          },
+          "good": {
+            "title": "تعداد سالم",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000000
+          },
+          "downtimeReason": {
+            "title": "علت توقف",
+            "type": "string",
+            "maxLength": 250
+          }
+        },
+        "required": [
+          "batch",
+          "line",
+          "product",
+          "date",
+          "shift",
+          "plannedMinutes",
+          "runMinutes",
+          "idealCycleSeconds",
+          "total",
+          "good"
+        ]
+      },
+      "inspection": {
+        "type": "object",
+        "properties": {
+          "batch": {
+            "title": "شناسه بچ",
+            "type": "string",
+            "maxLength": 250
+          },
+          "part": {
+            "title": "کد قطعه",
+            "type": "string",
+            "maxLength": 250
+          },
+          "sampleCount": {
+            "title": "تعداد نمونه",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000
+          },
+          "dimension": {
+            "title": "پارامتر اندازه‌گیری",
+            "type": "string",
+            "maxLength": 250
+          },
+          "nominal": {
+            "title": "مقدار اسمی mm",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 10000
+          },
+          "tolerance": {
+            "title": "تلرانس ± mm",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000
+          },
+          "measured": {
+            "title": "میانگین اندازه‌گیری mm",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 10000
+          },
+          "defects": {
+            "title": "تعداد معیوب",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          },
+          "instrument": {
+            "title": "شناسه ابزار کالیبره",
+            "type": "string",
+            "maxLength": 250
+          },
+          "notes": {
+            "title": "شرح عیب و روش",
+            "type": "string",
+            "maxLength": 2500
+          }
+        },
+        "required": [
+          "batch",
+          "part",
+          "sampleCount",
+          "dimension",
+          "nominal",
+          "tolerance",
+          "measured",
+          "defects",
+          "instrument"
+        ]
+      },
+      "maintenance": {
+        "type": "object",
+        "properties": {
+          "asset": {
+            "title": "شناسه تجهیز",
+            "type": "string",
+            "maxLength": 250
+          },
+          "title": {
+            "title": "عنوان درخواست",
+            "type": "string",
+            "maxLength": 250
+          },
+          "priority": {
+            "title": "اولویت",
+            "type": "string",
+            "maxLength": 250,
+            "enum": [
+              "عادی",
+              "بالا",
+              "بحرانی"
+            ]
+          },
+          "due": {
+            "title": "موعد رسیدگی",
+            "type": "string",
+            "maxLength": 250,
+            "format": "date"
+          },
+          "symptom": {
+            "title": "علائم و اقدام پیشنهادی",
+            "type": "string",
+            "maxLength": 2500
+          },
+          "downtimeMinutes": {
+            "title": "مدت توقف دقیقه",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100000
+          },
+          "resolution": {
+            "title": "شرح رفع عیب",
+            "type": "string",
+            "maxLength": 2500
+          }
+        },
+        "required": [
+          "asset",
+          "title",
+          "priority",
+          "due",
+          "symptom",
+          "downtimeMinutes"
+        ]
+      },
+      "energy": {
+        "type": "object",
+        "properties": {
+          "meter": {
+            "title": "شناسه کنتور",
+            "type": "string",
+            "maxLength": 250
+          },
+          "line": {
+            "title": "خط یا مصرف‌کننده",
+            "type": "string",
+            "maxLength": 250
+          },
+          "date": {
+            "title": "تاریخ قرائت",
+            "type": "string",
+            "maxLength": 250,
+            "format": "date"
+          },
+          "carrier": {
+            "title": "حامل",
+            "type": "string",
+            "maxLength": 250,
+            "enum": [
+              "برق kWh",
+              "گاز m³",
+              "هوای فشرده m³"
+            ]
+          },
+          "readingStart": {
+            "title": "قرائت ابتدا",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000000
+          },
+          "readingEnd": {
+            "title": "قرائت انتها",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000000
+          },
+          "tonnage": {
+            "title": "تناژ تولید",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000
+          },
+          "outageMinutes": {
+            "title": "قطعی یا محدودیت دقیقه",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1440
+          },
+          "notes": {
+            "title": "شرح وضعیت",
+            "type": "string",
+            "maxLength": 2500
+          }
+        },
+        "required": [
+          "meter",
+          "line",
+          "date",
+          "carrier",
+          "readingStart",
+          "readingEnd",
+          "tonnage",
+          "outageMinutes"
+        ]
+      },
+      "asset": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "title": "شناسه تجهیز",
+            "type": "string",
+            "maxLength": 250
+          },
+          "name": {
+            "title": "نام تجهیز",
+            "type": "string",
+            "maxLength": 250
+          },
+          "line": {
+            "title": "خط و محل",
+            "type": "string",
+            "maxLength": 250
+          },
+          "criticality": {
+            "title": "بحرانی بودن",
+            "type": "string",
+            "maxLength": 250,
+            "enum": [
+              "کم",
+              "متوسط",
+              "زیاد"
+            ]
+          },
+          "manufacturer": {
+            "title": "سازنده",
+            "type": "string",
+            "maxLength": 250
+          },
+          "serviceIntervalDays": {
+            "title": "دوره سرویس روز",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 3650
+          },
+          "lastService": {
+            "title": "آخرین سرویس",
+            "type": "string",
+            "maxLength": 250,
+            "format": "date"
+          },
+          "spareSource": {
+            "title": "منبع قطعات یدکی",
+            "type": "string",
+            "maxLength": 250
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "line",
+          "criticality",
+          "manufacturer",
+          "serviceIntervalDays",
+          "lastService"
+        ]
+      },
+      "recipe": {
+        "type": "object",
+        "properties": {
+          "part": {
+            "title": "کد محصول",
+            "type": "string",
+            "maxLength": 250
+          },
+          "revision": {
+            "title": "بازنگری",
+            "type": "string",
+            "maxLength": 250
+          },
+          "material": {
+            "title": "گرید مفتول",
+            "type": "string",
+            "maxLength": 250
+          },
+          "wireDiameter": {
+            "title": "قطر مفتول mm",
+            "type": "number",
+            "minimum": 0.1,
+            "maximum": 100
+          },
+          "meanDiameter": {
+            "title": "قطر میانگین حلقه mm",
+            "type": "number",
+            "minimum": 1,
+            "maximum": 10000
+          },
+          "activeCoils": {
+            "title": "تعداد حلقه فعال",
+            "type": "number",
+            "minimum": 1,
+            "maximum": 1000
+          },
+          "freeLength": {
+            "title": "طول آزاد mm",
+            "type": "number",
+            "minimum": 1,
+            "maximum": 10000
+          },
+          "standard": {
+            "title": "مرجع معیار پذیرش",
+            "type": "string",
+            "maxLength": 250
+          },
+          "notes": {
+            "title": "پارامترهای فرآیند و محدودیت",
+            "type": "string",
+            "maxLength": 2500
+          }
+        },
+        "required": [
+          "part",
+          "revision",
+          "material",
+          "wireDiameter",
+          "meanDiameter",
+          "activeCoils",
+          "freeLength",
+          "standard",
+          "notes"
+        ]
+      },
+      "calibration": {
+        "type": "object",
+        "properties": {
+          "instrument": {
+            "title": "شناسه ابزار",
+            "type": "string",
+            "maxLength": 250
+          },
+          "name": {
+            "title": "نام ابزار",
+            "type": "string",
+            "maxLength": 250
+          },
+          "certificate": {
+            "title": "شماره گواهی آزمایشگاه",
+            "type": "string",
+            "maxLength": 250
+          },
+          "calibratedAt": {
+            "title": "تاریخ کالیبراسیون",
+            "type": "string",
+            "maxLength": 250,
+            "format": "date"
+          },
+          "expiresAt": {
+            "title": "اعتبار تا",
+            "type": "string",
+            "maxLength": 250,
+            "format": "date"
+          },
+          "lab": {
+            "title": "آزمایشگاه",
+            "type": "string",
+            "maxLength": 250
+          },
+          "uncertainty": {
+            "title": "عدم قطعیت و واحد",
+            "type": "string",
+            "maxLength": 250
+          },
+          "notes": {
+            "title": "شرح کنترل",
+            "type": "string",
+            "maxLength": 2500
+          }
+        },
+        "required": [
+          "instrument",
+          "name",
+          "certificate",
+          "calibratedAt",
+          "expiresAt",
+          "lab",
+          "uncertainty"
+        ]
+      },
+      "ncr": {
+        "type": "object",
+        "properties": {
+          "batch": {
+            "title": "شناسه بچ",
+            "type": "string",
+            "maxLength": 250
+          },
+          "title": {
+            "title": "عنوان عدم انطباق",
+            "type": "string",
+            "maxLength": 250
+          },
+          "severity": {
+            "title": "شدت",
+            "type": "string",
+            "maxLength": 250,
+            "enum": [
+              "جزئی",
+              "عمده",
+              "بحرانی"
+            ]
+          },
+          "containment": {
+            "title": "اقدام مهار و قرنطینه",
+            "type": "string",
+            "maxLength": 2500
+          },
+          "rootCause": {
+            "title": "علت ریشه‌ای",
+            "type": "string",
+            "maxLength": 2500
+          },
+          "action": {
+            "title": "اقدام اصلاحی",
+            "type": "string",
+            "maxLength": 2500
+          },
+          "owner": {
+            "title": "مسئول پیگیری",
+            "type": "string",
+            "maxLength": 250
+          },
+          "due": {
+            "title": "مهلت",
+            "type": "string",
+            "maxLength": 250,
+            "format": "date"
+          }
+        },
+        "required": [
+          "batch",
+          "title",
+          "severity",
+          "containment",
+          "owner",
+          "due"
+        ]
+      },
+      "inventory": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "title": "کد قلم",
+            "type": "string",
+            "maxLength": 250
+          },
+          "name": {
+            "title": "نام قلم",
+            "type": "string",
+            "maxLength": 250
+          },
+          "lot": {
+            "title": "بچ یا شماره ذوب",
+            "type": "string",
+            "maxLength": 250
+          },
+          "unit": {
+            "title": "واحد",
+            "type": "string",
+            "maxLength": 250,
+            "enum": [
+              "kg",
+              "عدد",
+              "لیتر"
+            ]
+          },
+          "quantity": {
+            "title": "موجودی",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000000
+          },
+          "minimum": {
+            "title": "حد سفارش",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000000
+          },
+          "supplier": {
+            "title": "تأمین‌کننده",
+            "type": "string",
+            "maxLength": 250
+          },
+          "location": {
+            "title": "محل نگهداری",
+            "type": "string",
+            "maxLength": 250
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "lot",
+          "unit",
+          "quantity",
+          "minimum",
+          "supplier",
+          "location"
+        ]
+      },
+      "UserView": {
+        "type": "object",
+        "required": [
+          "id",
+          "username",
+          "name",
+          "role",
+          "roleLabel",
+          "mustChange"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "username": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "admin",
+              "executive",
+              "production",
+              "quality",
+              "maintenance",
+              "energy",
+              "engineering",
+              "auditor"
+            ]
+          },
+          "roleLabel": {
+            "type": "string"
+          },
+          "mustChange": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "Record": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "enum": [
+              "production",
+              "inspection",
+              "maintenance",
+              "energy",
+              "asset",
+              "recipe",
+              "calibration",
+              "ncr",
+              "inventory"
+            ]
+          },
+          "data": {
+            "type": "object"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "submitted",
+              "approved",
+              "rejected"
+            ]
+          },
+          "creator": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "approver": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "creator_name": {
+            "type": "string"
+          }
+        }
+      },
+      "Profile": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserView"
+          },
+          "department": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "jobTitle": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 30
+          },
+          "preferences": {
+            "type": "object",
+            "required": [
+              "density",
+              "startPage",
+              "notifications"
+            ],
+            "properties": {
+              "density": {
+                "enum": [
+                  "comfortable",
+                  "compact"
+                ]
+              },
+              "startPage": {
+                "enum": [
+                  "overview",
+                  "production",
+                  "inspection",
+                  "maintenance",
+                  "energy",
+                  "asset",
+                  "recipe",
+                  "calibration",
+                  "ncr",
+                  "inventory"
+                ],
+                "description": "Must also be readable by current role."
+              },
+              "notifications": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
