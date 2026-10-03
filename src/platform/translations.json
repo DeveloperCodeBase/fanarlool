@@ -2688,5 +2688,10 @@
     "Camera test",
     "اختبار الكاميرا",
     "Kamera testi"
+  ],
+  "ارتباط با سرور قطع شد؛ وضعیت ثبت را پس از اتصال از سوابق بررسی کنید.": [
+    "The server connection was interrupted. Check the record status after reconnecting.",
+    "انقطع الاتصال بالخادم؛ تحقق من حالة السجل بعد إعادة الاتصال.",
+    "Sunucu bağlantısı kesildi. Yeniden bağlandıktan sonra kayıt durumunu kontrol edin."
   ]
 }
