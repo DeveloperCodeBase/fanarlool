@@ -3148,5 +3148,15 @@
     "Kilograms must be recorded with at most three decimal places",
     "يجب تسجيل الكيلوغرام بدقة لا تتجاوز ثلاث خانات عشرية",
     "Kilogram en fazla üç ondalık basamakla kaydedilmelidir"
+  ],
+  "تاریخ": [
+    "Date",
+    "التاريخ",
+    "Tarih"
+  ],
+  "انصراف": [
+    "Cancel",
+    "إلغاء",
+    "Vazgeç"
   ]
 }
