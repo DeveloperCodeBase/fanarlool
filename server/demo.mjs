@@ -22,7 +22,7 @@ export async function createDemoRouter({origin,sha,secure=true,maxSpaces=24}) {
       const s=schemas[kind],data=Object.fromEntries(s.fields.map(f=>[f.key,f.type==='select'?f.options[0]:f.type==='date'?date(daysAgo):f.type==='number'?Math.max(f.min,1):f.optional?'':'نمونه آموزشی']));
       Object.assign(data,values);
       const clean=validateRecord(kind,data),id=randomUUID(),creator=ids[s.write[0]],approver=['approved','rejected'].includes(status)?ids.admin:null;
-      const at=date(daysAgo)+'T09:00:00.000Z';
+      const at=new Date(Math.min(Date.parse(date(daysAgo)+'T09:00:00.000Z'),Date.parse(now))).toISOString();
       db.prepare('INSERT INTO records(id,kind,data,status,creator,approver,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)').run(id,kind,JSON.stringify(clean),status,creator,approver,at,at);
       db.prepare('INSERT INTO audit(actor,action,target,details,created_at) VALUES(?,?,?,?,?)').run(creator,'demo.record.seeded',id,JSON.stringify({kind,demo:true,to:status,version:1,...(status==='rejected'?{note:'سناریوی آموزشی: مقدار ثبت‌شده نیازمند بازبینی و اصلاح است.'}:{})}),at);
       return id;
