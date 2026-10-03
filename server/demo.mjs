@@ -51,6 +51,42 @@ export async function createDemoRouter({origin,sha,secure=true,maxSpaces=24}) {
     for(let i=0;i<3;i++)insert('production',{batch:batch(i),line:line(i),product:part(i),date:date(1),shift:'شب',plannedMinutes:480,runMinutes:410,idealCycleSeconds:18,total:1100,good:1060,downtimeReason:'سناریوی آموزشی ثبت و بررسی'},['draft','submitted','rejected'][i]);
     for(let i=0;i<6;i++)insert('maintenance',{asset:`DEMO-A${i%3+1}`,title:['بازبینی لرزش آموزشی','تعویض سنگ آموزشی','کنترل مشعل آموزشی'][i%3],priority:['بحرانی','بالا','عادی'][i%3],due:date([3,1,-2,-5,2,-1][i]),symptom:'نمونه آموزشی: بررسی وضعیت و روان‌کاری',downtimeMinutes:15+i*5,resolution:i===4?'اقدام آموزشی ثبت و بررسی شد.':''},['draft','submitted','draft','submitted','approved','rejected'][i],i+1);
     for(let i=0;i<5;i++)insert('ncr',{batch:batch(i),title:'نمونه آموزشی: انحراف طول آزاد',severity:['جزئی','عمده','بحرانی'][i%3],containment:'قرنطینه آموزشی و بازبینی بچ',rootCause:i<2?'تنظیم ابزار نمونه':'',action:i<2?'بازتنظیم فیکسچر نمونه':'',owner:'کنترل کیفیت دمو',due:date([2,-2,-5,1,-1][i])},['draft','submitted','submitted','approved','draft'][i],i+1);
+    // Execution examples belong only to this browser's in-memory DB. Inventory
+    // snapshots above are not imported into the independent movement ledger.
+    const approved=db.prepare("SELECT * FROM records WHERE status='approved'").all().map(r=>({...r,data:JSON.parse(r.data)}));
+    const assets=approved.filter(r=>r.kind==='asset'),recipes=approved.filter(r=>r.kind==='recipe');
+    const asset=assets.find(r=>r.data.code==='DEMO-A2');
+    function execution(table,values,type,actor){
+      db.prepare(`INSERT INTO ${table}(${Object.keys(values).join(',')}) VALUES(${Object.keys(values).map(()=>'?').join(',')})`).run(...Object.values(values));
+      db.prepare('INSERT INTO audit(actor,action,target,details,created_at) VALUES(?,?,?,?,?)').run(actor,`operations.${type}.seeded`,values.id,JSON.stringify({entityType:type,demo:true,code:values.code,to:values.status,version:values.version,note:'نمونه آموزشی مرورگر؛ عملیات واقعی کارخانه نیست.'}),now);
+      return values;
+    }
+    const base=(role='production')=>({id:randomUUID(),creator:ids[role],version:1,created_at:now,updated_at:now});
+    const createOrder=(code,product,quantity,status='released')=>{
+      const recipe=recipes.find(r=>r.data.part===product);if(!asset||!recipe)return null;
+      return execution('operation_orders',{...base(),code,customer:'مشتری آموزشی، بدون سفارش واقعی',product,quantity,start_date:date(10),due_date:date(code==='DEMO-ORDER-02'?1:-3),priority:code==='DEMO-ORDER-02'?'high':'normal',recipe_id:recipe.id,asset_id:asset.id,status},'order',status==='draft'?ids.production:ids.executive);
+    };
+    const createLot=(order,code,quantity,status,good=null,scrap=null,inspection=null,materialLot='DEMO-HEAT1')=>execution('operation_lots',{...base(),order_id:order.id,code,material_lot:materialLot,quantity,good,scrap,inspection_id:inspection, status},'lot',status==='released'?ids.quality:ids.production);
+    const main=createOrder('DEMO-ORDER-01','FL-220',1200),second=createOrder('DEMO-ORDER-02','FL-250',600);
+    createOrder('DEMO-ORDER-03','FL-300',300,'draft');
+    const complete=createOrder('DEMO-ORDER-04','FL-220',100,'completed');
+    if(main&&second){
+      const inspection=approved.find(r=>r.kind==='inspection'&&r.data.batch==='DEMO-B07'&&r.data.part===main.product);
+      if(inspection)createLot(main,'DEMO-B07',1000,'released',980,20,inspection.id);
+      const running=createLot(main,'DEMO-EXEC-RUN01',100,'running');
+      createLot(main,'DEMO-B10',100,'quality_hold',96,4);
+      createLot(second,'DEMO-EXEC-QUEUE01',300,'queued',null,null,null,'DEMO-HEAT2');
+      createLot(second,'DEMO-EXEC-BLOCK01',200,'blocked',null,null,null,'DEMO-HEAT2');
+      const material=recipes.find(r=>r.id===main.recipe_id).data.material;
+      execution('operation_movements',{...base('engineering'),code:'DEMO-RECEIPT-01',material,lot:'DEMO-HEAT1',unit:'kg',direction:'receipt',quantity:500,production_lot_id:null,note:'رسید مصنوعی آموزشی؛ خرید واقعی نیست.'},'movement',ids.engineering);
+      execution('operation_movements',{...base(),code:'DEMO-ISSUE-01',material,lot:'DEMO-HEAT1',unit:'kg',direction:'issue',quantity:20,production_lot_id:running.id,note:'مصرف مصنوعی آموزشی برای تمرین ردیابی.'},'movement',ids.production);
+    }
+    if(complete){const inspection=approved.find(r=>r.kind==='inspection'&&r.data.batch==='DEMO-B13'&&r.data.part===complete.product);if(inspection)createLot(complete,'DEMO-B13',100,'released',100,0,inspection.id);else db.prepare('UPDATE operation_orders SET status=? WHERE id=?').run('draft',complete.id);}
+    for(const kind of ['maintenance','ncr']){
+      const record=approved.find(r=>r.kind===kind);if(!record)continue;
+      const role=kind==='maintenance'?'maintenance':'quality';
+      execution('operation_tasks',{...base(role),record_id:record.id,owner_id:ids[role],due_date:date(1),kind:kind==='maintenance'?'maintenance':'capa',status:kind==='maintenance'?'open':'in_progress'},'task',ids.executive);
+    }
     return {db,app:createApp({db,origin,sha,secure,demo:true,prefix:'/api/demo'}),lastSeen:Date.now(),active:0};
   }
   function reject(res,status,message){res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify({error:message}));}

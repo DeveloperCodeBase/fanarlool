@@ -7,7 +7,7 @@ const dataRoot=process.env.FANAR_DATA_ROOT;
 const socket=process.env.FANAR_SOCKET;
 if(!dataRoot || !socket || !socket.startsWith('/run/fanarlool/')) throw new Error('Explicit project data root and Unix socket required');
 const db=openDatabase(`${dataRoot}/platform.sqlite`);
-const options={db,origin:process.env.FANAR_ORIGIN,sha:process.env.FANAR_SHA};
+const options={db,origin:process.env.FANAR_ORIGIN,sha:process.env.FANAR_SHA,dataRoot};
 const production=createApp(options),demo=await createDemoRouter(options);
 const app=createServer((req,res)=>new URL(req.url,options.origin).pathname.startsWith('/api/demo/')?demo.handle(req,res):production.emit('request',req,res));
 app.requestTimeout=15000; app.headersTimeout=20000;

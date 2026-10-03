@@ -2728,5 +2728,425 @@
     "Rejection reason must contain 10 to 1,000 characters",
     "سبب الرفض من 10 إلى 1000 حرف",
     "Ret nedeni 10 ile 1.000 karakter içermelidir"
+  ],
+  "شناسه مرجع معتبر نیست": [
+    "The reference ID is invalid",
+    "معرّف المرجع غير صالح",
+    "Referans kimliği geçersiz"
+  ],
+  "مقدار یا تعداد معتبر نیست": [
+    "The amount or quantity is invalid",
+    "القيمة أو الكمية غير صالحة",
+    "Miktar veya adet geçersiz"
+  ],
+  "پرونده عملیاتی پیدا نشد": [
+    "The operational record was not found",
+    "لم يتم العثور على سجل العمليات",
+    "Operasyon kaydı bulunamadı"
+  ],
+  "رکورد مرجع پیدا نشد": [
+    "The reference record was not found",
+    "لم يتم العثور على السجل المرجعي",
+    "Referans kaydı bulunamadı"
+  ],
+  "مرجع باید تأییدشده باشد": [
+    "The reference must be approved",
+    "يجب أن يكون المرجع معتمدًا",
+    "Referans onaylanmış olmalıdır"
+  ],
+  "کد تکراری یا کار فعال موجود است": [
+    "This code is already used or an active task already exists",
+    "الرمز مستخدم بالفعل أو توجد مهمة نشطة",
+    "Bu kod kullanılıyor veya etkin bir görev zaten var"
+  ],
+  "نسخه پرونده معتبر نیست": [
+    "The record version is invalid",
+    "إصدار السجل غير صالح",
+    "Kayıt sürümü geçersiz"
+  ],
+  "نسخه پرونده تغییر کرده؛ اطلاعات را به‌روز کنید": [
+    "The record version has changed; refresh the data",
+    "تغيّر إصدار السجل؛ حدّث البيانات",
+    "Kayıt sürümü değişti; verileri yenileyin"
+  ],
+  "کد محصول با دستور ساخت یکسان نیست": [
+    "The product code does not match the manufacturing recipe",
+    "رمز المنتج لا يطابق وصفة التصنيع",
+    "Ürün kodu üretim reçetesiyle eşleşmiyor"
+  ],
+  "بازرسی باید متعلق به همین بچ و محصول باشد": [
+    "The inspection must belong to this batch and product",
+    "يجب أن يخص الفحص هذه الدفعة وهذا المنتج",
+    "Muayene bu partiye ve ürüne ait olmalıdır"
+  ],
+  "اندازه بازرسی خارج از تلرانس است": [
+    "The inspection measurement is outside tolerance",
+    "قياس الفحص خارج حدود التفاوت المسموح",
+    "Muayene ölçümü tolerans dışında"
+  ],
+  "کالیبراسیون ابزار در بازرسی و آزادسازی معتبر نیست": [
+    "The instrument calibration is not valid for both inspection and release",
+    "معايرة الأداة غير سارية في وقت الفحص والإفراج",
+    "Cihaz kalibrasyonu muayene ve serbest bırakma zamanlarının ikisinde de geçerli değil"
+  ],
+  "عدم انطباق باز برای این بچ وجود دارد": [
+    "This batch has an open nonconformity",
+    "توجد حالة عدم مطابقة مفتوحة لهذه الدفعة",
+    "Bu partide açık bir uygunsuzluk var"
+  ],
+  "دسترسی به عملیات مجاز نیست": [
+    "Access to operations is not permitted",
+    "الوصول إلى العمليات غير مسموح",
+    "Operasyonlara erişim izniniz yok"
+  ],
+  "دسترسی این عملیات برای نقش شما مجاز نیست": [
+    "Your role is not allowed to perform this operation",
+    "دورك لا يسمح بتنفيذ هذه العملية",
+    "Rolünüz bu işlemi yapmaya yetkili değil"
+  ],
+  "عبارت جستجو طولانی است": [
+    "The search text is too long",
+    "نص البحث طويل جدًا",
+    "Arama metni çok uzun"
+  ],
+  "حوزه جستجو معتبر نیست": [
+    "The search category is invalid",
+    "مجال البحث غير صالح",
+    "Arama kategorisi geçersiz"
+  ],
+  "وضعیت جستجو معتبر نیست": [
+    "The search status is invalid",
+    "حالة البحث غير صالحة",
+    "Arama durumu geçersiz"
+  ],
+  "مسیر عملیات پیدا نشد": [
+    "The operations endpoint was not found",
+    "لم يتم العثور على مسار العمليات",
+    "Operasyon uç noktası bulunamadı"
+  ],
+  "گردش ثبت‌شده قابل تغییر نیست": [
+    "A recorded stock movement cannot be changed",
+    "لا يمكن تعديل حركة المخزون المسجلة",
+    "Kaydedilmiş stok hareketi değiştirilemez"
+  ],
+  "بازه سفارش یا اولویت معتبر نیست": [
+    "The order date range or priority is invalid",
+    "الفترة الزمنية للطلب أو أولويته غير صالحة",
+    "Sipariş tarih aralığı veya önceliği geçersiz"
+  ],
+  "سفارش باید آزادشده باشد": [
+    "The order must be released",
+    "يجب الإفراج عن الطلب أولًا",
+    "Sipariş serbest bırakılmış olmalıdır"
+  ],
+  "مجموع برنامه بچ از مقدار سفارش بیشتر است": [
+    "The total planned batch quantity exceeds the order quantity",
+    "إجمالي كمية الدفعات المخططة يتجاوز كمية الطلب",
+    "Planlanan toplam parti miktarı sipariş miktarını aşıyor"
+  ],
+  "مرجع کار اجرایی پیدا نشد": [
+    "The execution task reference was not found",
+    "لم يتم العثور على مرجع المهمة التنفيذية",
+    "Uygulama görevinin referansı bulunamadı"
+  ],
+  "مرجع کار باید تأییدشده باشد": [
+    "The task reference must be approved",
+    "يجب أن يكون مرجع المهمة معتمدًا",
+    "Görev referansı onaylanmış olmalıdır"
+  ],
+  "مسئول کار فعال و متناسب با حوزه نیست": [
+    "The assignee is not active or does not have the required role",
+    "المكلّف بالمهمة غير نشط أو لا يملك الدور المناسب",
+    "Görevli etkin değil veya gerekli role sahip değil"
+  ],
+  "برای این مرجع کار فعال موجود است": [
+    "An active task already exists for this reference",
+    "توجد مهمة نشطة لهذا المرجع بالفعل",
+    "Bu referans için etkin bir görev zaten var"
+  ],
+  "واحد یا جهت گردش معتبر نیست": [
+    "The stock movement unit or direction is invalid",
+    "وحدة حركة المخزون أو اتجاهها غير صالح",
+    "Stok hareketi birimi veya yönü geçersiz"
+  ],
+  "کد گردش قبلاً ثبت شده است": [
+    "This stock movement code has already been recorded",
+    "رمز حركة المخزون مسجل بالفعل",
+    "Bu stok hareketi kodu daha önce kaydedilmiş"
+  ],
+  "گردش مصرف یا برگشت به بچ تولید نیاز دارد": [
+    "An issue or return must be linked to a production batch",
+    "يجب ربط الصرف أو المرتجع بدفعة إنتاج",
+    "Sarf veya iade bir üretim partisine bağlanmalıdır"
+  ],
+  "ماده و بچ مواد با سفارش تولید یکسان نیست": [
+    "The material and material lot do not match the production order",
+    "المادة ودفعة المادة لا تطابقان أمر الإنتاج",
+    "Malzeme ve malzeme partisi üretim emriyle eşleşmiyor"
+  ],
+  "مصرف فقط برای بچ صف یا در حال تولید مجاز است": [
+    "Material issues are allowed only for queued or running batches",
+    "يُسمح بصرف المواد للدفعات المنتظرة أو الجاري إنتاجها فقط",
+    "Malzeme sarfına yalnızca sıradaki veya üretimdeki partiler için izin verilir"
+  ],
+  "برگشت از مصرف ثبت‌شده بیشتر است": [
+    "The return exceeds the recorded issue quantity",
+    "كمية المرتجع تتجاوز كمية الصرف المسجلة",
+    "İade miktarı kaydedilmiş sarf miktarını aşıyor"
+  ],
+  "موجودی برای مصرف کافی نیست": [
+    "There is not enough stock for this issue",
+    "المخزون غير كافٍ لهذا الصرف",
+    "Bu sarf için yeterli stok yok"
+  ],
+  "موجودی از سقف مجاز بیشتر است": [
+    "The stock balance exceeds the allowed limit",
+    "رصيد المخزون يتجاوز الحد المسموح",
+    "Stok bakiyesi izin verilen sınırı aşıyor"
+  ],
+  "فقط پیش‌نویس سفارش آزاد می‌شود": [
+    "Only a draft order can be released",
+    "يمكن الإفراج عن الطلبات في حالة المسودة فقط",
+    "Yalnızca taslak sipariş serbest bırakılabilir"
+  ],
+  "آزادسازی سفارش باید مستقل از ثبت‌کننده باشد": [
+    "An order must be released by someone other than its creator",
+    "يجب أن يفرج عن الطلب شخص غير مسجّله",
+    "Siparişi oluşturan kişi dışında biri serbest bırakmalıdır"
+  ],
+  "سفارش قابل لغو نیست": [
+    "The order cannot be cancelled",
+    "لا يمكن إلغاء الطلب",
+    "Sipariş iptal edilemez"
+  ],
+  "سفارش با بچ شروع‌شده یا آزادشده قابل لغو نیست": [
+    "An order with a started or released batch cannot be cancelled",
+    "لا يمكن إلغاء طلب يحتوي على دفعة بدأ إنتاجها أو أُفرج عنها",
+    "Başlatılmış veya serbest bırakılmış partisi olan sipariş iptal edilemez"
+  ],
+  "بچ آزادشده قابل تغییر نیست": [
+    "A released batch cannot be changed",
+    "لا يمكن تعديل دفعة أُفرج عنها",
+    "Serbest bırakılmış parti değiştirilemez"
+  ],
+  "بچ یا سفارش آماده شروع نیست": [
+    "The batch or order is not ready to start",
+    "الدفعة أو الطلب غير جاهز للبدء",
+    "Parti veya sipariş başlatılmaya hazır değil"
+  ],
+  "نگهداری بحرانی باز مانع شروع این تجهیز است": [
+    "Open critical maintenance prevents this asset from starting",
+    "الصيانة الحرجة المفتوحة تمنع بدء تشغيل هذه المعدة",
+    "Açık kritik bakım bu ekipmanın başlatılmasını engelliyor"
+  ],
+  "فقط بچ در حال تولید قابل اتمام است": [
+    "Only a batch in production can be finished",
+    "يمكن إنهاء دفعة جارٍ إنتاجها فقط",
+    "Yalnızca üretimdeki parti tamamlanabilir"
+  ],
+  "تعداد سالم و ضایعات باید برابر مقدار برنامه باشد": [
+    "Good output plus scrap must equal the planned quantity",
+    "مجموع الكمية السليمة والهالك يجب أن يساوي الكمية المخططة",
+    "Sağlam üretim ve fire toplamı planlanan miktara eşit olmalıdır"
+  ],
+  "بچ باید در انتظار کیفیت باشد": [
+    "The batch must be awaiting quality review",
+    "يجب أن تكون الدفعة في انتظار مراجعة الجودة",
+    "Parti kalite incelemesini bekliyor olmalıdır"
+  ],
+  "آزادسازی بچ باید مستقل از ثبت‌کننده باشد": [
+    "A batch must be released by someone other than its creator",
+    "يجب أن يفرج عن الدفعة شخص غير مسجّلها",
+    "Partiyi oluşturan kişi dışında biri serbest bırakmalıdır"
+  ],
+  "بچ در این وضعیت قابل قرنطینه نیست": [
+    "A batch cannot be quarantined in this status",
+    "لا يمكن حجر الدفعة في هذه الحالة",
+    "Parti bu durumda karantinaya alınamaz"
+  ],
+  "فقط بچ قرنطینه در سفارش فعال بازکاری می‌شود": [
+    "Only a quarantined batch in an active order can be reworked",
+    "تُعاد معالجة دفعة محجورة ضمن طلب نشط فقط",
+    "Yalnızca etkin siparişteki karantina partisi yeniden işlenebilir"
+  ],
+  "مسئول کار دیگر صلاحیت فعال این حوزه را ندارد": [
+    "The assignee no longer has an active role for this task category",
+    "لم يعد المكلّف بالمهمة يملك صلاحية نشطة في هذا المجال",
+    "Görevlinin artık bu görev alanında etkin yetkisi yok"
+  ],
+  "شروع کار فقط توسط مسئول تخصیص‌یافته مجاز است": [
+    "Only the assigned person can start the task",
+    "يُسمح للمكلّف المحدد ببدء المهمة فقط",
+    "Görevi yalnızca atanan kişi başlatabilir"
+  ],
+  "کار باید باز باشد": [
+    "The task must be open",
+    "يجب أن تكون المهمة مفتوحة",
+    "Görev açık olmalıdır"
+  ],
+  "تکمیل کار فقط توسط مسئول تخصیص‌یافته مجاز است": [
+    "Only the assigned person can complete the task",
+    "يُسمح للمكلّف المحدد بإكمال المهمة فقط",
+    "Görevi yalnızca atanan kişi tamamlayabilir"
+  ],
+  "کار باید در حال انجام باشد": [
+    "The task must be in progress",
+    "يجب أن تكون المهمة قيد التنفيذ",
+    "Görev devam ediyor olmalıdır"
+  ],
+  "راستی‌آزمایی باید مستقل از مسئول کار باشد": [
+    "Verification must be performed by someone other than the assignee",
+    "يجب أن يتحقق شخص غير المكلّف بالمهمة من النتيجة",
+    "Doğrulamayı görevli dışında biri yapmalıdır"
+  ],
+  "کار باید در انتظار راستی‌آزمایی باشد": [
+    "The task must be awaiting verification",
+    "يجب أن تكون المهمة في انتظار التحقق",
+    "Görev doğrulama bekliyor olmalıdır"
+  ],
+  "فقط کار بسته‌شده دوباره باز می‌شود": [
+    "Only a closed task can be reopened",
+    "يمكن إعادة فتح مهمة مغلقة فقط",
+    "Yalnızca kapalı görev yeniden açılabilir"
+  ],
+  "اقدام اجرایی معتبر نیست": [
+    "The execution action is invalid",
+    "الإجراء التنفيذي غير صالح",
+    "Uygulama işlemi geçersiz"
+  ],
+  "شرح تصمیم": [
+    "Decision note",
+    "شرح القرار",
+    "Karar açıklaması"
+  ],
+  "کد سفارش": [
+    "Order code",
+    "رمز الطلب",
+    "Sipariş kodu"
+  ],
+  "مشتری": [
+    "Customer",
+    "العميل",
+    "Müşteri"
+  ],
+  "محصول": [
+    "Product",
+    "المنتج",
+    "Ürün"
+  ],
+  "کد بچ": [
+    "Batch code",
+    "رمز الدفعة",
+    "Parti kodu"
+  ],
+  "بچ مواد": [
+    "Material lot",
+    "دفعة المادة",
+    "Malzeme partisi"
+  ],
+  "کد گردش": [
+    "Stock movement code",
+    "رمز حركة المخزون",
+    "Stok hareketi kodu"
+  ],
+  "ماده": [
+    "Material",
+    "المادة",
+    "Malzeme"
+  ],
+  "شرح گردش": [
+    "Stock movement note",
+    "شرح حركة المخزون",
+    "Stok hareketi açıklaması"
+  ],
+  "پارامتر جستجو معتبر نیست": [
+    "The search parameter is invalid",
+    "معامل البحث غير صالح",
+    "Arama parametresi geçersiz"
+  ],
+  "اجازه مشاهده این حوزه را ندارید": [
+    "You do not have permission to view this category",
+    "ليس لديك إذن لعرض هذا المجال",
+    "Bu alanı görüntüleme izniniz yok"
+  ],
+  "بازه تاریخ معتبر نیست": [
+    "The date range is invalid",
+    "الفترة الزمنية غير صالحة",
+    "Tarih aralığı geçersiz"
+  ],
+  "نشست پیدا نشد": [
+    "The session was not found",
+    "لم يتم العثور على الجلسة",
+    "Oturum bulunamadı"
+  ],
+  "برای حساب خودتان از تغییر رمز استفاده کنید": [
+    "Use password change for your own account",
+    "استخدم تغيير كلمة المرور لحسابك الشخصي",
+    "Kendi hesabınız için parola değiştirme seçeneğini kullanın"
+  ],
+  "رمز موقت و دلیل بازنشانی معتبر نیست": [
+    "The temporary password or reset reason is invalid",
+    "كلمة المرور المؤقتة أو سبب إعادة التعيين غير صالح",
+    "Geçici parola veya sıfırlama nedeni geçersiz"
+  ],
+  "رمز تازه باید با رمز قبلی متفاوت باشد": [
+    "The new password must differ from the previous password",
+    "يجب أن تختلف كلمة المرور الجديدة عن السابقة",
+    "Yeni parola önceki paroladan farklı olmalıdır"
+  ],
+  "حساب هم‌زمان تغییر کرده؛ به‌روز کنید": [
+    "The account was changed concurrently; refresh the data",
+    "عُدّل الحساب بالتزامن؛ حدّث البيانات",
+    "Hesap eş zamanlı olarak değiştirildi; verileri yenileyin"
+  ],
+  "رمز موقت بازنشانی شد؛ همه نشست‌های کاربر باطل شدند.": [
+    "The temporary password was reset and all user sessions were revoked.",
+    "أُعيد تعيين كلمة المرور المؤقتة وأُبطلت جميع جلسات المستخدم.",
+    "Geçici parola sıfırlandı ve kullanıcının tüm oturumları sonlandırıldı."
+  ],
+  "بازرسی باید پس از ایجاد بچ و اتمام تولید ثبت یا تأیید شده باشد": [
+    "The inspection must be recorded or approved after batch creation and production completion",
+    "يجب تسجيل الفحص أو اعتماده بعد إنشاء الدفعة وإتمام الإنتاج",
+    "Muayene, parti oluşturulduktan ve üretim tamamlandıktan sonra kaydedilmiş veya onaylanmış olmalıdır"
+  ],
+  "بازرسی دارای عیب نیازمند بازکاری و بازرسی مجدد است": [
+    "An inspection with defects requires rework and a new inspection",
+    "الفحص الذي يظهر عيوبًا يستلزم إعادة المعالجة والفحص مجددًا",
+    "Kusurlu muayene sonucu yeniden işleme ve yeni bir muayene gerektirir"
+  ],
+  "بچ بدون قطعه سالم قابل آزادسازی نیست": [
+    "A batch with no good units cannot be released",
+    "لا يمكن الإفراج عن دفعة لا تحتوي على قطع سليمة",
+    "Sağlam parçası olmayan parti serbest bırakılamaz"
+  ],
+  "فقط پیش‌نویس سفارش قابل ویرایش است": [
+    "Only a draft order can be edited",
+    "يمكن تعديل مسودة الأمر فقط",
+    "Yalnızca taslak emir düzenlenebilir"
+  ],
+  "سفارش دارای بچ قابل ویرایش نیست": [
+    "An order with production lots cannot be edited",
+    "لا يمكن تعديل أمر لديه دفعات إنتاج",
+    "Üretim partisi olan emir düzenlenemez"
+  ],
+  "اطلاعات ویرایش سفارش معتبر نیست": [
+    "Order update data is invalid",
+    "بيانات تعديل الأمر غير صالحة",
+    "Emir güncelleme verileri geçersiz"
+  ],
+  "شناسه و کد سفارش قابل ویرایش نیستند": [
+    "The order ID and code cannot be changed",
+    "لا يمكن تعديل معرف الأمر ورمزه",
+    "Emir kimliği ve kodu değiştirilemez"
+  ],
+  "تخصیص مجدد فقط برای کار باز یا در حال انجام مجاز است": [
+    "Reassignment is allowed only for open or in-progress tasks",
+    "تُسمح إعادة الإسناد للمهام المفتوحة أو قيد التنفيذ فقط",
+    "Yeniden atama yalnızca açık veya devam eden görevler için yapılabilir"
+  ],
+  "مقدار کیلوگرم باید با دقت حداکثر سه رقم اعشار ثبت شود": [
+    "Kilograms must be recorded with at most three decimal places",
+    "يجب تسجيل الكيلوغرام بدقة لا تتجاوز ثلاث خانات عشرية",
+    "Kilogram en fazla üç ondalık basamakla kaydedilmelidir"
   ]
 }

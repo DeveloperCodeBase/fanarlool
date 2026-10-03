@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory)][ValidateSet('status','bootstrap','fetch','install','build','test','validate','deploy','nginx','edge','platform','backup','rollback','logs','health','version','admin','train')][string]$Action,
+    [Parameter(Mandatory)][ValidateSet('status','bootstrap','fetch','install','build','test','validate','deploy','nginx','edge','platform','backup','rollback','logs','health','version','admin','recover-admin','backup-drill','train')][string]$Action,
     [string]$Sha,
     [string]$SshHost = 'my-vps'
 )
@@ -20,15 +20,15 @@ if ($Action -notin @('status','bootstrap')) {
 }
 $encoded = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($scriptText))
 $targetSha = if ($Sha) { $Sha } else { '-' }
-if ($Action -eq 'admin') {
-    $taskUsername = Read-Host 'Initial administrator username (latin, 3-64 characters)'
-    $taskDisplayName = Read-Host 'Administrator display name'
+if ($Action -in @('admin','recover-admin')) {
+    $taskUsername = Read-Host 'Administrator username (latin, 3-64 characters; existing account for recovery)'
+    $taskDisplayName = if ($Action -eq 'admin') { Read-Host 'Administrator display name' } else { '' }
     $taskSecret = Read-Host 'Temporary password (12-128 characters)' -AsSecureString
     $taskPointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($taskSecret)
     try {
         $taskPayload = @{username=$taskUsername;name=$taskDisplayName;password=[Runtime.InteropServices.Marshal]::PtrToStringBSTR($taskPointer)} | ConvertTo-Json -Compress
         # bash -c leaves SSH stdin available for the private JSON payload; never put the password in argv.
-        $command = "bash -c `"`$(printf '%s' '$encoded' | base64 -d)`" -- 'admin' '$targetSha'"
+        $command = "bash -c `"`$(printf '%s' '$encoded' | base64 -d)`" -- '$Action' '$targetSha'"
         $OutputEncoding = [Text.UTF8Encoding]::new($false)
         $taskPayload | & ssh -o BatchMode=yes -o ConnectTimeout=15 $SshHost $command
         if ($LASTEXITCODE -ne 0) { throw 'Initial administrator provisioning failed' }

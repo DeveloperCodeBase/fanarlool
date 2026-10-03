@@ -4,7 +4,7 @@
 
 رابط React/TypeScript/Vite به صورت `dist` سرو می‌شود. API مستقل Node/SQLite با سرویس `fanarlool-api` و Unix socket `/run/fanarlool/api.sock` مالک احراز هویت، مجوزها، ثبت سوابق، گردش بررسی، پروفایل و فعالیت شخصی است. پنل مدیر، رویدادها و وضعیت سرویس همین پروژه را نمایش می‌دهد.
 
-فرآیند انتشار: commit/push → `validate -Sha` → فقط بار اول `platform -Sha` → `deploy -Sha` → `health`. platform فقط virtual host متعلق به FanarLool را به‌روزرسانی و سرویس اختصاصی را نصب می‌کند؛ پورت جدید ندارد. قبل از deploy، DB با SQLite backup API و integrity_check در `shared/backups` حفظ می‌شود. داده در `shared/data/platform.sqlite`؛ mode 600 و parent 700؛ schema version=2 با جدول پروفایل. API env در `shared/api.env` شامل path/origin/SHA است. رمز اولیه از Git/گزارش/لاگ خارج بماند.
+فرآیند انتشار: commit/push → `validate -Sha` → فقط بار اول `platform -Sha` → `deploy -Sha` → `health`. platform فقط virtual host متعلق به FanarLool را به‌روزرسانی و سرویس اختصاصی را نصب می‌کند؛ پورت جدید ندارد. قبل از deploy، DB با SQLite backup API و integrity_check در `shared/backups` حفظ می‌شود. داده در `shared/data/platform.sqlite`؛ mode 600 و parent 700؛ schema version=3 با جدول پروفایل. API env در `shared/api.env` شامل path/origin/SHA است. رمز اولیه از Git/گزارش/لاگ خارج بماند.
 
 برای نخستین مدیر، مالک از Windows فرمان `scripts/remote.ps1 -Action admin -Sha <active-40-char-SHA>` را اجرا می‌کند. نام کاربری و نام نمایش با prompt و رمز ۱۲ تا ۱۲۸ نویسه با SecureString دریافت و از stdin ارسال می‌شود. این فرمان فقط وقتی مدیر فعال وجود ندارد می‌پذیرد؛ رمز وارد command line نمی‌شود. حساب‌های بعدی از UI مدیر ایجاد می‌شوند و تغییر رمز موقت اجباری است.
 
@@ -61,3 +61,14 @@ SSH password/private key یا secret در Git قرار نگیرد. Vite env عم
 ## آموزش مرجع بدون سرویس و پورت جدید
 
 `remote.ps1 -Action train -Sha <pushed full SHA>` فقط در release checkout متعلق به همان SHA، اسکریپت Node با سقف ۱۸۰ ثانیه و اولویت پایین را اجرا می‌کند. ZIP رسمی UCI با کنترل اندازه و hash خوانده می‌شود؛ داده و وزن در `shared/models/<SHA>` با مجوز خصوصی قرار می‌گیرند. هیچ listener ساخته نمی‌شود. خروجی JSON مدل، تقسیم و ارزیابی پس از پایان موفق استخراج و در سورس محلی ثبت می‌شود؛ سپس SHA جدید محصول باید validate/deploy شود. فایل‌های دیتاست مرجع با سوابق عملیاتی SQLite ادغام نمی‌شوند.
+
+
+## اجرای کارخانه و نگهداری محصول
+
+schema۳ افزایشی، چهار جدول اختصاصی سفارش، بچ، کار اجرایی و دفتر مواد را اضافه می‌کند. داده‌های نسخه قبلی حذف یا با نمونه جایگزین نمی‌شوند. مسیر `/api/operations` پشت همان احراز هویت، CSRF و RBAC قرار دارد. آزادسازی سفارش و کیفیت، راستی‌آزمایی کار، مصرف و برگشت مواد با کنترل مرجع، نسخه و تراکنش ثبت می‌شوند. گزارش `/api/reports/production` کل شیفت‌های تأییدشده بازه را در SQL جمع می‌کند. جستجوی `/api/records/search` مجوز دامنه را پیش از شمارش و صفحه‌بندی اعمال می‌کند؛ آرشیو در مرورگر با صفحه۲۵تایی و CSV همان صفحه ارائه می‌شود.
+
+deploy سرویس و timer اختصاصی `fanarlool-backup` را پس از کنترل مالکیت نام و Description نصب می‌کند. زمان‌بندی روزانه ساعت۰۳:۰۰ تهران با تأخیر تصادفی حداکثر۵دقیقه و Persistent فعال است. [SQLite Online Backup API](https://www.sqlite.org/backup.html) منبع را فقط خواندنی باز می‌کند و نسخه کامل همراه شمارش جداول، hash، integrity و foreign-key check در `shared/backups/daily` نگه می‌دارد. [systemd timer](https://github.com/systemd/systemd/blob/main/man/systemd.timer.xml) اجرای ازدست‌رفته در خاموشی را پس از فعال‌شدن جبران می‌کند. هیچ حذف خودکار backup یا پورت تازه‌ای وجود ندارد. رشد فضای دیسک، سیاست نگهداری و نسخه خارج سرور باید در بهره‌برداری پایش و تصویب شوند.
+
+پس از انتشار، `scripts/remote.ps1 -Action backup-drill -Sha <active SHA>` یک پشتیبان تازه می‌سازد، hash را بررسی و تنها روی کپی موقت اختصاصی بازیابی می‌کند. فایل زنده تغییر نمی‌کند. نتیجه و زمان آخرین پشتیبان/مانور در مانیتورینگ مدیر دیده می‌شوند؛ این شاهد، جای مانور کامل قطع سرور و نسخه خارج سایت را نمی‌گیرد.
+
+مدیر می‌تواند رمز کاربر دیگر را با دلیل مستند بازنشانی کند؛ رمز در audit ذخیره نمی‌شود، همه نشست‌های هدف باطل و تغییر رمز در ورود بعد اجباری می‌شود. هر کاربر فقط نشست‌های خود را می‌بیند و می‌تواند نشست دیگر را باطل کند. اگر تمام مدیران دسترسی را فراموش کنند، مالک میزبان از `scripts/remote.ps1 -Action recover-admin -Sha <active SHA>` استفاده می‌کند؛ حساب admin نام‌برده باید قبلاً وجود داشته باشد، رمز از SecureString/stdin دریافت و رویداد بازیابی ثبت می‌شود. این مسیر حساب تازه یا رمز پیش‌فرض ایجاد نمی‌کند.

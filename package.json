@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview --port 3000",
     "lint": "tsc --noEmit",
-    "test": "node --test server/app.test.mjs tests/*.test.mjs"
+    "test": "node --test server/*.test.mjs tests/*.test.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

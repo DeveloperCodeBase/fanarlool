@@ -2,6 +2,9 @@ import { createServer } from 'node:http';
 import { randomBytes, randomUUID, createHash, scrypt, timingSafeEqual } from 'node:crypto';
 import { promisify } from 'node:util';
 import { roles, schemas, can, validateRecord, productionKpis } from './domain.mjs';
+import {createWorkflows} from './workflows.mjs';
+import {authorizedKinds,recordQuery,productionSummary} from './queries.mjs';
+import {readFileSync,statSync} from 'node:fs';
 const derive = promisify(scrypt);
 const digest = s => createHash('sha256').update(s).digest('hex');
 const validId = value => typeof value === 'string' && /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(value);
@@ -16,7 +19,7 @@ async function checkPassword(password, stored) {
   return hash?.length === 128 && timingSafeEqual(Buffer.from(key),Buffer.from(hash,'hex'));
 }
 export function passwordValid(s) { return typeof s === 'string' && s.length >= 12 && s.length <= 128; }
-export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secure = true, sha = 'development', demo = false, prefix = '/api' }) {
+export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secure = true, sha = 'development', demo = false, prefix = '/api', dataRoot }) {
   const fake = randomBytes(16).toString('hex') + ':' + randomBytes(64).toString('hex');
   const q = sql => db.prepare(sql);
   const atomic = operation => {
@@ -37,6 +40,7 @@ export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secu
     try { const value=JSON.parse(text); if (!value || typeof value!=='object' || Array.isArray(value)) throw 0; return value; } catch { throw error(400,'درخواست معتبر نیست'); }
   }
   const startedAt=new Date().toISOString(),requests=[];
+  const recoveryStatus=name=>{try{if(demo||!dataRoot)return null;const file=`${dataRoot}/${name}-status.json`;if(statSync(file).size>8192)return null;const value=JSON.parse(readFileSync(file,'utf8'));if(value.status==='FAIL')return {status:'FAIL',createdAt:value.createdAt,backupId:null};if(value.status!=='PASS'||!/^[a-f0-9]{64}$/.test(value.sha256))return null;return {status:value.status,createdAt:value.createdAt||value.verifiedAt,backupId:value.backupId,sha256:value.sha256,schema:value.schema,bytes:value.bytes||null,offsite:false,liveDatabaseModified:value.liveDatabaseModified===true};}catch{return null;}};
   return createServer(async (req,res) => {
     const requestStart=performance.now();let requestActor=null;
     res.once('finish',()=>{requests.push({at:new Date().toISOString(),method:req.method,path:new URL(req.url,origin).pathname,status:res.statusCode,durationMs:Math.round(performance.now()-requestStart),actor:requestActor});if(requests.length>250)requests.shift();});
@@ -44,7 +48,7 @@ export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secu
       const originalPath = new URL(req.url,origin).pathname;
       if(!originalPath.startsWith(prefix+'/')) throw error(404,'مسیر پیدا نشد');
       const path='/api'+originalPath.slice(prefix.length), method=req.method;
-      if (path === '/api/health' && method==='GET') return send(res,200,{status:'ok',sha,schema:2,demo});
+      if (path === '/api/health' && method==='GET') return send(res,200,{status:'ok',sha,schema:Number(q('PRAGMA user_version').get().user_version),demo});
       if (['POST','PATCH','DELETE'].includes(method) && req.headers.origin !== origin) throw error(403,'مبدأ درخواست مجاز نیست');
       if (path === '/api/auth/login' && method==='POST') {
         const b=await body(req);
@@ -90,6 +94,21 @@ export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secu
         q('DELETE FROM sessions WHERE user_id=?').run(u.id); audit(u.id,'auth.password',u.id);}); return send(res,200,{ok:true},{'Set-Cookie':cookie('',0)});
       }
       if (u.must_change) throw error(403,'ابتدا رمز موقت را تغییر دهید');
+      if(await createWorkflows({db,q,mutate,audit})({path,method,query:new URL(req.url,origin).searchParams,body:()=>body(req),u,demo,send:(status,value)=>send(res,status,value)}))return;
+      if(path==='/api/auth/sessions'&&method==='GET')return send(res,200,{sessions:q('SELECT token,expires,last_seen FROM sessions WHERE user_id=? AND expires>? AND last_seen>? ORDER BY last_seen DESC').all(u.id,Date.now(),Date.now()-1800000).map(s=>({id:s.token,current:s.token===session.token,expiresAt:new Date(s.expires).toISOString(),lastSeen:new Date(s.last_seen).toISOString()}))});
+      const sessionMatch=path.match(/^\/api\/auth\/sessions\/([a-f0-9]{64})$/);
+      if(sessionMatch&&method==='DELETE'){
+        mutate(()=>{if(q('DELETE FROM sessions WHERE token=? AND user_id=?').run(sessionMatch[1],u.id).changes!==1)throw error(404,'نشست پیدا نشد');audit(u.id,'auth.session_revoked',u.id,{current:sessionMatch[1]===session.token});});
+        return send(res,200,{ok:true,current:sessionMatch[1]===session.token},sessionMatch[1]===session.token?{'Set-Cookie':cookie('',0)}:{});
+      }
+      if(path==='/api/auth/revoke-others'&&method==='POST'){
+        let count=0;mutate(()=>{count=Number(q('DELETE FROM sessions WHERE user_id=? AND token<>?').run(u.id,session.token).changes);audit(u.id,'auth.sessions_revoked',u.id,{count});});return send(res,200,{ok:true,count});
+      }
+      if(path==='/api/records/search'&&method==='GET')return send(res,200,recordQuery(db,u.role,new URL(req.url,origin).searchParams));
+      if(path==='/api/reports/production'&&method==='GET'){
+        if(!can(u.role,'production'))throw error(403,'اجازه مشاهده این حوزه را ندارید');const query=new URL(req.url,origin).searchParams;
+        return send(res,200,productionSummary(db,query.get('from')||'',query.get('to')||''));
+      }
       if(path==='/api/profile') {
         const view=()=>{const p=q('SELECT * FROM user_profiles WHERE user_id=?').get(u.id);return {user:userView(q('SELECT * FROM users WHERE id=?').get(u.id)),department:p?.department||'',jobTitle:p?.job_title||'',email:p?.email||'',phone:p?.phone||'',preferences:{density:'comfortable',startPage:'overview',notifications:true,...JSON.parse(p?.preferences||'{}')}};};
         if(method==='GET')return send(res,200,view());
@@ -108,12 +127,14 @@ export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secu
       if(path==='/api/system' && method==='GET') {
         if(u.role!=='admin')throw error(403,'مانیتورینگ سامانه فقط برای مدیر سامانه است');
         const total=table=>Number(q(`SELECT COUNT(*) AS n FROM ${table}`).get().n);
-        return send(res,200,{sha,demo,startedAt,uptimeSeconds:Math.round(process.uptime()),memoryMb:Math.round(process.memoryUsage().rss/1048576),database:q('PRAGMA quick_check').get().quick_check,transport:'Unix socket',counts:{users:total('users'),activeUsers:Number(q('SELECT COUNT(*) AS n FROM users WHERE active=1').get().n),records:total('records'),audit:total('audit'),sessions:Number(q('SELECT COUNT(*) AS n FROM sessions WHERE expires>? AND last_seen>?').get(Date.now(),Date.now()-1800000).n)},statuses:q('SELECT status,COUNT(*) AS count FROM records GROUP BY status').all(),requests:[...requests].reverse().slice(0,100)});
+        return send(res,200,{sha,demo,startedAt,uptimeSeconds:Math.round(process.uptime()),memoryMb:Math.round(process.memoryUsage().rss/1048576),database:q('PRAGMA quick_check').get().quick_check,transport:'Unix socket',backup:recoveryStatus('backup'),recovery:recoveryStatus('recovery'),counts:{users:total('users'),activeUsers:Number(q('SELECT COUNT(*) AS n FROM users WHERE active=1').get().n),records:total('records'),audit:total('audit'),sessions:Number(q('SELECT COUNT(*) AS n FROM sessions WHERE expires>? AND last_seen>?').get(Date.now(),Date.now()-1800000).n)},statuses:q('SELECT status,COUNT(*) AS count FROM records GROUP BY status').all(),requests:[...requests].reverse().slice(0,100)});
       }
       if (path==='/api/workspace' && method==='GET') {
-        const records=q('SELECT r.*,u.name AS creator_name FROM records r JOIN users u ON u.id=r.creator ORDER BY r.updated_at DESC LIMIT 2000').all().filter(r=>can(u.role,r.kind)).map(r=>({...r,data:JSON.parse(r.data)}));
+        const allowed=authorizedKinds(u.role),params=allowed.map(()=>'?').join(',');
+        const records=q(`SELECT r.*,u.name AS creator_name FROM records r JOIN users u ON u.id=r.creator WHERE r.kind IN (${params}) ORDER BY r.updated_at DESC,r.id LIMIT 2000`).all(...allowed).map(r=>({...r,data:JSON.parse(r.data)}));
+        const total=Number(q(`SELECT COUNT(*) n FROM records WHERE kind IN (${params})`).get(...allowed).n);
         const catalog=Object.entries(schemas).filter(([k])=>can(u.role,k)).map(([kind,s])=>({kind,title:s.title,description:s.description,fields:s.fields,write:can(u.role,kind,'write'),approve:can(u.role,kind,'approve')}));
-        return send(res,200,{records,catalog,kpis:productionKpis(records),roles,sha,mode:demo?'demo':'manual',limited:records.length>=2000});
+        return send(res,200,{records,catalog,kpis:productionSummary(db).summary,roles,sha,mode:demo?'demo':'manual',limited:total>records.length,total});
       }
       const historyMatch=path.match(/^\/api\/records\/([^/]+)\/history$/);
       if(historyMatch && method==='GET') {
@@ -156,6 +177,10 @@ export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secu
         audit(u.id,'record.created',id,{kind:b.kind,from:null,to:'draft',version:1,...(b.sourceId?{sourceId:b.sourceId}:{})});}); return send(res,201,{id});
       }
       const match=path.match(/^\/api\/records\/([a-f0-9-]{36})$/);
+      if(match&&method==='GET'){
+        const record=q('SELECT r.*,u.name creator_name FROM records r JOIN users u ON u.id=r.creator WHERE r.id=?').get(match[1]);
+        if(!record||!can(u.role,record.kind))throw error(404,'رکورد پیدا نشد');return send(res,200,{record:{...record,data:JSON.parse(record.data)}});
+      }
       if(match && method==='PATCH') {
         const r=q('SELECT * FROM records WHERE id=?').get(match[1]); if (!r || !can(u.role,r.kind)) throw error(404,'رکورد پیدا نشد');
         const b=await body(req); if(b.version!==r.version) throw error(409,'رکورد هم‌زمان تغییر کرده؛ صفحه را به‌روز کنید');
@@ -193,6 +218,17 @@ export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secu
         }
       }
       const userMatch=path.match(/^\/api\/users\/([a-f0-9-]{36})$/);
+      const resetMatch=path.match(/^\/api\/users\/([a-f0-9-]{36})\/reset-password$/);
+      if(resetMatch&&method==='POST'){
+        if(u.role!=='admin')throw error(403,'اجازه مدیریت کاربران ندارید');if(demo)throw error(403,'هویت و نقش حساب‌های آموزشی ثابت است');
+        if(resetMatch[1]===u.id)throw error(400,'برای حساب خودتان از تغییر رمز استفاده کنید');
+        const target=q('SELECT * FROM users WHERE id=?').get(resetMatch[1]);if(!target)throw error(404,'کاربر پیدا نشد');
+        const b=await body(req);if(!passwordValid(b.password)||typeof b.reason!=='string'||b.reason.trim().length<10||b.reason.length>1000)throw error(400,'رمز موقت و دلیل بازنشانی معتبر نیست');
+        if(await checkPassword(b.password,target.password))throw error(400,'رمز تازه باید با رمز قبلی متفاوت باشد');
+        const hashed=await hashPassword(b.password);
+        mutate(()=>{if(q('UPDATE users SET password=?,must_change=1 WHERE id=? AND password=?').run(hashed,target.id,target.password).changes!==1)throw error(409,'حساب هم‌زمان تغییر کرده؛ به‌روز کنید');q('DELETE FROM sessions WHERE user_id=?').run(target.id);audit(u.id,'user.password_reset',target.id,{reason:b.reason.trim()});});
+        return send(res,200,{ok:true});
+      }
       if(userMatch && method==='PATCH') {
         if(u.role!=='admin') throw error(403,'اجازه مدیریت کاربران ندارید');
         if(demo)throw error(403,'هویت و نقش حساب‌های آموزشی ثابت است');

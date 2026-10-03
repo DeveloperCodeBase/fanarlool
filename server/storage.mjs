@@ -12,7 +12,23 @@ export function openDatabase(path) {
     CREATE TABLE IF NOT EXISTS login_limits(key TEXT PRIMARY KEY, failures INTEGER NOT NULL, until_ms INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS user_profiles(user_id TEXT PRIMARY KEY REFERENCES users(id), department TEXT NOT NULL DEFAULT '', job_title TEXT NOT NULL DEFAULT '', email TEXT NOT NULL DEFAULT '', phone TEXT NOT NULL DEFAULT '', preferences TEXT NOT NULL DEFAULT '{}');
     CREATE INDEX IF NOT EXISTS records_kind ON records(kind,created_at);
-    CREATE INDEX IF NOT EXISTS sessions_user ON sessions(user_id); PRAGMA user_version=2;`);
+    CREATE INDEX IF NOT EXISTS sessions_user ON sessions(user_id);
+    CREATE TABLE IF NOT EXISTS operation_orders(
+      id TEXT PRIMARY KEY,code TEXT NOT NULL UNIQUE,customer TEXT NOT NULL,product TEXT NOT NULL,quantity INTEGER NOT NULL CHECK(quantity>0),start_date TEXT NOT NULL,due_date TEXT NOT NULL,priority TEXT NOT NULL,
+      recipe_id TEXT NOT NULL REFERENCES records(id),asset_id TEXT NOT NULL REFERENCES records(id),creator TEXT NOT NULL REFERENCES users(id),status TEXT NOT NULL DEFAULT 'draft',version INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+    CREATE TABLE IF NOT EXISTS operation_lots(
+      id TEXT PRIMARY KEY,order_id TEXT NOT NULL REFERENCES operation_orders(id),code TEXT NOT NULL UNIQUE,material_lot TEXT NOT NULL,quantity INTEGER NOT NULL CHECK(quantity>0),good INTEGER,scrap INTEGER,inspection_id TEXT REFERENCES records(id),
+      creator TEXT NOT NULL REFERENCES users(id),status TEXT NOT NULL DEFAULT 'queued',version INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+    CREATE TABLE IF NOT EXISTS operation_tasks(
+      id TEXT PRIMARY KEY,record_id TEXT NOT NULL REFERENCES records(id),owner_id TEXT NOT NULL REFERENCES users(id),due_date TEXT NOT NULL,kind TEXT NOT NULL,
+      creator TEXT NOT NULL REFERENCES users(id),status TEXT NOT NULL DEFAULT 'open',version INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+    CREATE TABLE IF NOT EXISTS operation_movements(
+      id TEXT PRIMARY KEY,code TEXT NOT NULL UNIQUE,material TEXT NOT NULL,lot TEXT NOT NULL,unit TEXT NOT NULL,direction TEXT NOT NULL,quantity REAL NOT NULL CHECK(quantity>0),production_lot_id TEXT REFERENCES operation_lots(id),note TEXT NOT NULL DEFAULT '',
+      creator TEXT NOT NULL REFERENCES users(id),version INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+    CREATE INDEX IF NOT EXISTS operation_lots_order ON operation_lots(order_id,status);
+    CREATE UNIQUE INDEX IF NOT EXISTS operation_tasks_active ON operation_tasks(record_id) WHERE status<>'closed';
+    CREATE INDEX IF NOT EXISTS operation_stock_key ON operation_movements(material,lot,unit);
+    PRAGMA user_version=3;`);
   if (path !== ':memory:') chmodSync(path, 0o600);
   return db;
 }

@@ -195,13 +195,14 @@ bootstrap)
 logs) owned; sudo -n tail -n 40 /var/log/nginx/fanarlool.access.log /var/log/nginx/fanarlool.error.log; sudo -n journalctl -u fanarlool-api --no-pager -n 15 ;;
 health) owned; health ;;
 version) owned; readlink -f "$ROOT/current"; cat "$ROOT/current/dist/version.txt" ;;
-admin)
+admin|recover-admin)
   owned; exact; lock
   [[ $(readlink -f "$ROOT/current") == "$ROOT/releases/$SHA" ]] || fail 'Administrator provisioning requires the active SHA'
   [[ $(cat "$ROOT/current/dist/version.txt") == "$SHA" && -f $ROOT/current/VALIDATED ]] || fail 'Active release identity is not validated'
-  FANAR_DATA_ROOT="$ROOT/shared/data" /usr/bin/node "$ROOT/current/server/admin.mjs"
+  admin_mode=""; if [[ $ACTION == recover-admin ]]; then admin_mode=recover; fi
+  FANAR_DATA_ROOT="$ROOT/shared/data" /usr/bin/node "$ROOT/current/server/admin.mjs" "$admin_mode"
   ;;
-fetch|install|build|test|validate|deploy|nginx|edge|platform|backup|rollback|train)
+fetch|install|build|test|validate|deploy|nginx|edge|platform|backup|backup-drill|rollback|train)
   owned; lock; fetch
   case "$ACTION" in
   fetch) ;;
@@ -212,6 +213,9 @@ fetch|install|build|test|validate|deploy|nginx|edge|platform|backup|rollback|tra
   validate)
     [[ $(readlink -f "$ROOT/current" 2>/dev/null || true) != "$CANDIDATE" ]] || fail 'Do not rebuild active production release'
     [[ ! -e $CANDIDATE/VALIDATED ]] || fail 'Release already validated; use it or push a new SHA'
+    bash -n "$CANDIDATE/scripts/vps.sh"
+    sudo -n systemd-analyze verify "$CANDIDATE/ops/systemd/fanarlool-backup.service" "$CANDIDATE/ops/systemd/fanarlool-backup.timer"
+    (cd "$CANDIDATE"; PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p backup_test.py)
     install; build; tests; bundle
     printf '%s\n' "$SHA" > "$CANDIDATE/dist/version.txt"
     (cd "$CANDIDATE/dist"; find . -type f -print0 | sort -z | xargs -0 sha256sum) > "$CANDIDATE/BUNDLE.sha256"
@@ -255,6 +259,17 @@ PY
         fi
         fail 'API failed to start; previous application restored'
       fi
+      for unit in fanarlool-backup.service fanarlool-backup.timer; do
+        if [[ -f /etc/systemd/system/$unit ]]; then
+          sudo -n grep -q '^Description=FanarLool dedicated daily' "/etc/systemd/system/$unit" || fail 'Backup unit ownership mismatch'
+        fi
+        sudo -n install -m 644 "$CANDIDATE/ops/systemd/$unit" "/etc/systemd/system/$unit"
+      done
+      sudo -n systemctl daemon-reload
+      sudo -n systemctl enable --now fanarlool-backup.timer
+      sudo -n systemctl start fanarlool-backup.service
+      sudo -n systemctl is-active --quiet fanarlool-backup.timer
+      echo 'BACKUP_SCHEDULE=PASS (daily dedicated timer; no ports)'
     fi
     ;;
   platform)
@@ -277,6 +292,12 @@ PY
     sudo -n systemctl enable fanarlool-api
     sudo -n systemctl reload nginx
     echo 'PLATFORM_PROVISION=PASS (Unix socket; no TCP listener)'
+    ;;
+  backup-drill)
+    [[ $(readlink -f "$ROOT/current") == "$CANDIDATE" && -f $CANDIDATE/VALIDATED ]] || fail 'Recovery drill requires active validated SHA'
+    python3 "$CANDIDATE/ops/backup/fanarlool-backup.py" --root "$ROOT/shared" --mode backup
+    python3 "$CANDIDATE/ops/backup/fanarlool-backup.py" --root "$ROOT/shared" --mode verify
+    echo 'RECOVERY_DRILL=PASS (isolated copy; live database unchanged)'
     ;;
   backup)
     [[ -f $ROOT/shared/data/platform.sqlite ]] || fail 'No platform database yet'
