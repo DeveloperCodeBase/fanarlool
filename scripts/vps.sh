@@ -88,6 +88,11 @@ PY
   status=$(curl -sS --max-time 30 -o /dev/null -w '%{http_code}' "$base/.git/config")
   [[ $status == 403 || $status == 404 ]] || fail 'Hidden source file is exposed'
   sudo -n nginx -t
+  if [[ -f $ROOT/current/server/index.mjs ]]; then
+    curl -fsS --max-time 30 "$base/api/health" | python3 -c 'import json,sys; d=json.load(sys.stdin); assert d["status"]=="ok" and d["sha"]==sys.argv[1]; print("API_HEALTH=PASS")' "$expected"
+    status=$(curl -sS --max-time 30 -o /dev/null -w '%{http_code}' "$base/api/workspace")
+    [[ $status == 401 ]] || fail 'Anonymous workspace is not denied'
+  fi
   echo "HEALTH=PASS SHA=$actual"
 }
 case "$ACTION" in
@@ -143,10 +148,10 @@ bootstrap)
   fi
   bun --version; echo 'BOOTSTRAP=PASS'
   ;;
-logs) owned; sudo -n tail -n 40 /var/log/nginx/fanarlool.access.log /var/log/nginx/fanarlool.error.log ;;
+logs) owned; sudo -n tail -n 40 /var/log/nginx/fanarlool.access.log /var/log/nginx/fanarlool.error.log; sudo -n journalctl -u fanarlool-api --no-pager -n 15 ;;
 health) owned; health ;;
 version) owned; readlink -f "$ROOT/current"; cat "$ROOT/current/dist/version.txt" ;;
-fetch|install|build|test|validate|deploy|nginx|edge|rollback)
+fetch|install|build|test|validate|deploy|nginx|edge|platform|backup|rollback)
   owned; lock; fetch
   case "$ACTION" in
   fetch) ;;
@@ -166,7 +171,72 @@ fetch|install|build|test|validate|deploy|nginx|edge|rollback)
     [[ $(cat "$CANDIDATE/VALIDATED") == "$SHA" ]] || fail 'No validation evidence'
     (cd "$CANDIDATE/dist"; sha256sum --quiet -c ../BUNDLE.sha256)
     sudo -n nginx -t
+    if [[ -f $CANDIDATE/server/index.mjs ]]; then
+      [[ -f /etc/systemd/system/fanarlool-api.service ]] || fail 'Run platform provisioning first'
+      if [[ -f $ROOT/shared/data/platform.sqlite ]]; then
+        backup_dir="$ROOT/shared/backups/$(date -u +%Y%m%dT%H%M%SZ)-$SHA"; mkdir -p "$backup_dir"; chmod 700 "$backup_dir"
+        python3 - "$ROOT/shared/data/platform.sqlite" "$backup_dir/platform.sqlite" <<'PY'
+import sqlite3, sys, os
+source=sqlite3.connect(sys.argv[1]); target=sqlite3.connect(sys.argv[2]); source.backup(target)
+assert target.execute('PRAGMA integrity_check').fetchone()[0]=='ok'
+target.close(); source.close(); os.chmod(sys.argv[2],0o600)
+print('DB_BACKUP=PASS',sys.argv[2])
+PY
+      fi
+      printf 'FANAR_DATA_ROOT=%s/shared/data\nFANAR_SOCKET=/run/fanarlool/api.sock\nFANAR_ORIGIN=https://%s\nFANAR_SHA=%s\n' "$ROOT" "$DOMAIN" "$SHA" > "$ROOT/shared/api.env.next"
+      chmod 600 "$ROOT/shared/api.env.next"; mv "$ROOT/shared/api.env.next" "$ROOT/shared/api.env"
+    fi
+    old_current=$(readlink -f "$ROOT/current" 2>/dev/null || true)
     switch_release "$CANDIDATE"
+    if [[ -f $CANDIDATE/server/index.mjs ]]; then
+      sudo -n systemctl restart fanarlool-api
+      for attempt in 1 2 3 4 5; do
+        if curl -fsS --unix-socket /run/fanarlool/api.sock http://localhost/api/health >/dev/null; then break; fi
+        sleep 1
+      done
+      if ! curl -fsS --unix-socket /run/fanarlool/api.sock http://localhost/api/health >/dev/null; then
+        if [[ -n $old_current ]]; then
+          ln -s "$old_current" "$ROOT/.current.next"; mv -Tf "$ROOT/.current.next" "$ROOT/current"
+          if [[ -f $old_current/server/index.mjs ]]; then
+            sed -i "s/^FANAR_SHA=.*/FANAR_SHA=$(cat "$old_current/dist/version.txt")/" "$ROOT/shared/api.env"
+            sudo -n systemctl restart fanarlool-api
+          else sudo -n systemctl stop fanarlool-api; fi
+        fi
+        fail 'API failed to start; previous application restored'
+      fi
+    fi
+    ;;
+  platform)
+    [[ $(cat "$CANDIDATE/VALIDATED") == "$SHA" ]] || fail 'Validate candidate before provisioning'
+    [[ -f $CANDIDATE/ops/systemd/fanarlool-api.service ]] || fail 'Platform service definition missing'
+    config=/etc/nginx/sites-available/fanarlool
+    sudo -n grep -q '^# FanarLool dedicated' "$config" || fail 'Nginx config ownership is not proven'
+    if [[ -f /etc/systemd/system/fanarlool-api.service ]]; then
+      sudo -n grep -q '^Description=FanarLool isolated platform API' /etc/systemd/system/fanarlool-api.service || fail 'Existing service ownership mismatch'
+    fi
+    mkdir -p "$ROOT/shared/data" "$ROOT/shared/backups"; chmod 700 "$ROOT/shared/data" "$ROOT/shared/backups"
+    sudo -n cp "$config" "$ROOT/shared/nginx-before-platform.conf"
+    sudo -n install -m 644 "$CANDIDATE/ops/nginx/fanarlool.conf" "$config"
+    if ! sudo -n nginx -t; then
+      sudo -n cp "$ROOT/shared/nginx-before-platform.conf" "$config"; fail 'Nginx syntax failed; restored'
+    fi
+    sudo -n systemd-analyze verify "$CANDIDATE/ops/systemd/fanarlool-api.service"
+    sudo -n install -m 644 "$CANDIDATE/ops/systemd/fanarlool-api.service" /etc/systemd/system/fanarlool-api.service
+    sudo -n systemctl daemon-reload
+    sudo -n systemctl enable fanarlool-api
+    sudo -n systemctl reload nginx
+    echo 'PLATFORM_PROVISION=PASS (Unix socket; no TCP listener)'
+    ;;
+  backup)
+    [[ -f $ROOT/shared/data/platform.sqlite ]] || fail 'No platform database yet'
+    backup_file="$ROOT/shared/backups/manual-$(date -u +%Y%m%dT%H%M%SZ).sqlite"
+    python3 - "$ROOT/shared/data/platform.sqlite" "$backup_file" <<'PY'
+import sqlite3, sys, os
+s=sqlite3.connect(sys.argv[1]); t=sqlite3.connect(sys.argv[2]); s.backup(t)
+assert t.execute('PRAGMA integrity_check').fetchone()[0]=='ok'
+t.close(); s.close(); os.chmod(sys.argv[2],0o600)
+print('DB_BACKUP=PASS',sys.argv[2])
+PY
     ;;
   nginx)
     [[ -L $ROOT/current ]] || fail 'Deploy a validated release first'
@@ -217,7 +287,12 @@ PY
     target=$(readlink -f "$ROOT/previous")
     [[ $target == "$ROOT/releases/$SHA" ]] || fail 'Rollback SHA does not match previous release'
     (cd "$target/dist"; sha256sum --quiet -c ../BUNDLE.sha256)
-    switch_release "$target"; health
+    switch_release "$target"
+    if [[ -f $target/server/index.mjs ]]; then
+      sed -i "s/^FANAR_SHA=.*/FANAR_SHA=$SHA/" "$ROOT/shared/api.env"
+      sudo -n systemctl restart fanarlool-api
+    elif [[ -f /etc/systemd/system/fanarlool-api.service ]]; then sudo -n systemctl stop fanarlool-api; fi
+    health
     ;;
   esac
   ;;

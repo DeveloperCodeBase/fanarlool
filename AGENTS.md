@@ -10,6 +10,6 @@ Windows/PowerShell محل ادیت است. install/build/test/runtime روی VPS
 
 قبل از ادیت status و مالکیت worktree را بررسی کنید. تغییرهای نشست دیگر را دست نزنید؛ فقط مسیرهای متعلق به کار خود را stage کنید. شاخه `codex/`، commit و push معمولی؛ force push ممنوع.
 
-معماری فعلی static React/Vite است؛ Bun با `bun.lock` و install frozen. Node دائمی، Vite dev/preview و Docker برای این محصول لازم نیست. هیچ پورتی بدون بررسی تخصیص ندهید. Nginx فعلی 8080 با virtual host اختصاصی؛ Caddy موجود 80/443 با مسیر اختصاصی و TLS خودکار. تغییر وب‌استک مشترک فقط به اندازهٔ اتصال همین دامنه، با backup و validation و reload؛ restart ممنوع.
+معماری فعلی frontend static React/Vite و API واقعی Node/SQLite است؛ مالک ورود و نقش‌های واقعی را درخواست کرده است. Bun با `bun.lock` و install frozen برای build؛ Node موجود VPS برای API. سرویس اختصاصی `fanarlool-api` فقط Unix socket `/run/fanarlool/api.sock` دارد؛ Docker جدید یا پورت تازه نسازید. Nginx فعلی 8080 با virtual host اختصاصی؛ Caddy موجود 80/443 با مسیر اختصاصی و TLS خودکار. وب‌استک مشترک فقط validate/reload؛ restart سرویس API اختصاصی در deploy مجاز است.
 
-فقط SHA کامل و push‌شده validate و سپس deploy شود. release تأییدشده/فعال قابل rebuild نیست. SKIP برابر PASS نیست؛ تست فعلاً موجود نیست. اطلاعات ورود فعلی mock است و اثبات امنیت/اتصال صنعتی محسوب نمی‌شود.
+فقط SHA کامل و push‌شده validate و سپس deploy شود. release تأییدشده/فعال قابل rebuild نیست. SKIP برابر PASS نیست. تست API/auth/RBAC و قواعد داده با Node روی VPS اجرا شود. DB اختصاصی در `shared/data` و backup پیش از deploy؛ داده operational را seed نمونه نکنید. حساب اولیه فقط با رمز مالک از مسیر امن فعال شود. شبیه‌سازها اتصال صنعتی یا دستاورد میدانی محسوب نمی‌شوند. مدارک هزینه/قرارداد محلی و خصوصی بمانند؛ گزارش مالی بین دریافت، هزینه مستند و برآورد تفکیک کند.

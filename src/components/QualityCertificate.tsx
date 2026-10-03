@@ -44,12 +44,12 @@ export const QualityCertificate: React.FC<QualityCertificateProps> = ({ lang }) 
             <span>{isFa ? 'گواهینامه بازرسی متالورژیکی و ابعادی ۳.۱' : 'EN 10204 Type 3.1 Inspection Certificate'}</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-white">
-            {isFa ? 'سرتیفیکیت رسمی کیفیت محصول و تأییدیه ذوب ساپکو / مگاموتور' : 'Official Automotive OEM Inspection Certificate & Heat Analysis'}
+            {isFa ? 'نمونه آموزشی برگه کیفیت محصول' : 'Educational sample quality sheet'}
           </h2>
           <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl">
             {isFa 
-              ? 'صدور آنی سرتیفیکیت آزمون کیفی بر اساس استاندارد اروپایی EN 10204 بند ۳.۱ شامل آنالیز کوانتومتری ذوب، سختی‌سنجی، کنترل ابعادی گرید ۱ استاندارد DIN 2095 و امضای دیجیتال.'
-              : 'Cryptographically signed 3.1 quality inspection sheet complying with EN 10204 with full chemical, dimensional, and fatigue test verifications.'}
+              ? 'این نمونه با داده نمایشی تهیه شده است و گواهی رسمی، امضای دیجیتال یا تأییدیه مشتری محسوب نمی‌شود.'
+              : 'Demonstration data only. This is not an official certificate, digital signature, or customer approval.'}
           </p>
         </div>
 
@@ -60,7 +60,7 @@ export const QualityCertificate: React.FC<QualityCertificateProps> = ({ lang }) 
             className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-slate-950 text-xs font-bold transition-all flex items-center gap-1.5 shadow-lg shadow-emerald-950"
           >
             <Printer className="w-3.5 h-3.5" />
-            <span>{isFa ? 'چاپ سرتیفیکیت رسمی' : 'Print Certificate'}</span>
+            <span>{isFa ? 'نمایش نمونه آموزشی' : 'Show educational sample'}</span>
           </button>
         </div>
       </div>
@@ -69,9 +69,9 @@ export const QualityCertificate: React.FC<QualityCertificateProps> = ({ lang }) 
         <div className="p-3.5 rounded-xl bg-emerald-950/80 border border-emerald-500 text-emerald-300 text-xs flex items-center justify-between">
           <div className="flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>{isFa ? 'سرتیفیکیت با شناسه یکتای هش SHA-256 صادر و جهت چاپ ارسال گردید.' : 'Certificate dispatched to secure print spooler with valid SHA-256 hash.'}</span>
+            <span>{isFa ? 'نمونه نمایشی آماده است؛ صدور یا چاپ رسمی انجام نشده است.' : 'Sample ready; no official issuance or printing took place.'}</span>
           </div>
-          <span className="font-mono text-[10px]">VERIFIED-OK</span>
+          <span className="font-mono text-[10px]">SAMPLE ONLY</span>
         </div>
       )}
 
@@ -251,9 +251,9 @@ export const QualityCertificate: React.FC<QualityCertificateProps> = ({ lang }) 
               <QrCode className="w-14 h-14 text-slate-950" />
             </div>
             <div className="text-[11px] font-mono text-slate-400 space-y-0.5">
-              <div>امضای دیجیتال رمزنگاری‌شده بر بستر پلتفرم ابری</div>
-              <div className="text-[10px] text-cyan-400 break-all max-w-xs">SHA-256: 7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069</div>
-              <div className="text-emerald-400 font-bold">اصالت گواهینامه معتبر است.</div>
+              <div>نمونه آموزشی بدون امضای دیجیتال</div>
+              <div className="text-[10px] text-cyan-400 break-all max-w-xs">No verified certificate hash</div>
+              <div className="text-amber-400 font-bold">برای ارائه به مشتری یا ارزیاب معتبر نیست.</div>
             </div>
           </div>
 

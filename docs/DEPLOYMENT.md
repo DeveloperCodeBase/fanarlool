@@ -1,5 +1,15 @@
 # استقرار FanarLool
 
+## تغییر معماری نسخه نقش‌محور
+
+مالک پس از bootstrap ورود واقعی، داشبورد نقش‌ها و اطلاعات پایدار را درخواست کرد. از نسخهٔ نقش‌محور، frontend همچنان dist است اما API مستقل Node/SQLite با سرویس `fanarlool-api` و Unix socket `/run/fanarlool/api.sock` افزوده شده است؛ متن تاریخی static زیر مربوط به bootstrap اولیه است.
+
+در بسته جدید: commit/push → `validate -Sha` (اکنون test واقعی Node دارد) → فقط بار اول `platform -Sha` → `deploy -Sha` → `health`. platform فقط virtual host متعلق به FanarLool را به‌روزرسانی و سرویس اختصاصی را نصب می‌کند؛ پورت جدید ندارد. قبل از deploy، DB با SQLite backup API و integrity_check در `shared/backups` حفظ می‌شود. داده در `shared/data/platform.sqlite`؛ mode 600 و parent 700. schema version=1. API env در `shared/api.env` و شامل path/origin/SHA است؛ secret لازم ندارد. رمز اولیه از Git/گزارش/لاگ خارج بماند.
+
+برای نخستین مدیر: از محیط امن مدیر VPS JSON شامل username/name/password با حداقل ۱۲ نویسه به stdin اسکریپت committed `server/admin.mjs` بدهید و `FANAR_DATA_ROOT=/var/www/fanarlool/shared/data` تعیین کنید. این فرمان فقط وقتی مدیر فعال وجود ندارد می‌پذیرد؛ رمز در command line قرار نگیرد. قبل از این کار حساب فعال و credential پیش‌فرض وجود ندارد. افراد بعدی از UI مدیر ایجاد می‌شوند و رمز موقت اجباری تغییر می‌کند.
+
+health جدید API SHA، منع دسترسی anonymous، HTTPS redirect، asset و hidden-file protections را هم می‌سنجد. logs شامل journal سرویس اختصاصی است. `backup -Sha` backup دستی می‌سازد. rollback برنامه را عوض و API اختصاصی را restart می‌کند؛ به نسخه static قبلی برگردد، فقط API FanarLool متوقف می‌شود. DB restore به دلیل خطر از دست رفتن داده نیازمند snapshot و تصمیم مالک است؛ schema migration آینده باید سازگاری rollback را جدا بررسی کند.
+
 مخزن: `https://github.com/DeveloperCodeBase/fanarlool`؛ VPS: `193.163.201.141`؛ SSH alias پیش‌فرض `my-vps` با کاربر ubuntu و کلید موجود بیرون Git.
 
 ## معماری

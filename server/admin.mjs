@@ -1,0 +1,12 @@
+import { readFileSync } from 'node:fs';
+import { randomUUID } from 'node:crypto';
+import { openDatabase } from './storage.mjs';
+import { hashPassword, passwordValid } from './app.mjs';
+const dataRoot=process.env.FANAR_DATA_ROOT;
+if(!dataRoot) throw new Error('FANAR_DATA_ROOT required');
+const db=openDatabase(`${dataRoot}/platform.sqlite`);
+const input=JSON.parse(readFileSync(0,'utf8'));
+if(!/^[a-z0-9._-]{3,64}$/.test(input.username || '') || typeof input.name!=='string' || input.name.length>100 || !passwordValid(input.password)) throw new Error('Valid username/name/password required');
+if(db.prepare("SELECT id FROM users WHERE role='admin' AND active=1").get()) throw new Error('Initial admin already exists; use authenticated user management');
+db.prepare('INSERT INTO users(id,username,name,role,password,created_at) VALUES(?,?,?,?,?,?)').run(randomUUID(),input.username,input.name,'admin',await hashPassword(input.password),new Date().toISOString());
+console.log('Initial administrator created; password change required'); db.close();

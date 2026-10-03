@@ -1,5 +1,7 @@
 # وضعیت ادامه
 
+کار فعال جدید: مالک پلتفرم نقش‌محور و مجموعه کامل مستندات و تکمیل فرم صندوق را درخواست کرده است. شاخه `codex/fanarlool-role-platform`، دامنه در `docs/PLATFORM_SCOPE.md`. source قبلی شبیه‌ساز است؛ هسته جدید شامل auth سروری، هشت نقش، نه حوزه رکورد، تأیید مستقل و DB اختصاصی است. test واقعی افزوده شده؛ تا نتیجه gate/deploy جدید، PASS فرض نشود. اسناد و report خصوصی در مسیر doc تعیین‌شدهٔ مالک تولید می‌شوند و وارد سایت عمومی نمی‌شوند. لوگوی public با خروجی PNG دارای alpha جایگزین شد؛ نشان و سفید داخل آن حفظ شده است.
+
 تاریخ: ۲۰۲۶-۱۰-۰۳. baseline محصول `dc7c5b47e9b563ea9d9d9bb9fa0b1ce7279b865f`.
 
 ممیزی: React/Vite static؛ Bun lock؛ test/backend/DB/env ندارد؛ navigation بر پایهٔ tab. شاخهٔ bootstrap `codex/fanarlool-bootstrap`. wrapper، گیت exact-SHA، release اتمیک و rollback، config اختصاصی Nginx و snippet Caddy در این بسته افزوده شده‌اند.
