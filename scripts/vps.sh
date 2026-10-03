@@ -108,7 +108,15 @@ opener=client();first=None
 for role in ['admin','executive','production','quality','maintenance','energy','engineering','auditor']:
     status,login=call(opener,'/api/demo/auth/login','POST',{'username':'demo.'+role,'password':'FanarDemo-2026!'})
     assert status==200 and login['user']['role']==role,(role,status)
-    status,workspace=call(opener,'/api/demo/workspace');assert status==200 and workspace['mode']=='demo' and len(workspace['records'])==len(workspace['catalog'])*3
+    status,workspace=call(opener,'/api/demo/workspace')
+    assert status==200 and workspace['mode']=='demo'
+    permitted={item['kind'] for item in workspace['catalog']}
+    assert workspace['records'] and all(row['kind'] in permitted for row in workspace['records'])
+    assert all(any(row['kind']==kind for row in workspace['records']) for kind in permitted)
+    if role=='admin':assert len(workspace['records'])==98
+    sample=workspace['records'][0]
+    status,history=call(opener,'/api/demo/records/'+sample['id']+'/history')
+    assert status==200 and history['recordId']==sample['id'] and history['events']
     status,profile=call(opener,'/api/demo/profile');assert status==200 and profile['user']['id']==login['user']['id']
     status,activity=call(opener,'/api/demo/activity');assert status==200 and all(e['actor']==login['user']['id'] for e in activity['events'])
     status,monitor=call(opener,'/api/demo/system');assert status==(200 if role=='admin' else 403)
@@ -234,7 +242,7 @@ PY
     if [[ -f $CANDIDATE/server/index.mjs ]]; then
       sudo -n systemctl restart fanarlool-api
       for attempt in 1 2 3 4 5; do
-        if curl -fsS --unix-socket /run/fanarlool/api.sock http://localhost/api/health >/dev/null; then break; fi
+        if curl -fsS --unix-socket /run/fanarlool/api.sock http://localhost/api/health >/dev/null 2>/dev/null; then break; fi
         sleep 1
       done
       if ! curl -fsS --unix-socket /run/fanarlool/api.sock http://localhost/api/health >/dev/null; then

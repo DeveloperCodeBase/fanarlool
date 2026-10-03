@@ -35,7 +35,7 @@ export async function createDemoRouter({origin,sha,secure=true,maxSpaces=24}) {
     for(let i=0;i<5;i++)insert('inventory',{code:i<3?`DEMO-WIRE${i+1}`:`DEMO-SP${i-2}`,name:i<3?'مفتول فنر آموزشی':'قطعه یدکی آموزشی',lot:`DEMO-HEAT${i+1}`,unit:i<3?'kg':'عدد',quantity:[850,15,120,2,12][i],minimum:[200,50,80,5,5][i],supplier:'تأمین‌کننده آموزشی',location:`DEMO-RACK-${i+1}`});
     const meterReadings=new Map();
     for(let i=0;i<14;i++){
-      const daysAgo=14-i;
+      const daysAgo=13-i;
       for(let shift=0;shift<2;shift++){
         const total=1050+i*12+shift*30;
         insert('production',{batch:batch(i),line:line(i),product:part(i),date:date(daysAgo),shift:shift?'عصر':'صبح',plannedMinutes:480,runMinutes:400+(i%5)*8,idealCycleSeconds:18,total,good:total-18-(i%5)*4,downtimeReason:'نمونه آموزشی: تنظیم ابزار و تعویض کلاف'},'approved',daysAgo);
