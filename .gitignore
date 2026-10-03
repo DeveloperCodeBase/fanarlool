@@ -4,6 +4,7 @@ dist/
 .env.*
 !.env.example
 output/
+tmp/
 *.tsbuildinfo
 # Remote release validation evidence (outside the served dist).
 /VALIDATED

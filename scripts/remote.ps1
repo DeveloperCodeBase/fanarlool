@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory)][ValidateSet('status','bootstrap','fetch','install','build','test','validate','deploy','nginx','edge','platform','backup','rollback','logs','health','version')][string]$Action,
+    [Parameter(Mandatory)][ValidateSet('status','bootstrap','fetch','install','build','test','validate','deploy','nginx','edge','platform','backup','rollback','logs','health','version','admin')][string]$Action,
     [string]$Sha,
     [string]$SshHost = 'my-vps'
 )
@@ -20,6 +20,24 @@ if ($Action -notin @('status','bootstrap')) {
 }
 $encoded = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($scriptText))
 $targetSha = if ($Sha) { $Sha } else { '-' }
+if ($Action -eq 'admin') {
+    $taskUsername = Read-Host 'Initial administrator username (latin, 3-64 characters)'
+    $taskDisplayName = Read-Host 'Administrator display name'
+    $taskSecret = Read-Host 'Temporary password (12-128 characters)' -AsSecureString
+    $taskPointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($taskSecret)
+    try {
+        $taskPayload = @{username=$taskUsername;name=$taskDisplayName;password=[Runtime.InteropServices.Marshal]::PtrToStringBSTR($taskPointer)} | ConvertTo-Json -Compress
+        # bash -c leaves SSH stdin available for the private JSON payload; never put the password in argv.
+        $command = "bash -c `"`$(printf '%s' '$encoded' | base64 -d)`" -- 'admin' '$targetSha'"
+        $OutputEncoding = [Text.UTF8Encoding]::new($false)
+        $taskPayload | & ssh -o BatchMode=yes -o ConnectTimeout=15 $SshHost $command
+        if ($LASTEXITCODE -ne 0) { throw 'Initial administrator provisioning failed' }
+    } finally {
+        [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($taskPointer)
+        $taskPayload = $null; $taskSecret.Dispose()
+    }
+    return
+}
 $command = "printf '%s' '$encoded' | base64 -d | bash -s -- '$Action' '$targetSha'"
 & ssh -o BatchMode=yes -o ConnectTimeout=15 $SshHost $command
 if ($LASTEXITCODE -ne 0) { throw "FanarLool remote $Action failed (exit $LASTEXITCODE)" }

@@ -24,3 +24,9 @@ API روی Unix socket systemd با AF_UNIX، filesystem write allowlist و سق
 بعد از تأیید کارخانه: catalog خطوط/محصولات، baseline، ارتباط gateway با MQTT/OPC-UA فقط‌خواندنی، صف offline/idempotency، calibration/MSA، مدل vision با dataset مستقل و معیار precision/recall و خطای اندازه‌گیری، PdM با history واقعی، OEE خط منتخب و انرژی. مهندسی، شبکه و مسئول ایمنی باید هر اتصال را بپذیرند. قیمت‌ها و اجاره تجهیزات با استعلام جدید ایران بررسی شوند. نتیجه میدانی نیازمند صورتجلسه پذیرش است.
 
 منابع طراحی: [OWASP Authorization](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html)، [NIST OT Security](https://csrc.nist.gov/pubs/sp/800/82/r3/final)، [NIST Digital Thread](https://www.nist.gov/publications/roadmap-strengthen-us-manufacturing-supply-chain-digital-thread-technology)، [Node SQLite v22](https://nodejs.org/download/release/v22.23.0/docs/api/sqlite.html). اینها راهنمای طراحی هستند، نه گواهی انطباق محصول.
+# تکمیل فضای شخصی و دمو
+
+ورود دمو شامل دکمه هر هشت نقش و پرکردن اعتبارنامه عمومی آموزشی است. هر مرورگر یک SQLite در حافظه مستقل، cookie مجزا و مسیر `/api/demo/` دارد؛ session دمو در API واقعی معتبر نیست. حداکثر ۲۴ فضای همزمان، ۲۰۰ رکورد در هر فضا و عمر بیکاری یک ساعت؛ داده دمو با restart از بین می‌رود. حساب‌های آموزشی ثابت‌اند و مدیریت حساب واقعی یا تغییر رمز از دمو انجام نمی‌شود.
+
+`/api/profile` پروفایل و ترجیحات همان حساب، `/api/activity` فقط رویدادهای همان کاربر و `/api/system` فقط برای admin، سلامت دیتابیس، شمارنده‌ها و درخواست‌های اخیر را ارائه می‌کند. رویدادهای جامع در `/api/audit` باقی می‌مانند؛ لاگ خام میزبان و اطلاعات سرویس‌های دیگر منتشر نمی‌شود. تغییر داده و audit در تراکنش واحد انجام می‌شود و نشست پیش از mutation دوباره بررسی می‌شود. schema نسخه ۲ افزوده شدن جدول پروفایل است؛ داده نسخه ۱ حذف نمی‌شود.
+

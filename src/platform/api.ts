@@ -4,10 +4,13 @@ export type Catalog={kind:string;title:string;description:string;fields:Field[];
 export type RecordRow={id:string;kind:string;data:Record<string,string|number>;status:string;creator:string;creator_name:string;version:number;created_at:string;updated_at:string};
 export type Workspace={records:RecordRow[];catalog:Catalog[];roles:Record<string,string>;mode:string;sha:string;limited:boolean;kpis:{total:number;good:number;scrap:number;shifts:number;oee:number|null;availability:number|null;performance:number|null;quality:number|null}};
 let csrf='';
+let mode=sessionStorage.getItem('fanar-mode')==='demo'?'demo':'production';
+export function setApiMode(value:'demo'|'production'){mode=value;csrf='';sessionStorage.setItem('fanar-mode',value);}
+export function getApiMode(){return mode;}
 export function setCsrf(value:string){csrf=value;}
 export class ApiError extends Error{constructor(public status:number,message:string){super(message);}}
 export async function api<T>(path:string,method='GET',body?:unknown):Promise<T>{
- const response=await fetch(`/api${path}`,{method,credentials:'same-origin',headers:body!==undefined?{'Content-Type':'application/json','X-CSRF-Token':csrf}:{'X-CSRF-Token':csrf},body:body!==undefined?JSON.stringify(body):undefined});
+ const response=await fetch(`/api${mode==='demo'?'/demo':''}${path}`,{method,credentials:'same-origin',headers:body!==undefined?{'Content-Type':'application/json','X-CSRF-Token':csrf}:{'X-CSRF-Token':csrf},body:body!==undefined?JSON.stringify(body):undefined});
  const value=await response.json().catch(()=>({error:'پاسخ سامانه معتبر نیست'}));if(!response.ok)throw new ApiError(response.status,value.error||'عملیات انجام نشد');return value;
 }
 export const faNumber=(n:number|null|undefined,digits=0)=>n==null?'—':new Intl.NumberFormat('fa-IR',{maximumFractionDigits:digits}).format(n);

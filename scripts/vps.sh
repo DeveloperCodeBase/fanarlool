@@ -151,6 +151,12 @@ bootstrap)
 logs) owned; sudo -n tail -n 40 /var/log/nginx/fanarlool.access.log /var/log/nginx/fanarlool.error.log; sudo -n journalctl -u fanarlool-api --no-pager -n 15 ;;
 health) owned; health ;;
 version) owned; readlink -f "$ROOT/current"; cat "$ROOT/current/dist/version.txt" ;;
+admin)
+  owned; exact; lock
+  [[ $(readlink -f "$ROOT/current") == "$ROOT/releases/$SHA" ]] || fail 'Administrator provisioning requires the active SHA'
+  [[ $(cat "$ROOT/current/dist/version.txt") == "$SHA" && -f $ROOT/current/VALIDATED ]] || fail 'Active release identity is not validated'
+  FANAR_DATA_ROOT="$ROOT/shared/data" /usr/bin/node "$ROOT/current/server/admin.mjs"
+  ;;
 fetch|install|build|test|validate|deploy|nginx|edge|platform|backup|rollback)
   owned; lock; fetch
   case "$ACTION" in

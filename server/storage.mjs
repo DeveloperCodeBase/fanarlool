@@ -10,8 +10,9 @@ export function openDatabase(path) {
     CREATE TABLE IF NOT EXISTS records(id TEXT PRIMARY KEY, kind TEXT NOT NULL, data TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'draft', creator TEXT NOT NULL REFERENCES users(id), approver TEXT REFERENCES users(id), version INTEGER NOT NULL DEFAULT 1, created_at TEXT NOT NULL, updated_at TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS audit(id INTEGER PRIMARY KEY AUTOINCREMENT, actor TEXT, action TEXT NOT NULL, target TEXT, details TEXT NOT NULL, created_at TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS login_limits(key TEXT PRIMARY KEY, failures INTEGER NOT NULL, until_ms INTEGER NOT NULL);
+    CREATE TABLE IF NOT EXISTS user_profiles(user_id TEXT PRIMARY KEY REFERENCES users(id), department TEXT NOT NULL DEFAULT '', job_title TEXT NOT NULL DEFAULT '', email TEXT NOT NULL DEFAULT '', phone TEXT NOT NULL DEFAULT '', preferences TEXT NOT NULL DEFAULT '{}');
     CREATE INDEX IF NOT EXISTS records_kind ON records(kind,created_at);
-    CREATE INDEX IF NOT EXISTS sessions_user ON sessions(user_id); PRAGMA user_version=1;`);
+    CREATE INDEX IF NOT EXISTS sessions_user ON sessions(user_id); PRAGMA user_version=2;`);
   if (path !== ':memory:') chmodSync(path, 0o600);
   return db;
 }

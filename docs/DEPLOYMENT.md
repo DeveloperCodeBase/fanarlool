@@ -52,3 +52,9 @@ bootstrap ریشهٔ خالی و متعلق به کاربر را ثبت می‌�
 `previous` در deploy بعدی به آخرین release اشاره می‌کند. SHA آن را از version.txt دریافت و `scripts/remote.ps1 -Action rollback -Sha <previous-SHA>` اجرا کنید؛ manifest بررسی و switch سپس health می‌شود. اولین انتشار previous ندارد؛ نسخهٔ تأییدشدهٔ initial در releases باقی می‌ماند و backup config مشترک قابل بررسی است. برای قطع اتصال اولیه فقط بلوک مشخص FanarLool را پس از مقایسهٔ config جاری حذف و validate/reload کنید؛ backup قدیمی را روی تغییرهای تازهٔ دیگران overwrite نکنید.
 
 SSH password/private key یا secret در Git قرار نگیرد. Vite env عمومی وارد bundle می‌شود؛ secret در آن قرار نگیرد. پروژه فعلی env نیاز ندارد. پذیرش نهایی: DNS، HTTP redirect، HTTPS/certificate hostname، HTML فارسی، SHA، logo، JS/CSS، no listing، لاگ و مرورگر واقعی. آزمون دوربین نیاز به دستگاه/اجازهٔ کاربر دارد. نبود تست و بررسی انجام‌نشده را SKIP گزارش کنید.
+# حساب نخست و محیط دمو
+
+پس از deploy، مالک از Windows فرمان `scripts/remote.ps1 -Action admin -Sha <active-40-char-SHA>` را اجرا می‌کند؛ نام کاربری/نام و رمز موقت با prompt خصوصی دریافت می‌شوند و رمز فقط از stdin ارسال می‌شود. این action فعال بودن و validation همان release را کنترل می‌کند و در صورت وجود مدیر فعال، حساب جدید نمی‌سازد. سپس مالک در سایت رمز موقت را تغییر می‌دهد. اعتبارنامه دمو هیچ ارتباطی با این حساب ندارد.
+
+دمو هر مرورگر در حافظه و `/api/demo/` جداست؛ restart آن را پاک می‌کند و بکاپ production شامل دمو نیست. فونت Vazirmatn نسخه `v33.003` با مجوز OFL در `public/fonts/` محلی است. آمار request پنل admin فقط ۱۰۰ مورد اخیر همان برنامه و audit فقط رویدادهای کاربردی است؛ لاگ OS از طریق wrapper عملیات خوانده می‌شود.
+

@@ -15,13 +15,18 @@ async function checkPassword(password, stored) {
   return hash?.length === 128 && timingSafeEqual(Buffer.from(key),Buffer.from(hash,'hex'));
 }
 export function passwordValid(s) { return typeof s === 'string' && s.length >= 12 && s.length <= 128; }
-export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secure = true, sha = 'development' }) {
+export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secure = true, sha = 'development', demo = false, prefix = '/api' }) {
   const fake = randomBytes(16).toString('hex') + ':' + randomBytes(64).toString('hex');
   const q = sql => db.prepare(sql);
+  const atomic = operation => {
+    db.exec('BEGIN IMMEDIATE');
+    try { const result=operation(); db.exec('COMMIT'); return result; }
+    catch(e) { db.exec('ROLLBACK'); throw e; }
+  };
   const audit = (actor,action,target,details={}) => q('INSERT INTO audit(actor,action,target,details,created_at) VALUES(?,?,?,?,?)').run(actor,action,target,JSON.stringify(details),new Date().toISOString());
   const send = (res,status,value,headers={}) => { res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...headers}); res.end(JSON.stringify(value)); };
   const error = (code,message) => Object.assign(new Error(message),{code});
-  const cookieName = secure ? '__Host-fanar_session' : 'fanar_session';
+  const cookieName = (secure ? '__Host-' : '') + (demo ? 'fanar_demo_session' : 'fanar_session');
   const cookie = (token,age=28800) => `${cookieName}=${token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${age}${secure ? '; Secure' : ''}`;
   const userView = u => ({id:u.id, username:u.username, name:u.name, role:u.role, roleLabel:roles[u.role], mustChange:!!u.must_change});
   async function body(req) {
@@ -30,10 +35,15 @@ export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secu
     for await (const chunk of req) { size+=chunk.length; if(size>32768) throw error(413,'درخواست بزرگ است'); text+=chunk; }
     try { const value=JSON.parse(text); if (!value || typeof value!=='object' || Array.isArray(value)) throw 0; return value; } catch { throw error(400,'درخواست معتبر نیست'); }
   }
+  const startedAt=new Date().toISOString(),requests=[];
   return createServer(async (req,res) => {
+    const requestStart=performance.now();let requestActor=null;
+    res.once('finish',()=>{requests.push({at:new Date().toISOString(),method:req.method,path:new URL(req.url,origin).pathname,status:res.statusCode,durationMs:Math.round(performance.now()-requestStart),actor:requestActor});if(requests.length>250)requests.shift();});
     try {
-      const path = new URL(req.url,origin).pathname, method=req.method;
-      if (path === '/api/health' && method==='GET') return send(res,200,{status:'ok',sha,schema:1});
+      const originalPath = new URL(req.url,origin).pathname;
+      if(!originalPath.startsWith(prefix+'/')) throw error(404,'مسیر پیدا نشد');
+      const path='/api'+originalPath.slice(prefix.length), method=req.method;
+      if (path === '/api/health' && method==='GET') return send(res,200,{status:'ok',sha,schema:2,demo});
       if (['POST','PATCH','DELETE'].includes(method) && req.headers.origin !== origin) throw error(403,'مبدأ درخواست مجاز نیست');
       if (path === '/api/auth/login' && method==='POST') {
         const b=await body(req);
@@ -50,6 +60,7 @@ export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secu
         const token=randomBytes(32).toString('hex'),csrf=randomBytes(24).toString('hex');
         q('DELETE FROM sessions WHERE expires<? OR last_seen<?').run(now,now-1800000);
         q('INSERT INTO sessions VALUES(?,?,?,?,?)').run(digest(token),u.id,csrf,now+28800000,now);
+        if(demo)q('DELETE FROM sessions WHERE token NOT IN (SELECT token FROM sessions ORDER BY last_seen DESC LIMIT 32)').run();
         q('DELETE FROM login_limits WHERE key=?').run(keys[0]);
         audit(u.id,'auth.login',u.id); return send(res,200,{user:userView(u),csrf},{'Set-Cookie':cookie(token)});
       }
@@ -57,29 +68,59 @@ export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secu
       const session=raw && /^[a-f0-9]{64}$/.test(raw) ? q('SELECT s.*,u.username,u.name,u.role,u.active,u.must_change FROM sessions s JOIN users u ON u.id=s.user_id WHERE token=?').get(digest(raw)) : null;
       if (!session || !session.active || session.expires<Date.now() || session.last_seen<Date.now()-1800000) throw error(401,'برای ادامه وارد سامانه شوید');
       const u={...session,id:session.user_id};
+      requestActor=u.id;
+      const mutate = operation => atomic(() => {
+        const fresh=q('SELECT s.*,u.active,u.role FROM sessions s JOIN users u ON u.id=s.user_id WHERE token=?').get(session.token);
+        if(!fresh || !fresh.active || fresh.role!==u.role || fresh.expires<Date.now() || fresh.last_seen<Date.now()-1800000) throw error(401,'نشست تغییر کرده؛ دوباره وارد شوید');
+        if(demo)q('DELETE FROM audit WHERE id NOT IN (SELECT id FROM audit ORDER BY id DESC LIMIT 1000)').run();
+        return operation();
+      });
       q('UPDATE sessions SET last_seen=? WHERE token=?').run(Date.now(),session.token);
       if (['POST','PATCH','DELETE'].includes(method) && req.headers['x-csrf-token'] !== session.csrf) throw error(403,'درخواست تأیید امنیتی ندارد');
       if (path==='/api/auth/me' && method==='GET') return send(res,200,{user:userView(u),csrf:session.csrf});
-      if (path==='/api/auth/logout' && method==='POST') { q('DELETE FROM sessions WHERE token=?').run(session.token); audit(u.id,'auth.logout',u.id); return send(res,200,{ok:true},{'Set-Cookie':cookie('',0)}); }
+      if (path==='/api/auth/logout' && method==='POST') { mutate(()=>{q('DELETE FROM sessions WHERE token=?').run(session.token); audit(u.id,'auth.logout',u.id);}); return send(res,200,{ok:true},{'Set-Cookie':cookie('',0)}); }
       if (path==='/api/auth/password' && method==='POST') {
+        if(demo) throw error(403,'رمزهای دمو ثابت‌اند؛ تغییر رمز در حساب واقعی انجام می‌شود');
         const b=await body(req);
         if (!passwordValid(b.password) || typeof b.current!=='string' || b.current.length>128) throw error(400,'رمز باید ۱۲ تا ۱۲۸ نویسه باشد');
         if (!await checkPassword(b.current,q('SELECT password FROM users WHERE id=?').get(u.id).password)) throw error(403,'رمز فعلی صحیح نیست');
-        q('UPDATE users SET password=?,must_change=0 WHERE id=?').run(await hashPassword(b.password),u.id);
-        q('DELETE FROM sessions WHERE user_id=?').run(u.id); audit(u.id,'auth.password',u.id); return send(res,200,{ok:true},{'Set-Cookie':cookie('',0)});
+        const hashed=await hashPassword(b.password);
+        mutate(()=>{q('UPDATE users SET password=?,must_change=0 WHERE id=?').run(hashed,u.id);
+        q('DELETE FROM sessions WHERE user_id=?').run(u.id); audit(u.id,'auth.password',u.id);}); return send(res,200,{ok:true},{'Set-Cookie':cookie('',0)});
       }
       if (u.must_change) throw error(403,'ابتدا رمز موقت را تغییر دهید');
+      if(path==='/api/profile') {
+        const view=()=>{const p=q('SELECT * FROM user_profiles WHERE user_id=?').get(u.id);return {user:userView(q('SELECT * FROM users WHERE id=?').get(u.id)),department:p?.department||'',jobTitle:p?.job_title||'',email:p?.email||'',phone:p?.phone||'',preferences:{density:'comfortable',startPage:'overview',notifications:true,...JSON.parse(p?.preferences||'{}')}};};
+        if(method==='GET')return send(res,200,view());
+        if(method==='PATCH') {
+          const b=await body(req);
+          const bounded=(value,min,max)=>typeof value==='string'&&value.trim().length>=min&&value.length<=max;
+          if(!bounded(b.name,2,100)||!bounded(b.department,0,100)||!bounded(b.jobTitle,0,100)||!bounded(b.email,0,120)||!bounded(b.phone,0,30)|| (b.email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(b.email)))throw error(400,'اطلاعات پروفایل معتبر نیست');
+          const prefs=b.preferences;
+          if(!prefs || !['comfortable','compact'].includes(prefs.density)||typeof prefs.notifications!=='boolean'|| !(prefs.startPage==='overview'||can(u.role,prefs.startPage)))throw error(400,'تنظیمات شخصی معتبر نیست');
+          const preferences=JSON.stringify({density:prefs.density,startPage:prefs.startPage,notifications:prefs.notifications});
+          mutate(()=>{q('UPDATE users SET name=? WHERE id=?').run(b.name.trim(),u.id);q('INSERT INTO user_profiles(user_id,department,job_title,email,phone,preferences) VALUES(?,?,?,?,?,?) ON CONFLICT(user_id) DO UPDATE SET department=excluded.department,job_title=excluded.job_title,email=excluded.email,phone=excluded.phone,preferences=excluded.preferences').run(u.id,b.department.trim(),b.jobTitle.trim(),b.email.trim(),b.phone.trim(),preferences);audit(u.id,'profile.updated',u.id);});
+          return send(res,200,view());
+        }
+      }
+      if(path==='/api/activity' && method==='GET')return send(res,200,{events:q('SELECT a.*,u.name AS actor_name FROM audit a LEFT JOIN users u ON u.id=a.actor WHERE a.actor=? ORDER BY a.id DESC LIMIT 200').all(u.id)});
+      if(path==='/api/system' && method==='GET') {
+        if(u.role!=='admin')throw error(403,'مانیتورینگ سامانه فقط برای مدیر سامانه است');
+        const total=table=>Number(q(`SELECT COUNT(*) AS n FROM ${table}`).get().n);
+        return send(res,200,{sha,demo,startedAt,uptimeSeconds:Math.round(process.uptime()),memoryMb:Math.round(process.memoryUsage().rss/1048576),database:q('PRAGMA quick_check').get().quick_check,transport:'Unix socket',counts:{users:total('users'),activeUsers:Number(q('SELECT COUNT(*) AS n FROM users WHERE active=1').get().n),records:total('records'),audit:total('audit'),sessions:Number(q('SELECT COUNT(*) AS n FROM sessions WHERE expires>? AND last_seen>?').get(Date.now(),Date.now()-1800000).n)},statuses:q('SELECT status,COUNT(*) AS count FROM records GROUP BY status').all(),requests:[...requests].reverse().slice(0,100)});
+      }
       if (path==='/api/workspace' && method==='GET') {
         const records=q('SELECT r.*,u.name AS creator_name FROM records r JOIN users u ON u.id=r.creator ORDER BY r.updated_at DESC LIMIT 2000').all().filter(r=>can(u.role,r.kind)).map(r=>({...r,data:JSON.parse(r.data)}));
         const catalog=Object.entries(schemas).filter(([k])=>can(u.role,k)).map(([kind,s])=>({kind,title:s.title,description:s.description,fields:s.fields,write:can(u.role,kind,'write'),approve:can(u.role,kind,'approve')}));
-        return send(res,200,{records,catalog,kpis:productionKpis(records),roles,sha,mode:'manual',limited:records.length>=2000});
+        return send(res,200,{records,catalog,kpis:productionKpis(records),roles,sha,mode:demo?'demo':'manual',limited:records.length>=2000});
       }
       if (path==='/api/records' && method==='POST') {
         const b=await body(req); if(!can(u.role,b.kind,'write')) throw error(403,'اجازه ثبت در این بخش ندارید');
+        if(demo&&q('SELECT COUNT(*) AS n FROM records').get().n>=200)throw error(429,'سقف ۲۰۰ رکورد این فضای آموزشی تکمیل شده است');
         let data; try { data=validateRecord(b.kind,b.data); } catch(e) { throw error(400,e.message); }
         const id=randomUUID(),now=new Date().toISOString();
-        q('INSERT INTO records(id,kind,data,creator,created_at,updated_at) VALUES(?,?,?,?,?,?)').run(id,b.kind,JSON.stringify(data),u.id,now,now);
-        audit(u.id,'record.created',id,{kind:b.kind}); return send(res,201,{id});
+        mutate(()=>{q('INSERT INTO records(id,kind,data,creator,created_at,updated_at) VALUES(?,?,?,?,?,?)').run(id,b.kind,JSON.stringify(data),u.id,now,now);
+        audit(u.id,'record.created',id,{kind:b.kind});}); return send(res,201,{id});
       }
       const match=path.match(/^\/api\/records\/([a-f0-9-]{36})$/);
       if(match && method==='PATCH') {
@@ -95,28 +136,33 @@ export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secu
           else if(['approved','rejected'].includes(b.status) && r.status==='submitted' && can(u.role,r.kind,'approve') && r.creator!==u.id) { status=b.status; approver=u.id; }
           else throw error(403,'گذار وضعیت یا تأیید توسط همان ثبت‌کننده مجاز نیست');
         }
-        q('UPDATE records SET data=?,status=?,approver=?,version=version+1,updated_at=? WHERE id=? AND version=?').run(JSON.stringify(data),status,approver,new Date().toISOString(),r.id,r.version);
-        audit(u.id,'record.updated',r.id,{kind:r.kind,status,previous:r.status}); return send(res,200,{ok:true});
+        mutate(()=>{const result=q('UPDATE records SET data=?,status=?,approver=?,version=version+1,updated_at=? WHERE id=? AND version=?').run(JSON.stringify(data),status,approver,new Date().toISOString(),r.id,r.version);
+        if(result.changes!==1) throw error(409,'رکورد هم‌زمان تغییر کرده؛ صفحه را به‌روز کنید');
+        audit(u.id,'record.updated',r.id,{kind:r.kind,status,previous:r.status});}); return send(res,200,{ok:true});
       }
       if(path==='/api/users') {
         if(u.role!=='admin') throw error(403,'مدیریت کاربران فقط برای مدیر سامانه است');
         if(method==='GET') return send(res,200,{users:q('SELECT id,username,name,role,active,must_change,created_at FROM users ORDER BY name').all()});
         if(method==='POST') {
+          if(demo)throw error(403,'ایجاد حساب واقعی در دمو فعال نیست؛ حساب‌های هر هشت نقش آماده‌اند');
           const b=await body(req);
           if(!/^[a-z0-9._-]{3,64}$/.test(b.username || '') || typeof b.name!=='string' || b.name.trim().length<2 || b.name.length>100 || !roles[b.role] || !passwordValid(b.password)) throw error(400,'مشخصات کاربر یا رمز موقت معتبر نیست');
           if(q('SELECT id FROM users WHERE username=?').get(b.username)) throw error(409,'شناسه تکراری است');
-          const id=randomUUID(); q('INSERT INTO users(id,username,name,role,password,created_at) VALUES(?,?,?,?,?,?)').run(id,b.username,b.name.trim(),b.role,await hashPassword(b.password),new Date().toISOString());
-          audit(u.id,'user.created',id,{role:b.role}); return send(res,201,{id});
+          const id=randomUUID(), hashed=await hashPassword(b.password);
+          mutate(()=>{if(q('SELECT id FROM users WHERE username=?').get(b.username)) throw error(409,'شناسه تکراری است');
+          q('INSERT INTO users(id,username,name,role,password,created_at) VALUES(?,?,?,?,?,?)').run(id,b.username,b.name.trim(),b.role,hashed,new Date().toISOString());
+          audit(u.id,'user.created',id,{role:b.role});}); return send(res,201,{id});
         }
       }
       const userMatch=path.match(/^\/api\/users\/([a-f0-9-]{36})$/);
       if(userMatch && method==='PATCH') {
         if(u.role!=='admin') throw error(403,'اجازه مدیریت کاربران ندارید');
+        if(demo)throw error(403,'هویت و نقش حساب‌های آموزشی ثابت است');
         if(userMatch[1]===u.id) throw error(400,'تغییر سطح یا غیرفعال کردن خودتان مجاز نیست');
         const target=q('SELECT * FROM users WHERE id=?').get(userMatch[1]); if(!target) throw error(404,'کاربر پیدا نشد');
         const b=await body(req); if(!roles[b.role] || typeof b.active!=='boolean') throw error(400,'نقش یا وضعیت معتبر نیست');
-        q('UPDATE users SET role=?,active=? WHERE id=?').run(b.role,Number(b.active),target.id);
-        q('DELETE FROM sessions WHERE user_id=?').run(target.id); audit(u.id,'user.updated',target.id,{role:b.role,active:b.active}); return send(res,200,{ok:true});
+        mutate(()=>{q('UPDATE users SET role=?,active=? WHERE id=?').run(b.role,Number(b.active),target.id);
+        q('DELETE FROM sessions WHERE user_id=?').run(target.id); audit(u.id,'user.updated',target.id,{role:b.role,active:b.active});}); return send(res,200,{ok:true});
       }
       if(path==='/api/audit' && method==='GET') {
         if(!['admin','executive','auditor'].includes(u.role)) throw error(403,'اجازه مشاهده رویدادها ندارید');
