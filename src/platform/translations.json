@@ -2693,5 +2693,40 @@
     "The server connection was interrupted. Check the record status after reconnecting.",
     "انقطع الاتصال بالخادم؛ تحقق من حالة السجل بعد إعادة الاتصال.",
     "Sunucu bağlantısı kesildi. Yeniden bağlandıktan sonra kayıt durumunu kontrol edin."
+  ],
+  "شناسه رکورد معتبر نیست": [
+    "Invalid record ID",
+    "معرف السجل غير صالح",
+    "Kayıt kimliği geçersiz"
+  ],
+  "شناسه رکورد مبنا معتبر نیست": [
+    "Invalid source record ID",
+    "معرف السجل المصدر غير صالح",
+    "Kaynak kayıt kimliği geçersiz"
+  ],
+  "رکورد مبنا پیدا نشد": [
+    "Source record not found",
+    "لم يعثر على السجل المصدر",
+    "Kaynak kayıt bulunamadı"
+  ],
+  "نوع رکورد اصلاحی با مبنا یکسان نیست": [
+    "Correction kind differs from source",
+    "نوع التصحيح يختلف عن المصدر",
+    "Düzeltme türü kaynakla aynı değil"
+  ],
+  "فقط رکورد ردشده مبنای پیش‌نویس اصلاحی است": [
+    "Only a rejected record can be a correction source",
+    "السجل المرفوض فقط مصدر لمسودة التصحيح",
+    "Yalnızca reddedilen kayıt düzeltme kaynağı olabilir"
+  ],
+  "شرح تصمیم حداکثر ۱۰۰۰ نویسه است": [
+    "Decision note must not exceed 1,000 characters",
+    "ملاحظة القرار لا تتجاوز 1000 حرف",
+    "Karar notu en fazla 1.000 karakter olmalıdır"
+  ],
+  "دلیل رد باید ۱۰ تا ۱۰۰۰ نویسه باشد": [
+    "Rejection reason must contain 10 to 1,000 characters",
+    "سبب الرفض من 10 إلى 1000 حرف",
+    "Ret nedeni 10 ile 1.000 karakter içermelidir"
   ]
 }

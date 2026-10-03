@@ -10,7 +10,7 @@ test('four language catalog covers role, field and enum labels without changing 
 });
 test('active operational UI has complete translation keys and no untranslated Persian JSX text',()=>{
  const missing=[],literal=[];
- for(const path of ['src/App.tsx',...['PublicLanding','DemoLogin','PersonalWorkspace','RolePriorities','BenefitCalculator','IndustrialWorkbench','CameraWorkbench','JalaliDateInput','ModelRegistry','Simulator'].map(n=>`src/platform/${n}.tsx`)]){
+ for(const path of ['src/App.tsx',...['PublicLanding','DemoLogin','PersonalWorkspace','RolePriorities','BenefitCalculator','IndustrialWorkbench','CameraWorkbench','JalaliDateInput','ModelRegistry','Simulator','OperationsDashboard','RecordWorkspace','RecordEditor','CommandSearch','UserDirectory','PlatformGuide','OperationManual'].map(n=>`src/platform/${n}.tsx`)]){
   const text=readFileSync(new URL('../'+path,import.meta.url),'utf8');const ast=ts.createSourceFile(path,text,ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX);
   function visit(node){if(ts.isJsxText(node)&&/[\u0600-\u06ff]/.test(node.text))literal.push([path,node.text.trim()]);if(ts.isCallExpression(node)&&node.expression.getText(ast)==='t'&&node.arguments.length&&ts.isStringLiteral(node.arguments[0])){const source=node.arguments[0].text;if(/[\u0600-\u06ff]/.test(source)&&!dictionary[source])missing.push([path,source]);}ts.forEachChild(node,visit);}visit(ast);
  }
@@ -23,3 +23,11 @@ test('every engineering workbench label and method has four language strings',()
 test('Persian calendar date is consistent in all four language locales',()=>{
  for(const locale of ['fa','en','ar','tr']){const fmt=new Intl.DateTimeFormat(locale+'-u-ca-persian-nu-latn',{year:'numeric',month:'2-digit',day:'2-digit',timeZone:'Asia/Tehran'});const parts=Object.fromEntries(fmt.formatToParts(new Date('2026-10-03T12:00:00Z')).map(p=>[p.type,p.value]));assert.equal(parts.year,'1405');assert.equal(parts.month,'07');assert.equal(parts.day,'11');}
 });
+
+ test('new operational surfaces have complete four-language copy tuples',()=>{
+ let count=0;
+ for(const name of ['OperationsDashboard','RecordWorkspace','RecordEditor','UserDirectory','CommandSearch','PublicLanding','PersonalWorkspace','OperationManual']){
+ const path=`src/platform/${name}.tsx`,source=readFileSync(new URL('../'+path,import.meta.url),'utf8'),ast=ts.createSourceFile(path,source,ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX);
+ function visit(node){if(ts.isCallExpression(node)&&node.expression.getText(ast)==='w'){count++;assert.equal(node.arguments.length,4,path);assert(node.arguments.every(ts.isStringLiteral),path);assert(node.arguments.every(arg=>arg.text.trim()),path);assert(!/[\u0600-\u06ff]/.test(node.arguments[1].text),path);assert(!/[\u0600-\u06ff]/.test(node.arguments[3].text),path);}ts.forEachChild(node,visit);}visit(ast);
+ }assert(count>200,'Expected operational copy coverage');
+ });

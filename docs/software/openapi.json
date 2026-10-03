@@ -648,6 +648,10 @@
           "content": {
             "application/json": {
               "schema": {
+                "description": "Optional sourceId creates a new draft from a rejected record of the same kind. Source read and destination write permissions are required. The source remains immutable; provenance is stored transactionally in record.created audit.",
+                "properties": {
+                  "sourceId": { "type": "string", "format": "uuid" }
+                },
                 "oneOf": [
                   {
                     "type": "object",
@@ -791,6 +795,49 @@
         }
       }
     },
+    "/records/{id}/history": {
+      "get": {
+        "summary": "History of a single readable record",
+        "description": "Up to 200 record events, oldest first. Malformed UUID returns 400; a missing record or a record outside the caller's domain read permission returns 404. actorName and actorRole reflect the actor's current account. Only whitelisted details are exposed; unrelated raw audit data and credentials are never returned.",
+        "security": [{ "cookieSession": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": {
+          "200": {
+            "description": "Record-specific audit projection",
+            "content": { "application/json": { "schema": {
+              "type": "object", "required": ["recordId", "sourceId", "events"],
+              "properties": {
+                "recordId": { "type": "string", "format": "uuid" },
+                "sourceId": { "type": ["string", "null"], "format": "uuid" },
+                "events": { "type": "array", "maxItems": 200, "items": {
+                  "type": "object", "required": ["id", "action", "actorId", "actorName", "actorRole", "createdAt", "details"],
+                  "properties": {
+                    "id": { "type": "integer" },
+                    "action": { "enum": ["record.created", "record.updated", "demo.record.seeded"] },
+                    "actorId": { "type": ["string", "null"] },
+                    "actorName": { "type": ["string", "null"] },
+                    "actorRole": { "type": ["string", "null"] },
+                    "createdAt": { "type": "string", "format": "date-time" },
+                    "details": { "type": "object", "additionalProperties": false, "properties": {
+                      "kind": { "type": "string" },
+                      "sourceId": { "type": "string", "format": "uuid" },
+                      "note": { "type": "string", "maxLength": 1000 },
+                      "from": { "enum": ["draft", "submitted", "approved", "rejected"] },
+                      "to": { "enum": ["draft", "submitted", "approved", "rejected"] },
+                      "version": { "type": "integer", "minimum": 1 }
+                    } }
+                  }
+                } }
+              }
+            } } }
+          },
+          "400": { "description": "Malformed record UUID" },
+          "401": { "description": "Authentication required" },
+          "403": { "description": "Temporary password must be changed first" },
+          "404": { "description": "Record missing or not readable by this role" }
+        }
+      }
+    },
     "/records/{id}": {
       "patch": {
         "summary": "PATCH /records/{id}",
@@ -907,6 +954,11 @@
                   "version": {
                     "type": "integer",
                     "minimum": 1
+                  },
+                  "note": {
+                    "type": "string",
+                    "maxLength": 1000,
+                    "description": "Required when rejecting: 10-1000 characters after trimming for the minimum check. Optional on approval. Persisted with from/to/version in the same transaction as the decision."
                   },
                   "status": {
                     "enum": [

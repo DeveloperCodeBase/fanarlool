@@ -4,6 +4,7 @@ import { promisify } from 'node:util';
 import { roles, schemas, can, validateRecord, productionKpis } from './domain.mjs';
 const derive = promisify(scrypt);
 const digest = s => createHash('sha256').update(s).digest('hex');
+const validId = value => typeof value === 'string' && /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(value);
 export async function hashPassword(password) {
   const salt = randomBytes(16).toString('hex');
   const key = await derive(password, salt, 64, { N:32768, r:8, p:1, maxmem:64*1024*1024 });
@@ -114,18 +115,52 @@ export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secu
         const catalog=Object.entries(schemas).filter(([k])=>can(u.role,k)).map(([kind,s])=>({kind,title:s.title,description:s.description,fields:s.fields,write:can(u.role,kind,'write'),approve:can(u.role,kind,'approve')}));
         return send(res,200,{records,catalog,kpis:productionKpis(records),roles,sha,mode:demo?'demo':'manual',limited:records.length>=2000});
       }
+      const historyMatch=path.match(/^\/api\/records\/([^/]+)\/history$/);
+      if(historyMatch && method==='GET') {
+        const recordId=historyMatch[1];
+        if(!validId(recordId))throw error(400,'شناسه رکورد معتبر نیست');
+        const record=q('SELECT id,kind FROM records WHERE id=?').get(recordId);
+        if(!record || !can(u.role,record.kind))throw error(404,'رکورد پیدا نشد');
+        // Whitelist event fields. Raw audit details may contain unrelated private data.
+        const safeDetails=text=>{
+          let value;try{value=JSON.parse(text);}catch{value={};}
+          const details={kind:record.kind};
+          if(validId(value?.sourceId))details.sourceId=value.sourceId;
+          if(typeof value?.note==='string')details.note=value.note.slice(0,1000);
+          for(const key of ['from','to'])if(['draft','submitted','approved','rejected'].includes(value?.[key]))details[key]=value[key];
+          // Previous events used status/previous rather than from/to.
+          if(!details.from&&['draft','submitted','approved','rejected'].includes(value?.previous))details.from=value.previous;
+          if(!details.to&&['draft','submitted','approved','rejected'].includes(value?.status))details.to=value.status;
+          if(Number.isSafeInteger(value?.version)&&value.version>0)details.version=value.version;
+          return details;
+        };
+        const events=q("SELECT a.id,a.actor,a.action,a.details,a.created_at,u.name AS actor_name,u.role AS actor_role FROM audit a LEFT JOIN users u ON u.id=a.actor WHERE a.target=? AND a.action IN ('record.created','record.updated','demo.record.seeded') ORDER BY a.id DESC LIMIT 200").all(recordId).reverse().map(a=>({id:a.id,action:a.action,actorId:a.actor,actorName:a.actor_name||null,actorRole:a.actor_role||null,createdAt:a.created_at,details:safeDetails(a.details)}));
+        const created=q("SELECT details FROM audit WHERE target=? AND action='record.created' ORDER BY id ASC LIMIT 1").get(recordId);
+        return send(res,200,{recordId,sourceId:created?safeDetails(created.details).sourceId||null:null,events});
+      }
       if (path==='/api/records' && method==='POST') {
         const b=await body(req); if(!can(u.role,b.kind,'write')) throw error(403,'اجازه ثبت در این بخش ندارید');
         if(demo&&q('SELECT COUNT(*) AS n FROM records').get().n>=200)throw error(429,'سقف ۲۰۰ رکورد این فضای آموزشی تکمیل شده است');
+        if(b.sourceId!==undefined&&!validId(b.sourceId))throw error(400,'شناسه رکورد مبنا معتبر نیست');
+        const checkSource=()=>{
+          if(b.sourceId===undefined)return;
+          const source=q('SELECT kind,status FROM records WHERE id=?').get(b.sourceId);
+          if(!source||!can(u.role,source.kind))throw error(404,'رکورد مبنا پیدا نشد');
+          if(source.kind!==b.kind)throw error(400,'نوع رکورد اصلاحی با مبنا یکسان نیست');
+          if(source.status!=='rejected')throw error(409,'فقط رکورد ردشده مبنای پیش‌نویس اصلاحی است');
+        };
+        checkSource();
         let data; try { data=validateRecord(b.kind,b.data); } catch(e) { throw error(400,e.message); }
         const id=randomUUID(),now=new Date().toISOString();
-        mutate(()=>{q('INSERT INTO records(id,kind,data,creator,created_at,updated_at) VALUES(?,?,?,?,?,?)').run(id,b.kind,JSON.stringify(data),u.id,now,now);
-        audit(u.id,'record.created',id,{kind:b.kind});}); return send(res,201,{id});
+        mutate(()=>{checkSource();q('INSERT INTO records(id,kind,data,creator,created_at,updated_at) VALUES(?,?,?,?,?,?)').run(id,b.kind,JSON.stringify(data),u.id,now,now);
+        audit(u.id,'record.created',id,{kind:b.kind,from:null,to:'draft',version:1,...(b.sourceId?{sourceId:b.sourceId}:{})});}); return send(res,201,{id});
       }
       const match=path.match(/^\/api\/records\/([a-f0-9-]{36})$/);
       if(match && method==='PATCH') {
         const r=q('SELECT * FROM records WHERE id=?').get(match[1]); if (!r || !can(u.role,r.kind)) throw error(404,'رکورد پیدا نشد');
         const b=await body(req); if(b.version!==r.version) throw error(409,'رکورد هم‌زمان تغییر کرده؛ صفحه را به‌روز کنید');
+        if(b.note!==undefined&&(typeof b.note!=='string'||b.note.length>1000))throw error(400,'شرح تصمیم حداکثر ۱۰۰۰ نویسه است');
+        const note=typeof b.note==='string'?b.note.trim():'';
         let data=JSON.parse(r.data),status=r.status,approver=r.approver;
         if(b.data!==undefined) {
           if(!can(u.role,r.kind,'write') || r.status!=='draft' || (r.creator!==u.id && u.role!=='admin')) throw error(403,'فقط پیش‌نویس خودتان قابل ویرایش است');
@@ -133,12 +168,15 @@ export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secu
         }
         if(b.status!==undefined && b.status!==r.status) {
           if(b.status==='submitted' && r.status==='draft' && r.creator===u.id && can(u.role,r.kind,'write')) status='submitted';
-          else if(['approved','rejected'].includes(b.status) && r.status==='submitted' && can(u.role,r.kind,'approve') && r.creator!==u.id) { status=b.status; approver=u.id; }
+          else if(['approved','rejected'].includes(b.status) && r.status==='submitted' && can(u.role,r.kind,'approve') && r.creator!==u.id) {
+            if(b.status==='rejected'&&note.length<10)throw error(400,'دلیل رد باید ۱۰ تا ۱۰۰۰ نویسه باشد');
+            status=b.status; approver=u.id;
+          }
           else throw error(403,'گذار وضعیت یا تأیید توسط همان ثبت‌کننده مجاز نیست');
         }
         mutate(()=>{const result=q('UPDATE records SET data=?,status=?,approver=?,version=version+1,updated_at=? WHERE id=? AND version=?').run(JSON.stringify(data),status,approver,new Date().toISOString(),r.id,r.version);
         if(result.changes!==1) throw error(409,'رکورد هم‌زمان تغییر کرده؛ صفحه را به‌روز کنید');
-        audit(u.id,'record.updated',r.id,{kind:r.kind,status,previous:r.status});}); return send(res,200,{ok:true});
+        audit(u.id,'record.updated',r.id,{kind:r.kind,status,previous:r.status,from:r.status,to:status,version:r.version+1,...(note?{note}:{})});}); return send(res,200,{ok:true});
       }
       if(path==='/api/users') {
         if(u.role!=='admin') throw error(403,'مدیریت کاربران فقط برای مدیر سامانه است');

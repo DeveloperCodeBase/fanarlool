@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import {readFileSync} from 'node:fs';
-const allowed=new Set(['platform/economics','platform/calendar','platform/csv','components/labMath']);
+const allowed=new Set(['platform/economics','platform/calendar','platform/csv','components/labMath','platform/operationsInsights']);
 export async function loadTs(module){
  if(!allowed.has(module))throw new Error('Test module is outside the calculation kernel');
  const file=new URL(`../src/${module}.ts`,import.meta.url),source=readFileSync(file,'utf8');

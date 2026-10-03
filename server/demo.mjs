@@ -13,13 +13,44 @@ export async function createDemoRouter({origin,sha,secure=true,maxSpaces=24}) {
       const id=ids[role]=randomUUID();db.prepare('INSERT INTO users(id,username,name,role,password,must_change,created_at) VALUES(?,?,?,?,?,0,?)').run(id,`demo.${role}`,`${label} دمو`,role,passwordHash,now);
       db.prepare('INSERT INTO user_profiles(user_id,department,job_title,preferences) VALUES(?,?,?,?)').run(id,'کارخانه نمونه',label,JSON.stringify({density:'comfortable',startPage:'overview',notifications:true}));
     }
-    for(const [kind,s] of Object.entries(schemas))for(let i=0;i<3;i++){
-      const data=Object.fromEntries(s.fields.map(f=>[f.key,f.type==='select'?f.options[0]:f.type==='date'?'2026-10-03':f.type==='number'?Math.max(f.min,1):f.optional?'':'نمونه آموزشی']));
-      Object.assign(data,kind==='production'?{batch:`DEMO-B${i+1}`,line:'خط فرم‌دهی ۱',product:'FL-220',plannedMinutes:480,runMinutes:420,idealCycleSeconds:20,total:1000+i*50,good:980+i*45,downtimeReason:'توقف آموزشی تنظیم دستگاه'}:kind==='inspection'?{batch:`DEMO-B${i+1}`,part:'FL-220',sampleCount:50,defects:2,dimension:'طول آزاد mm',nominal:220,tolerance:1,measured:220.4,instrument:'کولیس نمونه'}:kind==='energy'?{meter:'DEMO-M1',line:'خط فرم‌دهی ۱',readingStart:100000+i*1000,readingEnd:100240+i*1000,tonnage:3,outageMinutes:20}:kind==='recipe'?{part:'FL-220',revision:'R01',material:'فولاد فنر نمونه',wireDiameter:10,meanDiameter:60,activeCoils:6,freeLength:220}:kind==='calibration'?{instrument:'DEMO-C01',name:'کولیس نمونه',calibratedAt:'2026-09-01',expiresAt:'2027-09-01',certificate:'DEMO-ONLY',lab:'آزمایشگاه آموزشی',uncertainty:'صرفاً نمونه'}:kind==='asset'?{code:`DEMO-A${i+1}`,name:'دستگاه فرم‌دهی نمونه',line:'خط ۱'}:kind==='maintenance'?{asset:'DEMO-A1',title:'بررسی لرزش دستگاه نمونه',symptom:'سناریوی آموزشی',resolution:'بازبینی پیشنهادی'}:kind==='ncr'?{batch:`DEMO-B${i+1}`,title:'خروج طول آزاد از تلرانس نمونه',containment:'قرنطینه آموزشی',owner:'کنترل کیفیت نمونه'}:{code:`DEMO-SP${i+1}`,name:'قطعه یدکی نمونه',lot:'DEMO-LOT',quantity:12,minimum:5,supplier:'تأمین‌کننده نمونه',location:'قفسه ۱'});
-      const clean=validateRecord(kind,data),status=['approved','submitted','draft'][i],id=randomUUID(),creator=ids[s.write[0]],approver=status==='approved'?ids.admin:null;
-      db.prepare('INSERT INTO records(id,kind,data,status,creator,approver,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)').run(id,kind,JSON.stringify(clean),status,creator,approver,now,now);
-      db.prepare('INSERT INTO audit(actor,action,target,details,created_at) VALUES(?,?,?,?,?)').run(creator,'demo.record.seeded',id,JSON.stringify({kind,demo:true}),now);
+    // Browser-private, synthetic records only. Never called for the production DB.
+    const dateParts=Object.fromEntries(new Intl.DateTimeFormat('en',{timeZone:'Asia/Tehran',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).map(p=>[p.type,p.value]));
+    const today=`${dateParts.year}-${dateParts.month}-${dateParts.day}`;
+    const date=daysAgo=>new Date(Date.parse(today+'T00:00:00Z')-daysAgo*86400000).toISOString().slice(0,10);
+    const line=i=>i%2?'DEMO-L2':'DEMO-L1',part=i=>['FL-220','FL-250','FL-300'][i%3],batch=i=>`DEMO-B${String(i+1).padStart(2,'0')}`;
+    function insert(kind,values,status='approved',daysAgo=1){
+      const s=schemas[kind],data=Object.fromEntries(s.fields.map(f=>[f.key,f.type==='select'?f.options[0]:f.type==='date'?date(daysAgo):f.type==='number'?Math.max(f.min,1):f.optional?'':'نمونه آموزشی']));
+      Object.assign(data,values);
+      const clean=validateRecord(kind,data),id=randomUUID(),creator=ids[s.write[0]],approver=['approved','rejected'].includes(status)?ids.admin:null;
+      const at=date(daysAgo)+'T09:00:00.000Z';
+      db.prepare('INSERT INTO records(id,kind,data,status,creator,approver,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)').run(id,kind,JSON.stringify(clean),status,creator,approver,at,at);
+      db.prepare('INSERT INTO audit(actor,action,target,details,created_at) VALUES(?,?,?,?,?)').run(creator,'demo.record.seeded',id,JSON.stringify({kind,demo:true,to:status,version:1,...(status==='rejected'?{note:'سناریوی آموزشی: مقدار ثبت‌شده نیازمند بازبینی و اصلاح است.'}:{})}),at);
+      return id;
     }
+    for(let i=0;i<3;i++){
+      insert('asset',{code:`DEMO-A${i+1}`,name:['فنرپیچ آموزشی','سنگ‌زن آموزشی','کوره آموزشی'][i],line:i===2?'DEMO-L2':'DEMO-L1',criticality:['زیاد','متوسط','زیاد'][i],manufacturer:'سازنده نمونه',serviceIntervalDays:30,lastService:date([40,12,28][i]),spareSource:'تأمین‌کننده آموزشی'});
+      insert('recipe',{part:part(i),revision:'R01',material:'54SiCr6 · نمونه آموزشی',wireDiameter:10+i,meanDiameter:60+i*10,activeCoils:6,freeLength:[220,250,300][i],standard:'معیار آموزشی، بدون گواهی انطباق',notes:'نسخه نمونه؛ دستور ساخت واقعی کارخانه نیست.'});
+      insert('calibration',{instrument:`DEMO-C0${i+1}`,name:['کولیس آموزشی','میکرومتر آموزشی','ساعت اندازه‌گیری آموزشی'][i],calibratedAt:date(120),expiresAt:date([-180,2,-7][i]),certificate:`DEMO-CERT-${i+1}`,lab:'آزمایشگاه آموزشی',uncertainty:'نمونه آموزشی mm',notes:'گواهی آموزشی؛ شاهد کالیبراسیون واقعی نیست.'});
+    }
+    for(let i=0;i<5;i++)insert('inventory',{code:i<3?`DEMO-WIRE${i+1}`:`DEMO-SP${i-2}`,name:i<3?'مفتول فنر آموزشی':'قطعه یدکی آموزشی',lot:`DEMO-HEAT${i+1}`,unit:i<3?'kg':'عدد',quantity:[850,15,120,2,12][i],minimum:[200,50,80,5,5][i],supplier:'تأمین‌کننده آموزشی',location:`DEMO-RACK-${i+1}`});
+    const meterReadings=new Map();
+    for(let i=0;i<14;i++){
+      const daysAgo=14-i;
+      for(let shift=0;shift<2;shift++){
+        const total=1050+i*12+shift*30;
+        insert('production',{batch:batch(i),line:line(i),product:part(i),date:date(daysAgo),shift:shift?'عصر':'صبح',plannedMinutes:480,runMinutes:400+(i%5)*8,idealCycleSeconds:18,total,good:total-18-(i%5)*4,downtimeReason:'نمونه آموزشی: تنظیم ابزار و تعویض کلاف'},'approved',daysAgo);
+      }
+      const nominal=[220,250,300][i%3];
+      insert('inspection',{batch:batch(i),part:part(i),sampleCount:60,defects:[0,1,2,4][i%4],dimension:'طول آزاد mm',nominal,tolerance:1,measured:nominal+[0.1,0.3,0.6,1.2][i%4],instrument:`DEMO-C0${i%3+1}`,notes:'اندازه‌گیری مصنوعی آموزشی؛ داده کارخانه نیست.'},i>=12?'submitted':'approved',daysAgo);
+      for(let carrier=0;carrier<2;carrier++){
+        const meter=`DEMO-${carrier?'G':'E'}-${line(i).slice(-1)}`,start=meterReadings.get(meter)||10000,end=start+(carrier?120:280)+i*8;
+        meterReadings.set(meter,end);
+        insert('energy',{meter,line:line(i),date:date(daysAgo),carrier:carrier?'گاز m³':'برق kWh',readingStart:start,readingEnd:end,tonnage:2.5+i*0.03,outageMinutes:i%4===0?30:0,notes:'قرائت مصنوعی آموزشی؛ قبض یا صرفه‌جویی واقعی نیست.'},'approved',daysAgo);
+      }
+    }
+    for(let i=0;i<3;i++)insert('production',{batch:batch(i),line:line(i),product:part(i),date:date(1),shift:'شب',plannedMinutes:480,runMinutes:410,idealCycleSeconds:18,total:1100,good:1060,downtimeReason:'سناریوی آموزشی ثبت و بررسی'},['draft','submitted','rejected'][i]);
+    for(let i=0;i<6;i++)insert('maintenance',{asset:`DEMO-A${i%3+1}`,title:['بازبینی لرزش آموزشی','تعویض سنگ آموزشی','کنترل مشعل آموزشی'][i%3],priority:['بحرانی','بالا','عادی'][i%3],due:date([3,1,-2,-5,2,-1][i]),symptom:'نمونه آموزشی: بررسی وضعیت و روان‌کاری',downtimeMinutes:15+i*5,resolution:i===4?'اقدام آموزشی ثبت و بررسی شد.':''},['draft','submitted','draft','submitted','approved','rejected'][i],i+1);
+    for(let i=0;i<5;i++)insert('ncr',{batch:batch(i),title:'نمونه آموزشی: انحراف طول آزاد',severity:['جزئی','عمده','بحرانی'][i%3],containment:'قرنطینه آموزشی و بازبینی بچ',rootCause:i<2?'تنظیم ابزار نمونه':'',action:i<2?'بازتنظیم فیکسچر نمونه':'',owner:'کنترل کیفیت دمو',due:date([2,-2,-5,1,-1][i])},['draft','submitted','submitted','approved','draft'][i],i+1);
     return {db,app:createApp({db,origin,sha,secure,demo:true,prefix:'/api/demo'}),lastSeen:Date.now(),active:0};
   }
   function reject(res,status,message){res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify({error:message}));}
