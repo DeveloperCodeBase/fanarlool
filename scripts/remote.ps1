@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory)][ValidateSet('status','bootstrap','fetch','install','build','test','validate','deploy','nginx','edge','platform','backup','rollback','logs','health','version','admin')][string]$Action,
+    [Parameter(Mandatory)][ValidateSet('status','bootstrap','fetch','install','build','test','validate','deploy','nginx','edge','platform','backup','rollback','logs','health','version','admin','train')][string]$Action,
     [string]$Sha,
     [string]$SshHost = 'my-vps'
 )

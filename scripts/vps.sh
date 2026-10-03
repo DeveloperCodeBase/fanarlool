@@ -92,6 +92,38 @@ PY
     curl -fsS --max-time 30 "$base/api/health" | python3 -c 'import json,sys; d=json.load(sys.stdin); assert d["status"]=="ok" and d["sha"]==sys.argv[1]; print("API_HEALTH=PASS")' "$expected"
     status=$(curl -sS --max-time 30 -o /dev/null -w '%{http_code}' "$base/api/workspace")
     [[ $status == 401 ]] || fail 'Anonymous workspace is not denied'
+    python3 - "$base" <<'PY'
+import urllib.request, urllib.error, http.cookiejar, json, sys
+base=sys.argv[1]
+def client(): return urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
+def call(opener,path,method='GET',body=None,csrf=None):
+    headers={'Origin':base}
+    if body is not None: headers['Content-Type']='application/json'
+    if csrf: headers['X-CSRF-Token']=csrf
+    req=urllib.request.Request(base+path,data=json.dumps(body).encode() if body is not None else None,headers=headers,method=method)
+    try:
+        with opener.open(req,timeout=20) as response:return response.status,json.load(response)
+    except urllib.error.HTTPError as error:return error.code,json.load(error)
+opener=client();first=None
+for role in ['admin','executive','production','quality','maintenance','energy','engineering','auditor']:
+    status,login=call(opener,'/api/demo/auth/login','POST',{'username':'demo.'+role,'password':'FanarDemo-2026!'})
+    assert status==200 and login['user']['role']==role,(role,status)
+    status,workspace=call(opener,'/api/demo/workspace');assert status==200 and workspace['mode']=='demo' and len(workspace['records'])==27
+    status,profile=call(opener,'/api/demo/profile');assert status==200 and profile['user']['id']==login['user']['id']
+    status,activity=call(opener,'/api/demo/activity');assert status==200 and all(e['actor']==login['user']['id'] for e in activity['events'])
+    status,monitor=call(opener,'/api/demo/system');assert status==(200 if role=='admin' else 403)
+    assert call(opener,'/api/workspace')[0]==401
+    if first is None:first=workspace['records'][0]['id']
+    assert call(opener,'/api/demo/auth/logout','POST',{},login['csrf'])[0]==200
+    print('DEMO_ROLE=PASS',role)
+other=client();assert call(other,'/api/demo/auth/login','POST',{'username':'demo.admin','password':'FanarDemo-2026!'})[0]==200
+assert call(other,'/api/demo/workspace')[1]['records'][0]['id']!=first
+print('DEMO_BROWSER_ISOLATION=PASS')
+PY
+    api_pid=$(systemctl show -p MainPID --value fanarlool-api)
+    [[ $api_pid =~ ^[1-9][0-9]*$ ]] || fail 'API process is not running'
+    if sudo -n ss -Hltnp | grep -q "pid=$api_pid,"; then fail 'Unexpected API TCP listener'; fi
+    echo 'API_TCP_LISTENER=NONE'
   fi
   echo "HEALTH=PASS SHA=$actual"
 }
@@ -157,10 +189,11 @@ admin)
   [[ $(cat "$ROOT/current/dist/version.txt") == "$SHA" && -f $ROOT/current/VALIDATED ]] || fail 'Active release identity is not validated'
   FANAR_DATA_ROOT="$ROOT/shared/data" /usr/bin/node "$ROOT/current/server/admin.mjs"
   ;;
-fetch|install|build|test|validate|deploy|nginx|edge|platform|backup|rollback)
+fetch|install|build|test|validate|deploy|nginx|edge|platform|backup|rollback|train)
   owned; lock; fetch
   case "$ACTION" in
   fetch) ;;
+  train) (cd "$CANDIDATE"; timeout 180 nice -n 10 /usr/bin/node scripts/train-reference.mjs "$ROOT/shared/models/$SHA") ;;
   install) install ;;
   build) install; build; bundle ;;
   test) install; tests ;;
