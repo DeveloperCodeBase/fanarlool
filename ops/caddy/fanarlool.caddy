@@ -1,0 +1,8 @@
+# BEGIN FanarLool - dedicated route; retain all existing hosts.
+fanarlool.vistapower.ir {
+    encode zstd gzip
+    reverse_proxy 172.18.0.1:8080 {
+        header_up Host fanarlool.vistapower.ir
+    }
+}
+# END FanarLool
