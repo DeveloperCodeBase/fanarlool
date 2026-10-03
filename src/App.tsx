@@ -20,7 +20,7 @@ import {JalaliDateInput} from './platform/JalaliDateInput';
 import {tehranDate} from './platform/calendar';
 const ModelRegistry=lazy(()=>import('./platform/ModelRegistry'));
 const PlatformGuide=lazy(()=>import('./platform/PlatformGuide').then(module=>({default:module.PlatformGuide})));
-const ExecutionWorkspace=lazy(()=>import('./platform/ExecutionWorkspace').then(m=>({default:m.ExecutionWorkspace})));
+const ExecutionWorkspace=lazy(()=>import('./platform/ExecutionWorkspace'));
 const ReportingWorkspace=lazy(()=>import('./platform/ReportingWorkspace').then(m=>({default:m.ReportingWorkspace})));
 const AccountSecurity=lazy(()=>import('./platform/AccountSecurity').then(m=>({default:m.AccountSecurity})));
 const Simulator=lazy(()=>import('./platform/Simulator'));
