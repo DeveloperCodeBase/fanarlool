@@ -54,6 +54,10 @@ switch_release() {
   local target=$1
   [[ $target == "$ROOT/releases/"* && -s $target/dist/index.html && -f $target/VALIDATED ]] || fail 'Invalid release target'
   [[ ! -e $ROOT/current || -L $ROOT/current ]] || fail 'current is not a managed symlink'
+  if [[ $(readlink -f "$ROOT/current" 2>/dev/null || true) == "$target" ]]; then
+    echo "DEPLOYED_SHA=$(cat "$target/dist/version.txt") (already active; rollback preserved)"
+    return
+  fi
   if [[ -L $ROOT/current ]]; then
     local previous; previous=$(readlink -f "$ROOT/current")
     [[ $previous == "$ROOT/releases/"* && -f $previous/VALIDATED ]] || fail 'Unowned current release'
@@ -75,6 +79,15 @@ PY
   ); do curl -fsS --max-time 30 "$base$path" -o /dev/null; done
   local status; status=$(curl -sS --max-time 30 -o /dev/null -w '%{http_code}' "$base/assets/nonexistent.js")
   [[ $status == 404 ]] || fail 'Missing asset does not return 404'
+  status=$(curl -sS --max-time 30 -o /dev/null -w '%{http_code}' "http://$DOMAIN/")
+  [[ $status == 308 || $status == 301 ]] || fail 'HTTP does not redirect to HTTPS'
+  [[ $(curl -sS --max-time 30 -o /dev/null -w '%{redirect_url}' "http://$DOMAIN/") == "$base/" ]] || fail 'Wrong HTTPS redirect target'
+  curl -fsS --max-time 30 "$base/logo.jpg" -o /dev/null
+  status=$(curl -sS --max-time 30 -o /dev/null -w '%{http_code}' "$base/assets/")
+  [[ $status == 403 || $status == 404 ]] || fail 'Asset directory listing is exposed'
+  status=$(curl -sS --max-time 30 -o /dev/null -w '%{http_code}' "$base/.git/config")
+  [[ $status == 403 || $status == 404 ]] || fail 'Hidden source file is exposed'
+  sudo -n nginx -t
   echo "HEALTH=PASS SHA=$actual"
 }
 case "$ACTION" in
@@ -97,6 +110,13 @@ status)
   sudo -n docker inspect hooshgate_caddy --format '{{range $name, $network := .NetworkSettings.Networks}}{{println $name $network.Gateway}}{{end}}'
   sudo -n grep -nE '^([a-zA-Z0-9*]|[[:space:]]*(import|reverse_proxy|tls|bind|admin|email))' /home/ubuntu/Desktop/magazine/deploy/Caddyfile
   curl -sS --max-time 20 -I "https://$DOMAIN/" || true
+  if [[ -f $ROOT/shared/edge-before.caddy ]]; then
+    sudo -n python3 - "$ROOT/shared/edge-before.caddy" "$EDGE_CONFIG" <<'PY'
+import pathlib, sys
+before, after = [pathlib.Path(p).read_bytes() for p in sys.argv[1:]]
+print('EDGE_PREEXISTING_BYTES_PRESERVED=' + str(after.startswith(before)))
+PY
+  fi
   ;;
 bootstrap)
   for tool in git curl unzip python3 flock; do command -v "$tool" >/dev/null || fail "Missing tool $tool"; done
