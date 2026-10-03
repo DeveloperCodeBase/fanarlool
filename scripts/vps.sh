@@ -33,7 +33,7 @@ install() { mutable; (cd "$CANDIDATE"; timeout 300 bun install --frozen-lockfile
 build() { (cd "$CANDIDATE"; timeout 300 bun run lint; timeout 300 bun run build); }
 tests() {
   if python3 -c 'import json,sys; sys.exit(0 if json.load(open(sys.argv[1])).get("scripts",{}).get("test") else 1)' "$CANDIDATE/package.json"; then
-    (cd "$CANDIDATE"; timeout 300 bun run test; timeout 120 bun test tests/*.test.ts)
+    (cd "$CANDIDATE"; timeout 300 bun run test)
   else echo 'TEST=SKIP (no test script)'; fi
 }
 bundle() {

@@ -41,7 +41,7 @@ $releaseSha = git rev-parse HEAD
 
 `fetch/install/build/test` برای عیب‌یابی candidate جدید با SHA کامل موجودند. runner عملیات از نسخهٔ Git همان SHA خوانده می‌شود؛ transport اسکریپت است، سورس محصول همیشه از GitHub می‌آید. status/bootstrap تنها عملیات پیش از commit هستند. به origin متفاوت، پوشهٔ غیرخالی ناشناس، سورس dirty، SHA غیر push‌شده و تغییر release فعال اجازه داده نمی‌شود.
 
-validate: `bun install --frozen-lockfile` → `bun run lint` → `bun run build` (`tsc && vite build`) → تست‌های واقعی Node برای API/auth/RBAC، مدل مرجع و ترجمه → تست‌های Bun برای محاسبات اقتصادی، تقویم و ابزارهای مهندسی → index/logo/JS/CSS → manifest SHA256 و marker. deploy: manifest + `nginx -t` + backup پایگاه‌داده + switch اتمیک + restart فقط API اختصاصی. health: HTTPS، SHA عمومی، دارایی‌ها، هشت نقش آزمایشی، جداسازی مرورگرها، منع workspace ناشناس و نبود listener TCP برای API. وضعیت دو دامنه همسایه نیز فقط از URL عمومی خوانده می‌شود. version.txt و index قابل refresh، assets دارای cache immutable هستند.
+validate: `bun install --frozen-lockfile` → `bun run lint` → `bun run build` (`tsc && vite build`) → تست‌های واقعی Node برای API/auth/RBAC، مدل مرجع و ترجمه → تست‌های Node برای هسته TypeScript محاسبات اقتصادی، تقویم و ابزارهای مهندسی → index/logo/JS/CSS → manifest SHA256 و marker. deploy: manifest + `nginx -t` + backup پایگاه‌داده + switch اتمیک + restart فقط API اختصاصی. health: HTTPS، SHA عمومی، دارایی‌ها، هشت نقش آزمایشی، جداسازی مرورگرها، منع workspace ناشناس و نبود listener TCP برای API. وضعیت دو دامنه همسایه نیز فقط از URL عمومی خوانده می‌شود. version.txt و index قابل refresh، assets دارای cache immutable هستند.
 
 ## ایمنی وب‌استک مشترک
 
