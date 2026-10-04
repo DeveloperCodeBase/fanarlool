@@ -3,6 +3,8 @@ import { randomBytes, randomUUID, createHash, scrypt, timingSafeEqual } from 'no
 import { promisify } from 'node:util';
 import { roles, schemas, can, validateRecord, productionKpis } from './domain.mjs';
 import {createWorkflows} from './workflows.mjs';
+import {createTwin} from './twin.mjs';
+import {createAccountServices,safeRequestRoute} from './account-services.mjs';
 import {authorizedKinds,recordQuery,productionSummary} from './queries.mjs';
 import {readFileSync,statSync} from 'node:fs';
 const derive = promisify(scrypt);
@@ -43,7 +45,7 @@ export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secu
   const recoveryStatus=name=>{try{if(demo||!dataRoot)return null;const file=`${dataRoot}/${name}-status.json`;if(statSync(file).size>8192)return null;const value=JSON.parse(readFileSync(file,'utf8'));if(value.status==='FAIL')return {status:'FAIL',createdAt:value.createdAt,backupId:null};if(value.status!=='PASS'||!/^[a-f0-9]{64}$/.test(value.sha256))return null;return {status:value.status,createdAt:value.createdAt||value.verifiedAt,backupId:value.backupId,sha256:value.sha256,schema:value.schema,bytes:value.bytes||null,offsite:false,liveDatabaseModified:value.liveDatabaseModified===true};}catch{return null;}};
   return createServer(async (req,res) => {
     const requestStart=performance.now();let requestActor=null;
-    res.once('finish',()=>{requests.push({at:new Date().toISOString(),method:req.method,path:new URL(req.url,origin).pathname,status:res.statusCode,durationMs:Math.round(performance.now()-requestStart),actor:requestActor});if(requests.length>250)requests.shift();});
+    res.once('finish',()=>{requests.push({at:new Date().toISOString(),method:req.method,path:safeRequestRoute(new URL(req.url,origin).pathname),status:res.statusCode,durationMs:Math.round(performance.now()-requestStart),actor:requestActor});if(requests.length>500)requests.shift();});
     try {
       const originalPath = new URL(req.url,origin).pathname;
       if(!originalPath.startsWith(prefix+'/')) throw error(404,'مسیر پیدا نشد');
@@ -94,6 +96,8 @@ export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secu
         q('DELETE FROM sessions WHERE user_id=?').run(u.id); audit(u.id,'auth.password',u.id);}); return send(res,200,{ok:true},{'Set-Cookie':cookie('',0)});
       }
       if (u.must_change) throw error(403,'ابتدا رمز موقت را تغییر دهید');
+      if(await createTwin({db,q,mutate,audit})({path,method,query:new URL(req.url,origin).searchParams,body:()=>body(req),u,demo,send:(status,value)=>send(res,status,value)}))return;
+      if(await createAccountServices({db,q,mutate,audit,userView,startedAt,requests,sha,demo,recoveryStatus})({path,method,query:new URL(req.url,origin).searchParams,body:()=>body(req),u,send:(status,value)=>send(res,status,value)}))return;
       if(await createWorkflows({db,q,mutate,audit})({path,method,query:new URL(req.url,origin).searchParams,body:()=>body(req),u,demo,send:(status,value)=>send(res,status,value)}))return;
       if(path==='/api/auth/sessions'&&method==='GET')return send(res,200,{sessions:q('SELECT token,expires,last_seen FROM sessions WHERE user_id=? AND expires>? AND last_seen>? ORDER BY last_seen DESC').all(u.id,Date.now(),Date.now()-1800000).map(s=>({id:s.token,current:s.token===session.token,expiresAt:new Date(s.expires).toISOString(),lastSeen:new Date(s.last_seen).toISOString()}))});
       const sessionMatch=path.match(/^\/api\/auth\/sessions\/([a-f0-9]{64})$/);
@@ -109,26 +113,7 @@ export function createApp({ db, origin = 'https://fanarlool.vistapower.ir', secu
         if(!can(u.role,'production'))throw error(403,'اجازه مشاهده این حوزه را ندارید');const query=new URL(req.url,origin).searchParams;
         return send(res,200,productionSummary(db,query.get('from')||'',query.get('to')||''));
       }
-      if(path==='/api/profile') {
-        const view=()=>{const p=q('SELECT * FROM user_profiles WHERE user_id=?').get(u.id);return {user:userView(q('SELECT * FROM users WHERE id=?').get(u.id)),department:p?.department||'',jobTitle:p?.job_title||'',email:p?.email||'',phone:p?.phone||'',preferences:{density:'comfortable',startPage:'overview',notifications:true,...JSON.parse(p?.preferences||'{}')}};};
-        if(method==='GET')return send(res,200,view());
-        if(method==='PATCH') {
-          const b=await body(req);
-          const bounded=(value,min,max)=>typeof value==='string'&&value.trim().length>=min&&value.length<=max;
-          if(!bounded(b.name,2,100)||!bounded(b.department,0,100)||!bounded(b.jobTitle,0,100)||!bounded(b.email,0,120)||!bounded(b.phone,0,30)|| (b.email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(b.email)))throw error(400,'اطلاعات پروفایل معتبر نیست');
-          const prefs=b.preferences;
-          if(!prefs || !['comfortable','compact'].includes(prefs.density)||typeof prefs.notifications!=='boolean'|| !(prefs.startPage==='overview'||can(u.role,prefs.startPage)))throw error(400,'تنظیمات شخصی معتبر نیست');
-          const preferences=JSON.stringify({density:prefs.density,startPage:prefs.startPage,notifications:prefs.notifications});
-          mutate(()=>{q('UPDATE users SET name=? WHERE id=?').run(b.name.trim(),u.id);q('INSERT INTO user_profiles(user_id,department,job_title,email,phone,preferences) VALUES(?,?,?,?,?,?) ON CONFLICT(user_id) DO UPDATE SET department=excluded.department,job_title=excluded.job_title,email=excluded.email,phone=excluded.phone,preferences=excluded.preferences').run(u.id,b.department.trim(),b.jobTitle.trim(),b.email.trim(),b.phone.trim(),preferences);audit(u.id,'profile.updated',u.id);});
-          return send(res,200,view());
-        }
-      }
       if(path==='/api/activity' && method==='GET')return send(res,200,{events:q('SELECT a.*,u.name AS actor_name FROM audit a LEFT JOIN users u ON u.id=a.actor WHERE a.actor=? ORDER BY a.id DESC LIMIT 200').all(u.id)});
-      if(path==='/api/system' && method==='GET') {
-        if(u.role!=='admin')throw error(403,'مانیتورینگ سامانه فقط برای مدیر سامانه است');
-        const total=table=>Number(q(`SELECT COUNT(*) AS n FROM ${table}`).get().n);
-        return send(res,200,{sha,demo,startedAt,uptimeSeconds:Math.round(process.uptime()),memoryMb:Math.round(process.memoryUsage().rss/1048576),database:q('PRAGMA quick_check').get().quick_check,transport:'Unix socket',backup:recoveryStatus('backup'),recovery:recoveryStatus('recovery'),counts:{users:total('users'),activeUsers:Number(q('SELECT COUNT(*) AS n FROM users WHERE active=1').get().n),records:total('records'),audit:total('audit'),sessions:Number(q('SELECT COUNT(*) AS n FROM sessions WHERE expires>? AND last_seen>?').get(Date.now(),Date.now()-1800000).n)},statuses:q('SELECT status,COUNT(*) AS count FROM records GROUP BY status').all(),requests:[...requests].reverse().slice(0,100)});
-      }
       if (path==='/api/workspace' && method==='GET') {
         const allowed=authorizedKinds(u.role),params=allowed.map(()=>'?').join(',');
         const records=q(`SELECT r.*,u.name AS creator_name FROM records r JOIN users u ON u.id=r.creator WHERE r.kind IN (${params}) ORDER BY r.updated_at DESC,r.id LIMIT 2000`).all(...allowed).map(r=>({...r,data:JSON.parse(r.data)}));

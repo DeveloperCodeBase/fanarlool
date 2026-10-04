@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "FanarLool factory platform",
-    "version": "3.0",
-    "description": "Factory execution and documented records API. Human document date: ۱۴۰۵/۰۷/۱۲. ISO dates/timestamps are canonical technical exchange values. Candidate source contract; release PASS requires matching SHA gate. Demo is isolated and cannot reset operational identities."
+    "version": "4.0",
+    "description": "Engineering scenario, account profile and monitoring API; schema4. Human date ۱۴۰۵/۰۷/۱۲. ISO is canonical exchange only. Demo is isolated. Release acceptance requires the actual matching SHA gate; industrial connectivity remains a separate field acceptance."
   },
   "servers": [
     {
@@ -34,7 +34,7 @@
                       "type": "string"
                     },
                     "schema": {
-                      "const": 3
+                      "const": 4
                     },
                     "demo": {
                       "type": "boolean"
@@ -1668,72 +1668,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "name",
-                  "department",
-                  "jobTitle",
-                  "email",
-                  "phone",
-                  "preferences"
-                ],
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 2
-                  },
-                  "department": {
-                    "type": "string",
-                    "maxLength": 100
-                  },
-                  "jobTitle": {
-                    "type": "string",
-                    "maxLength": 100
-                  },
-                  "email": {
-                    "type": "string",
-                    "maxLength": 120
-                  },
-                  "phone": {
-                    "type": "string",
-                    "maxLength": 30
-                  },
-                  "preferences": {
-                    "type": "object",
-                    "required": [
-                      "density",
-                      "startPage",
-                      "notifications"
-                    ],
-                    "properties": {
-                      "density": {
-                        "enum": [
-                          "comfortable",
-                          "compact"
-                        ]
-                      },
-                      "startPage": {
-                        "enum": [
-                          "overview",
-                          "production",
-                          "inspection",
-                          "maintenance",
-                          "energy",
-                          "asset",
-                          "recipe",
-                          "calibration",
-                          "ncr",
-                          "inventory"
-                        ],
-                        "description": "Must also be readable by current role."
-                      },
-                      "notifications": {
-                        "type": "boolean"
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/PatchProfile"
               }
             }
           }
@@ -1812,60 +1747,20 @@
     },
     "/system": {
       "get": {
-        "summary": "GET /system",
+        "summary": "Admin-only monitoring; request ring bounded to 500, audit SQL pagination, grouped live sessions",
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "sha": {
-                      "type": "string"
-                    },
-                    "demo": {
-                      "type": "boolean"
-                    },
-                    "startedAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "uptimeSeconds": {
-                      "type": "integer"
-                    },
-                    "memoryMb": {
-                      "type": "integer"
-                    },
-                    "database": {
-                      "type": "string"
-                    },
-                    "transport": {
-                      "const": "Unix socket"
-                    },
-                    "counts": {
-                      "type": "object"
-                    },
-                    "statuses": {
-                      "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
-                    },
-                    "requests": {
-                      "type": "array",
-                      "maxItems": 100,
-                      "items": {
-                        "type": "object"
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/MonitoringSnapshot"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid data",
+            "description": "Invalid fields",
             "content": {
               "application/json": {
                 "schema": {
@@ -1885,7 +1780,7 @@
             }
           },
           "403": {
-            "description": "Permission, Origin, CSRF or mandatory password change",
+            "description": "Role or ownership denied",
             "content": {
               "application/json": {
                 "schema": {
@@ -1894,8 +1789,8 @@
               }
             }
           },
-          "429": {
-            "description": "Rate or demo capacity limit",
+          "409": {
+            "description": "Version or approved reference changed",
             "content": {
               "application/json": {
                 "schema": {
@@ -1905,9 +1800,69 @@
             }
           }
         },
-        "security": [
+        "parameters": [
           {
-            "cookieSession": []
+            "name": "tab",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "requests",
+                "audit",
+                "sessions"
+              ]
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "statusClass",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "2xx",
+                "3xx",
+                "4xx",
+                "5xx"
+              ]
+            }
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "role",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
           }
         ]
       }
@@ -3865,6 +3820,370 @@
           }
         }
       }
+    },
+    "/twin": {
+      "get": {
+        "summary": "List readable engineering scenarios; filter before pagination",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwinList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Role or ownership denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Version or approved reference changed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assetId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "recipeId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create an audited scenario; engineering/admin only",
+        "responses": {
+          "201": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwinScenario"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Role or ownership denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Version or approved reference changed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTwinScenario"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twin/preview": {
+      "post": {
+        "summary": "Compute recipe-linked or saved-snapshot engineering analysis without persistence",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwinPreview"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Role or ownership denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Version or approved reference changed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TwinPreviewRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twin/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read scenario snapshot and latest 100 revisions with explicit total",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwinDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Role or ownership denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Version or approved reference changed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Append a revision; owner/admin and unchanged approved references required",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwinScenario"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Role or ownership denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Version or approved reference changed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchTwinScenario"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -4591,35 +4910,165 @@
           },
           "preferences": {
             "type": "object",
-            "required": [
-              "density",
-              "startPage",
-              "notifications"
-            ],
             "properties": {
               "density": {
+                "type": "string",
                 "enum": [
                   "comfortable",
                   "compact"
                 ]
               },
               "startPage": {
-                "enum": [
-                  "overview",
-                  "production",
-                  "inspection",
-                  "maintenance",
-                  "energy",
-                  "asset",
-                  "recipe",
-                  "calibration",
-                  "ncr",
-                  "inventory"
-                ],
-                "description": "Must also be readable by current role."
+                "type": "string"
               },
               "notifications": {
                 "type": "boolean"
+              },
+              "locale": {
+                "type": "string",
+                "enum": [
+                  "fa",
+                  "en",
+                  "ar",
+                  "tr"
+                ]
+              },
+              "dateFormat": {
+                "const": "jalali"
+              },
+              "timezone": {
+                "const": "Asia/Tehran"
+              }
+            }
+          },
+          "shift": {
+            "type": "string",
+            "enum": [
+              "day",
+              "morning",
+              "evening",
+              "night",
+              "rotating",
+              "unassigned"
+            ]
+          },
+          "location": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "extension": {
+            "type": "string",
+            "maxLength": 8
+          },
+          "bio": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "updatedAt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "summary": {
+            "type": "object",
+            "properties": {
+              "ownedRecords": {
+                "type": "integer"
+              },
+              "ownDrafts": {
+                "type": "integer"
+              },
+              "awaitingReview": {
+                "type": "integer"
+              },
+              "openAssignedTasks": {
+                "type": "integer"
+              },
+              "activityLast7Days": {
+                "type": "integer"
+              },
+              "ownedStatuses": {
+                "type": "object",
+                "properties": {
+                  "draft": {
+                    "type": "integer"
+                  },
+                  "submitted": {
+                    "type": "integer"
+                  },
+                  "approved": {
+                    "type": "integer"
+                  },
+                  "rejected": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "lastActiveAt": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "generatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "source": {
+                "type": "string"
+              },
+              "recentEvents": {
+                "type": "array",
+                "maxItems": 20,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "type": "string"
+                    },
+                    "target": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "actorName": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "accessScope": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string"
+                    },
+                    "read": {
+                      "type": "boolean"
+                    },
+                    "write": {
+                      "type": "boolean"
+                    },
+                    "approve": {
+                      "type": "boolean"
+                    }
+                  }
+                }
               }
             }
           }
@@ -6298,6 +6747,1349 @@
           "to"
         ],
         "description": "Full approved matching SQL sums; null ratios for zero denominators. Daily series capped at latest 366 days, total aggregate uncapped by series length."
+      },
+      "TwinInputs": {
+        "type": "object",
+        "properties": {
+          "wireDiameter": {
+            "type": "number",
+            "minimum": 0.1,
+            "maximum": 100
+          },
+          "meanDiameter": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 10000
+          },
+          "freeLength": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 10000
+          },
+          "activeCoils": {
+            "type": "number",
+            "minimum": 0.25,
+            "maximum": 1000
+          },
+          "totalCoils": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 1020
+          },
+          "force": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 10000000.0
+          },
+          "shearModulus": {
+            "type": "number",
+            "minimum": 1000,
+            "maximum": 200000
+          },
+          "allowableStress": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 5000
+          }
+        },
+        "required": [
+          "wireDiameter",
+          "meanDiameter",
+          "freeLength",
+          "activeCoils",
+          "totalCoils",
+          "force",
+          "shearModulus",
+          "allowableStress"
+        ],
+        "description": "Finite mm/N/MPa inputs. meanDiameter>wireDiameter; totalCoils>=activeCoils+2; freeLength>totalCoils*wireDiameter. Squared ground ends assumed."
+      },
+      "TwinOutputs": {
+        "type": "object",
+        "properties": {
+          "rate": {
+            "type": "number"
+          },
+          "stress": {
+            "type": "number"
+          },
+          "deflection": {
+            "type": "number"
+          },
+          "length": {
+            "type": "number"
+          },
+          "solidHeight": {
+            "type": "number"
+          },
+          "availableDeflection": {
+            "type": "number"
+          },
+          "solidForce": {
+            "type": "number"
+          },
+          "clearance": {
+            "type": "number"
+          },
+          "index": {
+            "type": "number"
+          },
+          "wahl": {
+            "type": "number"
+          },
+          "stressRatio": {
+            "type": "number"
+          },
+          "safetyFactor": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "validLinear": {
+            "type": "boolean"
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "solid_contact",
+                "allowable_stress_exceeded",
+                "spring_index_outside_reference_range"
+              ]
+            }
+          }
+        }
+      },
+      "TwinReference": {
+        "type": "object",
+        "properties": {
+          "assetCode": {
+            "type": "string"
+          },
+          "assetName": {
+            "type": "string"
+          },
+          "recipePart": {
+            "type": "string"
+          },
+          "recipeRevision": {
+            "type": "string"
+          },
+          "recipeMaterial": {
+            "type": "string"
+          },
+          "assetVersion": {
+            "type": "integer"
+          },
+          "recipeVersion": {
+            "type": "integer"
+          }
+        }
+      },
+      "TwinModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "const": "compression-spring-wahl-v1"
+          },
+          "units": {
+            "type": "object",
+            "properties": {
+              "length": {
+                "const": "mm"
+              },
+              "force": {
+                "const": "N"
+              },
+              "stress": {
+                "const": "MPa"
+              },
+              "rate": {
+                "const": "N/mm"
+              }
+            }
+          },
+          "assumptions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "liveConnection": {
+            "const": false
+          },
+          "factoryValidated": {
+            "const": false
+          }
+        }
+      },
+      "TwinPreview": {
+        "type": "object",
+        "properties": {
+          "inputs": {
+            "$ref": "#/components/schemas/TwinInputs"
+          },
+          "outputs": {
+            "$ref": "#/components/schemas/TwinOutputs"
+          },
+          "baseline": {
+            "type": "object",
+            "properties": {
+              "inputs": {
+                "$ref": "#/components/schemas/TwinInputs"
+              },
+              "outputs": {
+                "$ref": "#/components/schemas/TwinOutputs"
+              }
+            }
+          },
+          "reference": {
+            "$ref": "#/components/schemas/TwinReference"
+          },
+          "model": {
+            "$ref": "#/components/schemas/TwinModel"
+          },
+          "comparison": {
+            "type": "object",
+            "properties": {
+              "rate": {
+                "type": "object",
+                "properties": {
+                  "baseline": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "candidate": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "delta": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "percent": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "stress": {
+                "type": "object",
+                "properties": {
+                  "baseline": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "candidate": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "delta": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "percent": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "deflection": {
+                "type": "object",
+                "properties": {
+                  "baseline": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "candidate": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "delta": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "percent": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "solidForce": {
+                "type": "object",
+                "properties": {
+                  "baseline": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "candidate": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "delta": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "percent": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "safetyFactor": {
+                "type": "object",
+                "properties": {
+                  "baseline": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "candidate": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "delta": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "percent": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "clearance": {
+                "type": "object",
+                "properties": {
+                  "baseline": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "candidate": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "delta": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "percent": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "loadCurve": {
+            "type": "array",
+            "minItems": 21,
+            "maxItems": 21,
+            "items": {
+              "type": "object",
+              "properties": {
+                "force": {
+                  "type": "number"
+                },
+                "baselineDeflection": {
+                  "type": "number"
+                },
+                "candidateDeflection": {
+                  "type": "number"
+                },
+                "baselineStress": {
+                  "type": "number"
+                },
+                "candidateStress": {
+                  "type": "number"
+                },
+                "baselineValidLinear": {
+                  "type": "boolean"
+                },
+                "candidateValidLinear": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "TwinScenario": {
+        "type": "object",
+        "properties": {
+          "inputs": {
+            "$ref": "#/components/schemas/TwinInputs"
+          },
+          "outputs": {
+            "$ref": "#/components/schemas/TwinOutputs"
+          },
+          "baseline": {
+            "type": "object",
+            "properties": {
+              "inputs": {
+                "$ref": "#/components/schemas/TwinInputs"
+              },
+              "outputs": {
+                "$ref": "#/components/schemas/TwinOutputs"
+              }
+            }
+          },
+          "reference": {
+            "$ref": "#/components/schemas/TwinReference"
+          },
+          "model": {
+            "$ref": "#/components/schemas/TwinModel"
+          },
+          "comparison": {
+            "type": "object",
+            "properties": {
+              "rate": {
+                "type": "object",
+                "properties": {
+                  "baseline": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "candidate": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "delta": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "percent": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "stress": {
+                "type": "object",
+                "properties": {
+                  "baseline": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "candidate": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "delta": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "percent": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "deflection": {
+                "type": "object",
+                "properties": {
+                  "baseline": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "candidate": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "delta": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "percent": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "solidForce": {
+                "type": "object",
+                "properties": {
+                  "baseline": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "candidate": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "delta": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "percent": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "safetyFactor": {
+                "type": "object",
+                "properties": {
+                  "baseline": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "candidate": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "delta": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "percent": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "clearance": {
+                "type": "object",
+                "properties": {
+                  "baseline": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "candidate": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "delta": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "percent": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "loadCurve": {
+            "type": "array",
+            "minItems": 21,
+            "maxItems": 21,
+            "items": {
+              "type": "object",
+              "properties": {
+                "force": {
+                  "type": "number"
+                },
+                "baselineDeflection": {
+                  "type": "number"
+                },
+                "candidateDeflection": {
+                  "type": "number"
+                },
+                "baselineStress": {
+                  "type": "number"
+                },
+                "candidateStress": {
+                  "type": "number"
+                },
+                "baselineValidLinear": {
+                  "type": "boolean"
+                },
+                "candidateValidLinear": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "assetId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "recipeId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "creatorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ownerName": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "TwinPreviewRequest": {
+        "type": "object",
+        "properties": {
+          "assetId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "recipeId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "inputs": {
+            "$ref": "#/components/schemas/TwinInputs"
+          },
+          "scenarioId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "assetId",
+          "recipeId",
+          "inputs"
+        ],
+        "description": "scenarioId uses saved geometry and reference snapshot. Changed or unapproved reference returns 409, matching PATCH. Preview does not persist or approve a recipe."
+      },
+      "CreateTwinScenario": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 1000
+          },
+          "assetId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "recipeId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "inputs": {
+            "$ref": "#/components/schemas/TwinInputs"
+          }
+        },
+        "required": [
+          "title",
+          "reason",
+          "assetId",
+          "recipeId",
+          "inputs"
+        ]
+      },
+      "PatchTwinScenario": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 1000
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "inputs": {
+            "$ref": "#/components/schemas/TwinInputs"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "version",
+          "title",
+          "reason",
+          "inputs"
+        ]
+      },
+      "TwinRevision": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "actorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "actorName": {
+            "type": "string"
+          },
+          "editorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "editorName": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "TwinDetail": {
+        "type": "object",
+        "properties": {
+          "scenario": {
+            "$ref": "#/components/schemas/TwinScenario"
+          },
+          "revisions": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/TwinRevision"
+            }
+          },
+          "revisionCount": {
+            "type": "integer"
+          },
+          "source": {
+            "type": "string"
+          },
+          "generatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "model": {
+            "$ref": "#/components/schemas/TwinModel"
+          }
+        }
+      },
+      "TwinList": {
+        "type": "object",
+        "properties": {
+          "scenarios": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TwinScenario"
+            }
+          },
+          "total": {
+            "type": "integer"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "pageSize": {
+            "type": "integer"
+          },
+          "totalPages": {
+            "type": "integer"
+          },
+          "permissions": {
+            "type": "object",
+            "properties": {
+              "read": {
+                "type": "boolean"
+              },
+              "write": {
+                "type": "boolean"
+              }
+            }
+          },
+          "model": {
+            "$ref": "#/components/schemas/TwinModel"
+          },
+          "generatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "source": {
+            "type": "string"
+          },
+          "owners": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "PatchProfile": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100
+          },
+          "department": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "jobTitle": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 30
+          },
+          "shift": {
+            "type": "string",
+            "enum": [
+              "day",
+              "morning",
+              "evening",
+              "night",
+              "rotating",
+              "unassigned"
+            ]
+          },
+          "location": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "extension": {
+            "type": "string",
+            "maxLength": 8
+          },
+          "bio": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "preferences": {
+            "type": "object",
+            "properties": {
+              "density": {
+                "type": "string",
+                "enum": [
+                  "comfortable",
+                  "compact"
+                ]
+              },
+              "startPage": {
+                "type": "string"
+              },
+              "notifications": {
+                "type": "boolean"
+              },
+              "locale": {
+                "type": "string",
+                "enum": [
+                  "fa",
+                  "en",
+                  "ar",
+                  "tr"
+                ]
+              },
+              "dateFormat": {
+                "const": "jalali"
+              },
+              "timezone": {
+                "const": "Asia/Tehran"
+              }
+            }
+          }
+        },
+        "required": [
+          "name",
+          "department",
+          "jobTitle",
+          "email",
+          "phone",
+          "preferences"
+        ]
+      },
+      "MonitoringRequest": {
+        "type": "object",
+        "properties": {
+          "at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "method": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "durationMs": {
+            "type": "number"
+          },
+          "actorId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "actorName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "MonitoringAudit": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "action": {
+            "type": "string"
+          },
+          "target": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "actorId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "actorName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "actorRole": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "details": {
+            "type": "object",
+            "description": "Allowlisted audit values only. No request body, password, CSRF, session token or raw IP."
+          }
+        }
+      },
+      "MonitoringSession": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "activeSessions": {
+            "type": "integer"
+          },
+          "lastSeen": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "maxExpiresAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "MonitoringSnapshot": {
+        "type": "object",
+        "properties": {
+          "demo": {
+            "type": "boolean"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "browser-demo-sqlite",
+              "project-sqlite"
+            ]
+          },
+          "generatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "sha": {
+            "type": "string"
+          },
+          "transport": {
+            "const": "Unix socket"
+          },
+          "database": {
+            "type": "string"
+          },
+          "schema": {
+            "type": "integer"
+          },
+          "databaseSizeBytes": {
+            "type": "integer"
+          },
+          "memoryMb": {
+            "type": "number"
+          },
+          "uptimeSeconds": {
+            "type": "integer"
+          },
+          "health": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string"
+              },
+              "checkedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "cacheTtlSeconds": {
+                "type": "integer"
+              },
+              "source": {
+                "type": "string"
+              },
+              "industrialConnectivity": {
+                "const": false
+              }
+            }
+          },
+          "counts": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          },
+          "statistics": {
+            "type": "object",
+            "properties": {
+              "request": {
+                "type": "object",
+                "properties": {
+                  "sampleSize": {
+                    "type": "integer"
+                  },
+                  "capacity": {
+                    "type": "integer"
+                  },
+                  "successes": {
+                    "type": "integer"
+                  },
+                  "clientErrors": {
+                    "type": "integer"
+                  },
+                  "serverErrors": {
+                    "type": "integer"
+                  },
+                  "averageMs": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "p95Ms": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "firstAt": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "lastAt": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "source": {
+                    "const": "bounded-in-memory-request-ring"
+                  }
+                }
+              },
+              "audit": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "integer"
+                  },
+                  "last24h": {
+                    "type": "integer"
+                  },
+                  "failedLogins24h": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "sessions": {
+                "type": "object",
+                "properties": {
+                  "active": {
+                    "type": "integer"
+                  },
+                  "users": {
+                    "type": "integer"
+                  },
+                  "requiresPasswordChange": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "source": {
+                "type": "string"
+              }
+            }
+          },
+          "requestPage": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MonitoringRequest"
+                }
+              },
+              "total": {
+                "type": "integer"
+              },
+              "page": {
+                "type": "integer"
+              },
+              "pageSize": {
+                "type": "integer"
+              },
+              "totalPages": {
+                "type": "integer"
+              },
+              "limited": {
+                "const": false
+              }
+            }
+          },
+          "auditPage": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MonitoringAudit"
+                }
+              },
+              "total": {
+                "type": "integer"
+              },
+              "page": {
+                "type": "integer"
+              },
+              "pageSize": {
+                "type": "integer"
+              },
+              "totalPages": {
+                "type": "integer"
+              },
+              "limited": {
+                "const": false
+              }
+            }
+          },
+          "sessionPage": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MonitoringSession"
+                }
+              },
+              "total": {
+                "type": "integer"
+              },
+              "page": {
+                "type": "integer"
+              },
+              "pageSize": {
+                "type": "integer"
+              },
+              "totalPages": {
+                "type": "integer"
+              },
+              "limited": {
+                "const": false
+              }
+            }
+          },
+          "backup": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "recovery": {
+            "type": [
+              "object",
+              "null"
+            ]
+          }
+        }
       }
     }
   },

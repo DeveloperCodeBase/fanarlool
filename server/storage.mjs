@@ -28,7 +28,12 @@ export function openDatabase(path) {
     CREATE INDEX IF NOT EXISTS operation_lots_order ON operation_lots(order_id,status);
     CREATE UNIQUE INDEX IF NOT EXISTS operation_tasks_active ON operation_tasks(record_id) WHERE status<>'closed';
     CREATE INDEX IF NOT EXISTS operation_stock_key ON operation_movements(material,lot,unit);
-    PRAGMA user_version=3;`);
+    CREATE TABLE IF NOT EXISTS twin_scenarios(id TEXT PRIMARY KEY, title TEXT NOT NULL, asset_id TEXT NOT NULL REFERENCES records(id), recipe_id TEXT NOT NULL REFERENCES records(id), owner_id TEXT NOT NULL REFERENCES users(id), creator TEXT NOT NULL REFERENCES users(id), version INTEGER NOT NULL DEFAULT 1, payload TEXT NOT NULL, created_at TEXT NOT NULL, updated_at TEXT NOT NULL);
+    CREATE TABLE IF NOT EXISTS twin_revisions(scenario_id TEXT NOT NULL REFERENCES twin_scenarios(id), version INTEGER NOT NULL, editor TEXT NOT NULL REFERENCES users(id), reason TEXT NOT NULL, payload TEXT NOT NULL, created_at TEXT NOT NULL, PRIMARY KEY(scenario_id,version));
+    CREATE INDEX IF NOT EXISTS twin_scenarios_updated ON twin_scenarios(updated_at,id);`);
+  const profileColumns=new Set(db.prepare('PRAGMA table_info(user_profiles)').all().map(c=>c.name));
+  for(const [name,definition] of Object.entries({shift:"TEXT NOT NULL DEFAULT 'unassigned'",location:"TEXT NOT NULL DEFAULT ''",extension:"TEXT NOT NULL DEFAULT ''",bio:"TEXT NOT NULL DEFAULT ''",version:'INTEGER NOT NULL DEFAULT 0',updated_at:"TEXT NOT NULL DEFAULT ''"}))if(!profileColumns.has(name))db.exec(`ALTER TABLE user_profiles ADD COLUMN ${name} ${definition}`);
+  if(Number(db.prepare('PRAGMA user_version').get().user_version)<4)db.exec('PRAGMA user_version=4');
   if (path !== ':memory:') chmodSync(path, 0o600);
   return db;
 }

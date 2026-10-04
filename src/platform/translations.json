@@ -3158,5 +3158,135 @@
     "Cancel",
     "إلغاء",
     "Vazgeç"
+  ],
+  "اجازه مشاهده دوقلوی مهندسی را ندارید": [
+    "Your role cannot view the engineering twin.",
+    "لا يسمح دورك بعرض التوأم الهندسي.",
+    "Rolünüz mühendislik ikizini görüntüleyemiyor."
+  ],
+  "ایمیل، تلفن یا داخلی پروفایل معتبر نیست": [
+    "The profile email, phone or extension is invalid.",
+    "البريد أو الهاتف أو الرقم الداخلي غير صالح.",
+    "Profil e-postası, telefonu veya dahili numarası geçersiz."
+  ],
+  "پروفایل تغییر کرده؛ دوباره دریافت کنید": [
+    "The profile changed; reload it.",
+    "تغير الملف؛ أعد تحميله.",
+    "Profil değişti; yeniden yükleyin."
+  ],
+  "ذخیره سناریو فقط برای مهندسی یا مدیر سامانه مجاز است": [
+    "Only engineering or the administrator can save a scenario.",
+    "يسمح للهندسة أو المسؤول فقط بحفظ السيناريو.",
+    "Senaryoyu yalnızca mühendislik veya yönetici kaydedebilir."
+  ],
+  "سناریو پیدا نشد": [
+    "Scenario not found.",
+    "لم يعثر على السيناريو.",
+    "Senaryo bulunamadı."
+  ],
+  "صفحه یا اندازه صفحه معتبر نیست": [
+    "The page or page size is invalid.",
+    "الصفحة أو حجمها غير صالح.",
+    "Sayfa veya sayfa boyutu geçersiz."
+  ],
+  "صفحه یا جستجوی سناریو معتبر نیست": [
+    "Scenario page or search is invalid.",
+    "صفحة السيناريو أو البحث غير صالح.",
+    "Senaryo sayfası veya araması geçersiz."
+  ],
+  "ظرفیت سناریوهای آموزشی این مرورگر تکمیل است": [
+    "This browser’s evaluation scenario capacity is full.",
+    "اكتملت سعة سيناريوهات التقييم لهذا المتصفح.",
+    "Bu tarayıcının değerlendirme senaryosu kapasitesi dolu."
+  ],
+  "عنوان یا دلیل سناریو معتبر نیست": [
+    "The scenario title or rationale is invalid.",
+    "عنوان السيناريو أو سببه غير صالح.",
+    "Senaryo başlığı veya gerekçesi geçersiz."
+  ],
+  "فیلتر مانیتورینگ معتبر نیست": [
+    "The monitoring filter is invalid.",
+    "مرشح المراقبة غير صالح.",
+    "İzleme filtresi geçersiz."
+  ],
+  "محاسبه سناریو به عدد نامعتبر رسید": [
+    "The scenario calculation produced a non-finite value.",
+    "أنتج حساب السيناريو قيمة غير منتهية.",
+    "Senaryo hesabı sonlu olmayan bir değer üretti."
+  ],
+  "مرجع سناریو باید تأییدشده باشد": [
+    "The scenario reference must be approved.",
+    "يجب اعتماد مرجع السيناريو.",
+    "Senaryo referansı onaylanmış olmalıdır."
+  ],
+  "مرجع سناریو پیدا نشد": [
+    "Scenario reference not found.",
+    "لم يعثر على مرجع السيناريو.",
+    "Senaryo referansı bulunamadı."
+  ],
+  "مرجع سناریوی موجود قابل تغییر نیست": [
+    "An existing scenario’s reference cannot be changed.",
+    "لا يمكن تغيير مرجع السيناريو القائم.",
+    "Mevcut senaryonun referansı değiştirilemez."
+  ],
+  "مسئول سناریو باید مهندس یا مدیر فعال باشد": [
+    "The scenario owner must be an active engineer or administrator.",
+    "يجب أن يكون المسؤول مهندساً أو مديراً نشطاً.",
+    "Senaryo sorumlusu etkin mühendis veya yönetici olmalıdır."
+  ],
+  "مسیر پروفایل پیدا نشد": [
+    "Profile route not found.",
+    "لم يعثر على مسار الملف.",
+    "Profil yolu bulunamadı."
+  ],
+  "مسیر دوقلوی مهندسی پیدا نشد": [
+    "Engineering twin route not found.",
+    "لم يعثر على مسار التوأم الهندسي.",
+    "Mühendislik ikizi yolu bulunamadı."
+  ],
+  "نسخه پروفایل معتبر نیست": [
+    "The profile version is invalid.",
+    "إصدار الملف غير صالح.",
+    "Profil sürümü geçersiz."
+  ],
+  "نسخه سناریو تغییر کرده؛ دوباره دریافت کنید": [
+    "The scenario version changed; reload it.",
+    "تغير إصدار السيناريو؛ أعد تحميله.",
+    "Senaryo sürümü değişti; yeniden yükleyin."
+  ],
+  "نسخه سناریو معتبر نیست": [
+    "The scenario version is invalid.",
+    "إصدار السيناريو غير صالح.",
+    "Senaryo sürümü geçersiz."
+  ],
+  "نسخه مرجع سناریو تغییر کرده؛ سناریوی جدید بسازید": [
+    "The reference version changed; create a new scenario.",
+    "تغير إصدار المرجع؛ أنشئ سيناريو جديداً.",
+    "Referans sürümü değişti; yeni senaryo oluşturun."
+  ],
+  "نقش و هویت سازمانی از پروفایل قابل تغییر نیست": [
+    "Role and organisational identity cannot be changed through the profile.",
+    "لا يمكن تغيير الدور والهوية المؤسسية عبر الملف.",
+    "Rol ve kurumsal kimlik profilden değiştirilemez."
+  ],
+  "ورودی فیزیکی سناریو خارج از محدوده است": [
+    "A physical scenario input is outside its bounds.",
+    "المدخل الفيزيائي للسيناريو خارج الحدود.",
+    "Fiziksel senaryo girdisi sınırların dışında."
+  ],
+  "ورودی فیزیکی سناریو معتبر نیست": [
+    "The physical scenario inputs are invalid.",
+    "المدخلات الفيزيائية للسيناريو غير صالحة.",
+    "Fiziksel senaryo girdileri geçersiz."
+  ],
+  "ویرایش سناریو فقط برای مسئول یا مدیر مجاز است": [
+    "Only the owner or administrator can edit this scenario.",
+    "يسمح للمسؤول أو المدير فقط بتعديل السيناريو.",
+    "Bu senaryoyu yalnızca sorumlu veya yönetici düzenleyebilir."
+  ],
+  "هندسه فنر با فرض انتهای تخت سنگ‌خورده سازگار نیست": [
+    "The spring geometry is incompatible with squared ground ends.",
+    "هندسة النابض لا توافق افتراض النهايات المستوية المجلخة.",
+    "Yay geometrisi taşlanmış düz uç varsayımıyla uyumsuz."
   ]
 }

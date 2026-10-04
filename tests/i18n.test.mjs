@@ -6,7 +6,7 @@ import {roles,schemas} from '../server/domain.mjs';
 const dictionary=JSON.parse(readFileSync(new URL('../src/platform/translations.json',import.meta.url),'utf8').replace(/^\uFEFF/,''));
 test('operational API errors and dynamic field labels have translations in every supported language',()=>{
  const missing=[];
- for(const path of ['server/workflows.mjs','server/queries.mjs','server/app.mjs']){
+ for(const path of ['server/workflows.mjs','server/queries.mjs','server/app.mjs','server/twin.mjs','server/account-services.mjs']){
   const source=readFileSync(new URL('../'+path,import.meta.url),'utf8');
   const messages=[...source.matchAll(/(?:fail|error)\(\d+,'([^']+)'/g)].map(m=>m[1]);
   for(const message of messages)if(/[\u0600-\u06ff]/.test(message)&&!dictionary[message])missing.push([path,message]);
@@ -19,7 +19,7 @@ test('four language catalog covers role, field and enum labels without changing 
 });
 test('active operational UI has complete translation keys and no untranslated Persian JSX text',()=>{
  const missing=[],literal=[];
- for(const path of ['src/App.tsx',...['PublicLanding','DemoLogin','PersonalWorkspace','RolePriorities','BenefitCalculator','IndustrialWorkbench','CameraWorkbench','JalaliDateInput','ModelRegistry','Simulator','OperationsDashboard','RecordWorkspace','RecordEditor','CommandSearch','UserDirectory','PlatformGuide','OperationManual','ExecutionWorkspace','ReportingWorkspace','AccountSecurity','ExecutionGuide'].map(n=>`src/platform/${n}.tsx`)]){
+ for(const path of ['src/App.tsx',...['PublicLanding','DemoLogin','PersonalWorkspace','RolePriorities','BenefitCalculator','IndustrialWorkbench','CameraWorkbench','JalaliDateInput','ModelRegistry','Simulator','OperationsDashboard','RecordWorkspace','RecordEditor','CommandSearch','UserDirectory','PlatformGuide','OperationManual','ExecutionWorkspace','ReportingWorkspace','AccountSecurity','ExecutionGuide','DigitalTwinWorkspace','ProfileWorkspace','MonitoringWorkspace'].map(n=>`src/platform/${n}.tsx`)]){
   const text=readFileSync(new URL('../'+path,import.meta.url),'utf8');const ast=ts.createSourceFile(path,text,ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX);
   function visit(node){if(ts.isJsxText(node)&&/[\u0600-\u06ff]/.test(node.text))literal.push([path,node.text.trim()]);if(ts.isCallExpression(node)&&node.expression.getText(ast)==='t'&&node.arguments.length&&ts.isStringLiteral(node.arguments[0])){const source=node.arguments[0].text;if(/[\u0600-\u06ff]/.test(source)&&!dictionary[source])missing.push([path,source]);}ts.forEachChild(node,visit);}visit(ast);
  }
@@ -35,7 +35,7 @@ test('Persian calendar date is consistent in all four language locales',()=>{
 
  test('new operational surfaces have complete four-language copy tuples',()=>{
  let count=0;
- for(const name of ['OperationsDashboard','RecordWorkspace','RecordEditor','UserDirectory','CommandSearch','PublicLanding','PersonalWorkspace','OperationManual','ExecutionWorkspace','ReportingWorkspace','AccountSecurity','ExecutionGuide']){
+ for(const name of ['OperationsDashboard','RecordWorkspace','RecordEditor','UserDirectory','CommandSearch','PublicLanding','PersonalWorkspace','OperationManual','ExecutionWorkspace','ReportingWorkspace','AccountSecurity','ExecutionGuide','DigitalTwinWorkspace','ProfileWorkspace','MonitoringWorkspace']){
  const path=`src/platform/${name}.tsx`,source=readFileSync(new URL('../'+path,import.meta.url),'utf8'),ast=ts.createSourceFile(path,source,ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX);
  function visit(node){if(ts.isCallExpression(node)&&node.expression.getText(ast)==='w'){count++;assert.equal(node.arguments.length,4,path);assert(node.arguments.every(ts.isStringLiteral),path);assert(node.arguments.every(arg=>arg.text.trim()),path);assert(!/[\u0600-\u06ff]/.test(node.arguments[1].text),path);assert(!/[\u0600-\u06ff]/.test(node.arguments[3].text),path);}ts.forEachChild(node,visit);}visit(ast);
  }assert(count>200,'Expected operational copy coverage');

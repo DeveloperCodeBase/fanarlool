@@ -12,7 +12,7 @@ import tempfile
 import time
 import uuid
 
-TABLES = ('users', 'sessions', 'records', 'audit', 'login_limits', 'user_profiles', 'operation_orders', 'operation_lots', 'operation_tasks', 'operation_movements')
+TABLES = ('users', 'sessions', 'records', 'audit', 'login_limits', 'user_profiles', 'operation_orders', 'operation_lots', 'operation_tasks', 'operation_movements', 'twin_scenarios', 'twin_revisions')
 
 def digest(path):
     value = hashlib.sha256()

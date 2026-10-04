@@ -4,7 +4,7 @@
 
 رابط React/TypeScript/Vite به صورت `dist` سرو می‌شود. API مستقل Node/SQLite با سرویس `fanarlool-api` و Unix socket `/run/fanarlool/api.sock` مالک احراز هویت، مجوزها، ثبت سوابق، گردش بررسی، پروفایل و فعالیت شخصی است. پنل مدیر، رویدادها و وضعیت سرویس همین پروژه را نمایش می‌دهد.
 
-فرآیند انتشار: commit/push → `validate -Sha` → فقط بار اول `platform -Sha` → `deploy -Sha` → `health`. platform فقط virtual host متعلق به FanarLool را به‌روزرسانی و سرویس اختصاصی را نصب می‌کند؛ پورت جدید ندارد. قبل از deploy، DB با SQLite backup API و integrity_check در `shared/backups` حفظ می‌شود. داده در `shared/data/platform.sqlite`؛ mode 600 و parent 700؛ schema version=3 با جدول پروفایل. API env در `shared/api.env` شامل path/origin/SHA است. رمز اولیه از Git/گزارش/لاگ خارج بماند.
+فرآیند انتشار: commit/push → `validate -Sha` → فقط بار اول `platform -Sha` → `deploy -Sha` → `health`. platform فقط virtual host متعلق به FanarLool را به‌روزرسانی و سرویس اختصاصی را نصب می‌کند؛ پورت جدید ندارد. قبل از deploy، DB با SQLite backup API و integrity_check در `shared/backups` حفظ می‌شود. داده در `shared/data/platform.sqlite`؛ mode 600 و parent 700؛ schema version=4 با جدول پروفایل. API env در `shared/api.env` شامل path/origin/SHA است. رمز اولیه از Git/گزارش/لاگ خارج بماند.
 
 برای نخستین مدیر، مالک از Windows فرمان `scripts/remote.ps1 -Action admin -Sha <active-40-char-SHA>` را اجرا می‌کند. نام کاربری و نام نمایش با prompt و رمز ۱۲ تا ۱۲۸ نویسه با SecureString دریافت و از stdin ارسال می‌شود. این فرمان فقط وقتی مدیر فعال وجود ندارد می‌پذیرد؛ رمز وارد command line نمی‌شود. حساب‌های بعدی از UI مدیر ایجاد می‌شوند و تغییر رمز موقت اجباری است.
 
@@ -72,3 +72,7 @@ deploy سرویس و timer اختصاصی `fanarlool-backup` را پس از کن
 پس از انتشار، `scripts/remote.ps1 -Action backup-drill -Sha <active SHA>` یک پشتیبان تازه می‌سازد، hash را بررسی و تنها روی کپی موقت اختصاصی بازیابی می‌کند. فایل زنده تغییر نمی‌کند. نتیجه و زمان آخرین پشتیبان/مانور در مانیتورینگ مدیر دیده می‌شوند؛ این شاهد، جای مانور کامل قطع سرور و نسخه خارج سایت را نمی‌گیرد.
 
 مدیر می‌تواند رمز کاربر دیگر را با دلیل مستند بازنشانی کند؛ رمز در audit ذخیره نمی‌شود، همه نشست‌های هدف باطل و تغییر رمز در ورود بعد اجباری می‌شود. هر کاربر فقط نشست‌های خود را می‌بیند و می‌تواند نشست دیگر را باطل کند. اگر تمام مدیران دسترسی را فراموش کنند، مالک میزبان از `scripts/remote.ps1 -Action recover-admin -Sha <active SHA>` استفاده می‌کند؛ حساب admin نام‌برده باید قبلاً وجود داشته باشد، رمز از SecureString/stdin دریافت و رویداد بازیابی ثبت می‌شود. این مسیر حساب تازه یا رمز پیش‌فرض ایجاد نمی‌کند.
+
+## schema۴ و مدل مهندسی
+
+جدول‌های twin_scenarios و twin_revisions و ستون‌های پروفایل افزایشی هستند؛ داده قبلی حفظ می‌شود. پشتیبان روزانه و recovery drill شمارش این دو جدول را نیز ثبت می‌کنند؛ manifest schema۳ قبلی سازگار باقی می‌ماند. مدل محاسباتی twin در API موجود اجرا می‌شود، بدون worker، پورت یا container تازه. پایش admin فقط داده پروژه خود را می‌خواند و quick_check پنج‌دقیقه‌ای زمان واقعی بررسی را حفظ می‌کند.

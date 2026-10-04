@@ -42,6 +42,22 @@ class BackupTests(unittest.TestCase):
             module.verify(self.root)
         self.assertEqual(self.source.read_bytes(), self.original)
 
+    def test_schema4_twin_history_survives_recovery(self):
+        with sqlite3.connect(self.source) as db:
+            db.executescript("CREATE TABLE twin_scenarios(id TEXT PRIMARY KEY, owner TEXT REFERENCES users(id)); CREATE TABLE twin_revisions(scenario_id TEXT REFERENCES twin_scenarios(id), version INTEGER); INSERT INTO twin_scenarios VALUES('scenario','owner'); INSERT INTO twin_revisions VALUES('scenario',1); INSERT INTO twin_revisions VALUES('scenario',2); PRAGMA user_version=4;")
+        original = self.source.read_bytes()
+        target = module.backup(self.root)
+        manifest = json.loads((target / 'manifest.json').read_text())
+        self.assertEqual(manifest['schema'], 4)
+        self.assertEqual(manifest['counts']['twin_scenarios'], 1)
+        self.assertEqual(manifest['counts']['twin_revisions'], 2)
+        module.verify(self.root)
+        recovered = json.loads((self.root / 'data/recovery-status.json').read_text())
+        self.assertEqual(recovered['counts'], manifest['counts'])
+        self.assertEqual(self.source.read_bytes(), original)
+        with sqlite3.connect(target / 'platform.sqlite') as db:
+            self.assertEqual(db.execute('SELECT version FROM twin_revisions ORDER BY version').fetchall(), [(1,), (2,)])
+
     def test_symlink_database_and_foreign_key_corruption_are_rejected(self):
         other = self.root / 'unrelated.sqlite'
         other.write_bytes(self.original)
