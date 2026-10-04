@@ -1,0 +1,27 @@
+[Unit]
+Description=FanarLool isolated platform API
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=www-data
+WorkingDirectory=/var/www/fanarlool/current
+EnvironmentFile=/var/www/fanarlool/shared/api.env
+ExecStart=/usr/bin/node /var/www/fanarlool/current/server/index.mjs
+Restart=on-failure
+RestartSec=3
+RuntimeDirectory=fanarlool
+RuntimeDirectoryMode=0750
+UMask=0007
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/www/fanarlool/shared/data /run/fanarlool
+RestrictAddressFamilies=AF_UNIX
+MemoryMax=512M
+TasksMax=32
+
+[Install]
+WantedBy=multi-user.target

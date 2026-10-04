@@ -1,193 +1,83 @@
-import React, { useState, useEffect } from 'react';
-import { TabId, Language, UserProfile } from './types';
-import { USER_PROFILES } from './mockData';
-import { Header } from './components/Header';
-import { LoginModal } from './components/LoginModal';
-import { AlarmModal } from './components/AlarmModal';
-import { LandingPage } from './components/LandingPage';
-import { DigitalTwinView } from './components/DigitalTwinView';
-import { Module1Vision } from './components/Module1Vision';
-import { Module2Profilometry } from './components/Module2Profilometry';
-import { Module3CentralQC } from './components/Module3CentralQC';
-import { Module4PdM } from './components/Module4PdM';
-import { Module5OEE } from './components/Module5OEE';
-import { Module6Energy } from './components/Module6Energy';
-import { MetallurgyLab } from './components/MetallurgyLab';
-import { QualityCertificate } from './components/QualityCertificate';
-import { LiveCameraStation } from './components/LiveCameraStation';
-import { SpringDesignTools } from './components/SpringDesignTools';
-import { FactoryScadaTopology } from './components/FactoryScadaTopology';
-import { ProcessControlSPC } from './components/ProcessControlSPC';
-import { FinancialRoiSimulator } from './components/FinancialRoiSimulator';
-import { UserGuideView } from './components/UserGuideView';
-import { ProposalsRoadmap } from './components/ProposalsRoadmap';
-import { ShieldCheck } from 'lucide-react';
-
-export const App: React.FC = () => {
-  const [currentTab, setCurrentTab] = useState<TabId>('landing');
-  const [lang, setLang] = useState<Language>('fa');
-  const [currentUser, setCurrentUser] = useState<UserProfile>(USER_PROFILES[0]);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
-  const [isAlarmModalOpen, setIsAlarmModalOpen] = useState<boolean>(false);
-  const [simulating, setSimulating] = useState<boolean>(true);
-  const [activeAlarmsCount, setActiveAlarmsCount] = useState<number>(2);
-
-  // Set document direction when language changes
-  useEffect(() => {
-    document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
-    document.documentElement.lang = lang;
-  }, [lang]);
-
-  // Periodic telemetry simulation ticker
-  useEffect(() => {
-    if (!simulating) return;
-    const interval = setInterval(() => {
-      // Small randomized heartbeat
-      setActiveAlarmsCount((prev) => (Math.random() > 0.85 ? (prev === 2 ? 1 : 2) : prev));
-    }, 8000);
-    return () => clearInterval(interval);
-  }, [simulating]);
-
-  const toggleLanguage = () => {
-    setLang((prev) => (prev === 'fa' ? 'en' : 'fa'));
-  };
-
-  const isFa = lang === 'fa';
-
-  return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-cyan-500 selection:text-slate-950">
-      {/* Top Main Navigation Header */}
-      <Header
-        currentTab={currentTab}
-        onSelectTab={setCurrentTab}
-        lang={lang}
-        onToggleLang={toggleLanguage}
-        currentUser={currentUser}
-        onOpenLoginModal={() => setIsLoginModalOpen(true)}
-        onOpenAlarmModal={() => setIsAlarmModalOpen(true)}
-        simulating={simulating}
-        onToggleSimulation={() => setSimulating(!simulating)}
-        activeAlarmsCount={activeAlarmsCount}
-      />
-
-      {/* Main Content Body */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
-        {currentTab === 'landing' && (
-          <LandingPage onSelectTab={setCurrentTab} lang={lang} />
-        )}
-        {currentTab === 'digital_twin' && (
-          <DigitalTwinView lang={lang} />
-        )}
-        {currentTab === 'module1_vision' && (
-          <Module1Vision lang={lang} />
-        )}
-        {currentTab === 'module2_profilometry' && (
-          <Module2Profilometry lang={lang} />
-        )}
-        {currentTab === 'module3_central_qc' && (
-          <Module3CentralQC lang={lang} />
-        )}
-        {currentTab === 'module4_pdm' && (
-          <Module4PdM lang={lang} />
-        )}
-        {currentTab === 'module5_oee' && (
-          <Module5OEE lang={lang} />
-        )}
-        {currentTab === 'module6_energy' && (
-          <Module6Energy lang={lang} />
-        )}
-        {currentTab === 'metallurgy_lab' && (
-          <MetallurgyLab lang={lang} />
-        )}
-        {currentTab === 'quality_certificate' && (
-          <QualityCertificate lang={lang} />
-        )}
-        {currentTab === 'live_camera' && (
-          <LiveCameraStation lang={lang} />
-        )}
-        {currentTab === 'engineering_tools' && (
-          <SpringDesignTools lang={lang} />
-        )}
-        {currentTab === 'factory_scada' && (
-          <FactoryScadaTopology lang={lang} />
-        )}
-        {currentTab === 'spc_control' && (
-          <ProcessControlSPC lang={lang} />
-        )}
-        {currentTab === 'roi_calculator' && (
-          <FinancialRoiSimulator lang={lang} />
-        )}
-        {currentTab === 'user_guide' && (
-          <UserGuideView lang={lang} onNavigateToTab={setCurrentTab} />
-        )}
-        {currentTab === 'proposals_roadmap' && (
-          <ProposalsRoadmap lang={lang} />
-        )}
-      </main>
-
-      {/* Role Switcher & Login Modal */}
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
-        currentUser={currentUser}
-        onSelectUser={setCurrentUser}
-        lang={lang}
-      />
-
-      {/* Real-time SCADA Alarm Console Modal */}
-      <AlarmModal
-        isOpen={isAlarmModalOpen}
-        onClose={() => setIsAlarmModalOpen(false)}
-        lang={lang}
-        onAcknowledgeAlarm={() => setActiveAlarmsCount(prev => Math.max(0, prev - 1))}
-      />
-
-      {/* Industrial Footer */}
-      <footer className="mt-16 bg-slate-950 border-t border-slate-800/80 text-slate-400 py-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-xl bg-white p-1 border border-slate-700 flex items-center justify-center">
-              <img src="/logo.png" alt="Iran Coil Spring Co." className="w-full h-full object-contain" onError={(e) => { (e.target as HTMLImageElement).src = '/logo.jpg'; }} />
-            </div>
-            <div>
-              <div className="text-sm font-bold text-white">
-                {isFa ? 'کارخانه فنر لول ایران (سهامی عام)' : 'Iran Coil Spring Company (P.J.S.)'}
-              </div>
-              <div className="text-xs text-slate-400">
-                {isFa 
-                  ? 'بزرگترین تولیدکننده انواع فنرهای لول سیستم تعلیق خودروهای سواری، تجاری و ادوات ریلی در خاورمیانه'
-                  : 'Leading Manufacturer of Suspension Coil Springs in the Middle East'}
-              </div>
-            </div>
-          </div>
-
-          <div className="text-xs text-center md:text-right space-y-1">
-            <div className="flex items-center justify-center md:justify-end gap-2 text-slate-300">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
-              <span>{isFa ? 'پلتفرم هوشمند طراحی‌شده توسط: شبکه هوشمند ابتکار ویستا' : 'Designed by: Vesta Smart Network'}</span>
-            </div>
-            <div className="text-[11px] text-slate-400">
-              {isFa ? 'مستقر در پارک علم و فناوری استان سمنان • سازمان نظام صنفی رایانه‌ای' : 'Semnan Science & Tech Park • Computer Guild Organization'}
-            </div>
-          </div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-6 pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-400 gap-3">
-          <div>
-            © {new Date().getFullYear()} {isFa ? 'تمامی حقوق مادی و معنوی متعلق به کارخانه فنر لول ایران و ابتکار ویستا می‌باشد.' : 'All rights reserved. Iran Coil Spring Co. & Vesta Smart Network.'}
-          </div>
-          <div className="flex items-center gap-4 font-mono text-slate-400">
-            <span>DIN EN 13906-1</span>
-            <span>•</span>
-            <span>DIN 2095</span>
-            <span>•</span>
-            <span>ISO 10816-3</span>
-            <span>•</span>
-            <span>ANSI/ISA-95</span>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
-};
+import {translate as t, useLocale, LanguageSelector} from './platform/i18n';
+import {useState,useEffect,lazy,Suspense,Component,type ReactNode} from 'react';
+import {ArrowLeft,LogOut,LayoutDashboard,ClipboardList,Users,ShieldCheck,BookOpen,FlaskConical,RefreshCw,Search,Plus,Download,X,Check,AlertCircle,Menu,ChevronLeft,ChevronRight,LockKeyhole,Activity,Factory,FileClock} from 'lucide-react';
+import {PublicLanding} from './platform/PublicLanding';
+import {api,ApiError,setCsrf,setApiMode,faNumber,faDate,faDateTime,exportCsv,statusLabels,type User,type Workspace,type Catalog,type RecordRow} from './platform/api';
+import './platform/platform.css';
+import './platform/professional.css';
+import {DemoLogin} from './platform/DemoLogin';
+import {PersonalWorkspace,SystemMonitor,EventTable,type Preferences} from './platform/PersonalWorkspace';
+import {labTools,labGroups} from './platform/labCatalog';
+import {w} from './platform/copy';
+import {OperationsDashboard} from './platform/OperationsDashboard';
+import {RecordWorkspace} from './platform/RecordWorkspace';
+import {UserDirectory} from './platform/UserDirectory';
+import {CommandSearch} from './platform/CommandSearch';
+import {RecordEditor as RecordDialog} from './platform/RecordEditor';
+import {ExecutionGuide} from './platform/ExecutionGuide';
+import {RolePriorities} from './platform/RolePriorities';
+import {JalaliDateInput} from './platform/JalaliDateInput';
+import {tehranDate} from './platform/calendar';
+const ModelRegistry=lazy(()=>import('./platform/ModelRegistry'));
+const PlatformGuide=lazy(()=>import('./platform/PlatformGuide').then(module=>({default:module.PlatformGuide})));
+const ExecutionWorkspace=lazy(()=>import('./platform/ExecutionWorkspace'));
+const ReportingWorkspace=lazy(()=>import('./platform/ReportingWorkspace').then(m=>({default:m.ReportingWorkspace})));
+const AccountSecurity=lazy(()=>import('./platform/AccountSecurity').then(m=>({default:m.AccountSecurity})));
+const Simulator=lazy(()=>import('./platform/Simulator'));
+const DigitalTwinWorkspace=lazy(()=>import('./platform/DigitalTwinWorkspace'));
+class ErrorBoundary extends Component<{children:ReactNode},{failed:boolean}>{state={failed:false};static getDerivedStateFromError(){return{failed:true};}render(){return this.state.failed?<div className="notice amber">{t("نمایش ابزار با خطا مواجه شد؛ صفحه را دوباره بارگذاری کنید.")}</div>:this.props.children;}}
+const roleBriefs=[['مدیریت','شاخص‌های تأییدشده'],['تولید','شیفت و بچ'],['کیفیت','بازرسی و کالیبراسیون'],['نگهداری','تجهیزات و دستورکار'],['انرژی','قرائت و شدت مصرف'],['مهندسی','دستور ساخت و تحلیل']];
+const descriptions:Record<string,string>={admin:'کاربران، دسترسی و سلامت سامانه را مدیریت کنید.',executive:'تصویر یکپارچه از تولید، کیفیت و اقدامات کارخانه.',production:'سوابق شیفت و بچ را ثبت و آماده بررسی کنید.',quality:'ردیابی بازرسی و تصمیم کیفیت از ابزار تا بچ محصول.',maintenance:'درخواست‌ها و سوابق تجهیزات را به اقدام قابل پیگیری تبدیل کنید.',energy:'قرائت‌ها و محدودیت انرژی را ثبت و بررسی کنید.',engineering:'دارایی و دستور ساخت را با بازنگری مشخص مدیریت کنید.',auditor:'نسخه‌های ثبت‌شده و رویدادها را بدون تغییر بررسی کنید.'};
+const pageTitles:Record<string,string>={overview:'نمای کلی',knowledge:'دانش و برنامهٔ توسعه',simulator:'آزمایشگاه مهندسی',users:'کاربران و دسترسی',audit:'ردپای رویدادها',profile:'پروفایل من',settings:'تنظیمات من',activity:'فعالیت‌های من',system:'مانیتورینگ سامانه',models:'داده و مدل مرجع'};
+export function App(){
+ const {locale,setLocale}=useLocale();
+ const[page,setPage]=useState<'landing'|'login'|'workspace'>('landing'),[user,setUser]=useState<User|null>(null),[workspace,setWorkspace]=useState<Workspace|null>(null),[section,setSection]=useState('overview');
+ const[error,setError]=useState(''),[notice,setNotice]=useState(''),[busy,setBusy]=useState(false),[loading,setLoading]=useState(true),[online,setOnline]=useState(navigator.onLine),[mobile,setMobile]=useState(false);
+ const[demoRole,setDemoRole]=useState('');
+ const[labOpen,setLabOpen]=useState(true),[labTool,setLabTool]=useState('twin');
+ const[prefs,setPrefs]=useState<Preferences>({density:'comfortable',startPage:'overview',notifications:true});
+ const[username,setUsername]=useState(''),[password,setPassword]=useState(''),[newPassword,setNewPassword]=useState(''),[changeMode,setChangeMode]=useState(false);
+ const[search,setSearch]=useState(''),[filter,setFilter]=useState('all'),[currentPage,setCurrentPage]=useState(1),[editing,setEditing]=useState<RecordRow|null|undefined>(),[values,setValues]=useState<Record<string,string|number>>({});
+ const[users,setUsers]=useState<any[]>([]),[events,setEvents]=useState<any[]>([]),[newUser,setNewUser]=useState(false),[userDraft,setUserDraft]=useState({username:'',name:'',role:'production',password:''});
+ const[focusId,setFocusId]=useState<string|null>(null),[sourceId,setSourceId]=useState<string|undefined>(),[pendingCreate,setPendingCreate]=useState<string|null>(null),[commandOpen,setCommandOpen]=useState(false);
+ useEffect(()=>{const yes=()=>setOnline(true),no=()=>setOnline(false);window.addEventListener('online',yes);window.addEventListener('offline',no);return()=>{window.removeEventListener('online',yes);window.removeEventListener('offline',no);};},[]);
+ useEffect(()=>{window.scrollTo({top:0});},[page,section]);
+ function openSection(key:string){setSection(key);setMobile(false);setFocusId(null);}
+ function expireSession(){setCsrf('');setUser(null);setWorkspace(null);setPage('login');setPassword('');}
+ function openRecord(row:RecordRow){setWorkspace(previous=>previous&&!previous.records.some(r=>r.id===row.id)?{...previous,records:[row,...previous.records]}:previous);setSection(row.kind);setFocusId(row.id);setMobile(false);setCommandOpen(false);}
+ function focusRecord(id:string|null){if(id===null){setFocusId(null);return;}const row=workspace?.records.find(r=>r.id===id);if(row)openRecord(row);}
+ useEffect(()=>{if(focusId)document.querySelector('.record-detail')?.scrollIntoView({block:'start'});},[focusId]);
+ function openCreate(kind:string){setSection(kind);setMobile(false);setFocusId(null);setPendingCreate(kind);}
+ function openGuide(key:string){if(key.startsWith('lab:')){setLabTool(key.slice(4));openSection('simulator');return;}if(['profile','settings','activity','models','knowledge','execution','reports','security'].includes(key)||workspace?.catalog.some(c=>c.kind===key)||(key==='system'&&user?.role==='admin'))openSection(key);}
+ async function load(initial=false){const [next,profile]=await Promise.all([api<Workspace>('/workspace'),api<any>('/profile')]);if(focusId&&!next.records.some(r=>r.id===focusId)){try{const focused=await api<{record:RecordRow}>(`/records/${focusId}`);next.records=[focused.record,...next.records];}catch{}}setWorkspace(next);setPrefs(profile.preferences);setUser(profile.user);if(initial){if(profile.version>0&&['fa','en','ar','tr'].includes(profile.preferences.locale))setLocale(profile.preferences.locale);const start=profile.preferences.startPage;if(start==='twin'&&next.catalog.some(c=>c.kind==='recipe')&&next.catalog.some(c=>c.kind==='asset')){setLabTool('twin');setSection('simulator');}else{const permitted=['overview','profile','settings','activity','execution','reports','security','knowledge','models',...(profile.user.role==='admin'?['system','users']:[])];setSection(permitted.includes(start)||next.catalog.some(c=>c.kind===start)?start:'overview');}}}
+ useEffect(()=>{api<{user:User;csrf:string}>('/auth/me').then(async r=>{setCsrf(r.csrf);if(!r.user.mustChange)await load(true);else setUser(r.user);setPage('workspace');}).catch(e=>{if(!(e instanceof ApiError&&e.status===401))setError('ارتباط با سرویس ورود برقرار نیست؛ معرفی سامانه در دسترس است.');}).finally(()=>setLoading(false));},[]);
+ useEffect(()=>{if(editing===undefined&&!newUser)return;const previous=document.activeElement as HTMLElement|null;const dialog=document.querySelector<HTMLElement>('[role=dialog]');if(!dialog)return;const focusable=()=>Array.from(dialog.querySelectorAll<HTMLElement>('button:not(:disabled),input:not(:disabled),select:not(:disabled),textarea:not(:disabled),a[href]'));focusable()[0]?.focus();const trap=(event:KeyboardEvent)=>{if(event.key==='Escape'&&!busy){setEditing(undefined);setNewUser(false);}if(event.key!=='Tab')return;const nodes=focusable();if(!nodes.length)return;const first=nodes[0],last=nodes[nodes.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}};dialog.addEventListener('keydown',trap);return()=>{dialog.removeEventListener('keydown',trap);previous?.focus();};},[editing!==undefined,newUser,busy]);
+ useEffect(()=>{setSearch('');setFilter('all');setCurrentPage(1);setEditing(undefined);setError('');setNotice('');setMobile(false);if(section==='users')api<any>('/users').then(r=>setUsers(r.users)).catch(e=>setError(e.message));if(section==='audit')api<any>('/audit').then(r=>setEvents(r.events)).catch(e=>setError(e.message));},[section]);
+ useEffect(()=>{if(pendingCreate!==section)return;const catalog=workspace?.catalog.find(c=>c.kind===section);if(!catalog?.write)return;setEditing(null);setSourceId(undefined);setValues(Object.fromEntries(catalog.fields.map(f=>[f.key,f.type==='date'?tehranDate():f.type==='select'?f.options![0]:''])));setPendingCreate(null);},[pendingCreate,section]);
+ useEffect(()=>{const handle=(event:KeyboardEvent)=>{if(page==='workspace'&&workspace&&editing===undefined&&!newUser&&!changeMode&&(event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='k'){event.preventDefault();setCommandOpen(value=>!value);}};window.addEventListener('keydown',handle);return()=>window.removeEventListener('keydown',handle);},[page,workspace,editing,newUser,changeMode]);
+ async function run(operation:()=>Promise<void>){if(!online){setError('ارتباط قطع است. تغییرات ارسال نشده‌اند.');return;}setBusy(true);setError('');setNotice('');try{await operation();}catch(e){if(e instanceof ApiError&&e.status===401){setUser(null);setWorkspace(null);setPage('login');setEditing(undefined);setChangeMode(false);setPassword('');setNewPassword('');setCsrf('');}setError(e instanceof Error?e.message:t('عملیات انجام نشد'));}finally{setBusy(false);}}
+ async function login(e:React.FormEvent){e.preventDefault();setApiMode(demoRole?'demo':'production');await run(async()=>{const r=await api<{user:User;csrf:string}>('/auth/login','POST',{username,password});setCsrf(r.csrf);if(!r.user.mustChange)await load(true);else setUser(r.user);setPassword('');setPage('workspace');});}
+ async function logout(){await run(async()=>{await api('/auth/logout','POST',{});setCsrf('');setUser(null);setWorkspace(null);setPassword('');setPage('landing');setSection('overview');setDemoRole('');setApiMode('production');});}
+ async function changePassword(e:React.FormEvent){e.preventDefault();await run(async()=>{await api('/auth/password','POST',{current:password,password:newPassword});setUser(null);setWorkspace(null);setPassword('');setNewPassword('');setPage('login');setChangeMode(false);setNotice('رمز تغییر کرد. با رمز جدید وارد شوید.');});}
+ const displayTitle=section==='execution'?w('اجرای کارخانه','Factory execution','تنفيذ عمليات المصنع','Fabrika yürütme'):section==='reports'?w('گزارش و سوابق','Reports and archive','التقارير والأرشيف','Raporlar ve arşiv'):section==='security'?w('امنیت حساب','Account security','أمان الحساب','Hesap güvenliği'):section==='overview'?w('مرکز عملیات','Operations centre','مركز العمليات','Operasyon merkezi'):section==='knowledge'?w('راهنمای عملیات','Operations handbook','دليل العمليات','Operasyon kılavuzu'):t(pageTitles[section]);
+ const selected=workspace?.catalog.find(c=>c.kind===section),records=workspace?.records||[],k=workspace?.kpis;
+ const listed=records.filter(r=>r.kind===section&&(filter==='all'||r.status===filter)&&(!search||Object.values(r.data).join(' ').toLowerCase().includes(search.toLowerCase())));
+ function startEdit(row:RecordRow|null){setSourceId(undefined);setEditing(row);setValues(row?{...row.data}:Object.fromEntries((selected?.fields||[]).map(f=>[f.key,f.type==='date'?tehranDate():f.type==='select'?f.options![0]:''])));}
+ function startCorrection(row:RecordRow){setSourceId(row.id);setEditing(null);setValues({...row.data});}
+ async function saveRecord(e:React.FormEvent){e.preventDefault();if(!selected)return;await run(async()=>{let result:{id?:string};const previousId=editing?.id;if(editing)result=await api(`/records/${editing.id}`,'PATCH',{version:editing.version,data:values});else result=await api('/records','POST',{kind:selected.kind,data:values,...(sourceId?{sourceId}:{})});setEditing(undefined);setSourceId(undefined);await load();setFocusId(result.id||previousId||null);setNotice('اطلاعات ذخیره شد. برای بررسی مستقل آن را ارسال کنید.');});}
+ async function transition(row:RecordRow,status:string,note?:string){let success=false;await run(async()=>{await api(`/records/${row.id}`,'PATCH',{version:row.version,status,note});await load();setNotice('وضعیت رکورد به‌روز شد.');success=true;});return success;}
+ if(loading)return <div className="initial-loading"><Activity/><span>{t("در حال آماده‌سازی فضای کارخانه…")}</span></div>;
+ if(page==='landing')return <><PublicLanding onLogin={()=>{setError('');setPage('login');}}/>{error&&<div className="floating-notice" role="status">{t(error)}</div>}</>;
+ if(page==='login'||user?.mustChange||changeMode)return <div className="login-layout"><aside><a href="#" className="brand" onClick={e=>{e.preventDefault();if(!user)setPage('landing');}}><img src="/logo.png" alt={t("فنر لول ایران")}/><span>{t("فنر لول ایران")}<small>{t("فضای کاری سازمانی")}</small></span></a><div><span className="eyebrow">{t("هر تیم، یک مسیر روشن")}</span><h1>{t("دسترسی درست.")}<br/>{t("کار دقیق‌تر.")}</h1><p>{t("با حساب شخصی وارد شوید؛ نقش و مجوزها توسط مدیر سامانه تخصیص داده می‌شوند.")}</p><div className="login-roles">{roleBriefs.map(r=><div key={t(r[0])}><Check size={17}/><span><b>{t(r[0])}</b><small>{t(r[1])}</small></span></div>)}</div></div><small>{t("شبکه هوشمند ابتکار ویستا · کارخانه فنر لول ایران")}</small></aside><main><div className="login-card"><LanguageSelector/><span className="login-icon"><LockKeyhole size={27}/></span><h2>{user?.mustChange||changeMode?t('تغییر رمز عبور'):t('ورود به پلتفرم')}</h2><p>{user?.mustChange?t('برای نخستین ورود رمز موقت را تغییر دهید.'):t('حساب شما باید توسط مدیر سامانه فعال شده باشد.')}</p>{!user&&<DemoLogin selected={demoRole} onSelect={role=>{setDemoRole(role);setApiMode('demo');setUsername(`demo.${role}`);setPassword('FanarDemo-2026!');setError('');}} onReal={()=>{setDemoRole('');setApiMode('production');setUsername('');setPassword('');}}/>}<form onSubmit={user?.mustChange||changeMode?changePassword:login}>{!user&&<label>{t("شناسه سازمانی")}<input required autoComplete="username" dir="ltr" value={username} onChange={e=>{setUsername(e.target.value);setDemoRole('');setApiMode('production');}} placeholder={t("شناسه حساب کارکنان")}/></label>}<label>{user?t('رمز فعلی'):t('رمز عبور')}<input required type="password" autoComplete="current-password" dir="ltr" value={password} onChange={e=>setPassword(e.target.value)}/></label>{(user?.mustChange||changeMode)&&<label>{t("رمز جدید")}<input required type="password" minLength={12} maxLength={128} autoComplete="new-password" dir="ltr" value={newPassword} onChange={e=>setNewPassword(e.target.value)}/><small>{t("حداقل ۱۲ نویسه؛ یک عبارت طولانی و اختصاصی انتخاب کنید.")}</small></label>}{error&&<div className="notice error" role="alert">{t(error)}</div>}{notice&&prefs.notifications&&<div className="notice success" role="status">{t(notice)}</div>}<button className="primary large" disabled={busy||!online}>{busy?t('در حال بررسی…'):user?t('تغییر رمز و خروج'):t('ورود امن')}<ArrowLeft size={18}/></button></form><p className="login-help">{t("رمز را فراموش کرده‌اید؟ به مدیر سامانه مراجعه کنید. ثبت‌نام عمومی فعال نیست.")}</p>{user?<button className="text-button" onClick={changeMode?()=>setChangeMode(false):logout}>{changeMode?t('بازگشت به داشبورد'):t('خروج')}</button>:<button className="text-button" onClick={()=>setPage('landing')}>{t("بازگشت به معرفی پلتفرم")}</button>}</div></main></div>;
+ if(!user)return null;
+ return <div className={`workspace-layout ${prefs.density==='compact'?'compact':''}`}><aside className={`workspace-sidebar ${mobile?'open':''}`}><a className="brand" href="#" onClick={e=>{e.preventDefault();openSection('overview');}}><img src="/logo.png" alt={t('فنر لول')}/><span>{t('فنر لول')}<small>INDUSTRIAL INTELLIGENCE</small></span></a><button className="sidebar-dismiss icon-button" aria-label={t('بستن')} onClick={()=>setMobile(false)}><X size={18}/></button><div className="plant-selector"><Factory size={18}/><span>{t('کارخانه فنر لول ایران')}<small>{w('فضای عملیات یکپارچه','Integrated operations','العمليات المتكاملة','Entegre operasyonlar')}</small></span><span className="plant-dot"/></div><nav aria-label={t('داشبورد نقش')}><button className={section==='overview'?'active':''} onClick={()=>openSection('overview')}><LayoutDashboard size={18}/>{w('مرکز عملیات','Operations centre','مركز العمليات','Operasyon merkezi')}</button><span className="sidebar-label">{w('عملیات کارخانه','FACTORY OPERATIONS','عمليات المصنع','FABRİKA OPERASYONLARI')}</span><button className={section==='execution'?'active':''} onClick={()=>openSection('execution')}><Factory size={18}/>{w('اجرای کارخانه','Factory execution','تنفيذ عمليات المصنع','Fabrika yürütme')}</button><button className={section==='reports'?'active':''} onClick={()=>openSection('reports')}><FileClock size={18}/>{w('گزارش و سوابق','Reports and archive','التقارير والأرشيف','Raporlar ve arşiv')}</button>{workspace?.catalog.map(c=><button key={c.kind} className={section===c.kind?'active':''} onClick={()=>openSection(c.kind)}><ClipboardList size={17}/><span>{t(c.title)}</span>{workspace.records.filter(r=>r.kind===c.kind&&r.status==='submitted').length>0&&<b className="nav-count">{faNumber(workspace.records.filter(r=>r.kind===c.kind&&r.status==='submitted').length)}</b>}</button>)}<span className="sidebar-label">{w('مهندسی و دانش','ENGINEERING & KNOWLEDGE','الهندسة والمعرفة','MÜHENDİSLİK VE BİLGİ')}</span><button className={section==='knowledge'?'active':''} onClick={()=>openSection('knowledge')}><BookOpen size={18}/>{w('راهنمای عملیات','Operations handbook','دليل العمليات','Operasyon kılavuzu')}</button><button aria-expanded={labOpen} onClick={()=>setLabOpen(!labOpen)}><FlaskConical size={18}/>{t('آزمایشگاه و شبیه‌ساز')}<ChevronLeft size={14}/></button>{labOpen&&<div className="lab-sidebar">{labGroups.map(group=><details className="nav-lab-group" key={group.id} open={section==='simulator'?labTools.some(tool=>tool.key===labTool&&tool.group===group.id):group.id==='quality'}><summary>{group.title[['fa','en','ar','tr'].indexOf(locale)]}</summary>{labTools.filter(tool=>tool.group===group.id).map(tool=><button key={tool.key} className={section==='simulator'&&labTool===tool.key?'active':''} onClick={()=>{setLabTool(tool.key);openSection('simulator');}}>{t(tool.title)}</button>)}</details>)}</div>}<button className={section==='models'?'active':''} onClick={()=>openSection('models')}><Activity size={17}/>{t('داده و مدل مرجع')}</button><span className="sidebar-label">{w('حساب و راهبری','ACCOUNT & GOVERNANCE','الحساب والحوكمة','HESAP VE YÖNETİŞİM')}</span>{[['security',w('امنیت حساب','Account security','أمان الحساب','Hesap güvenliği')],['profile',t('پروفایل من')],['settings',t('تنظیمات من')],['activity',t('فعالیت‌های من')]].map(([key,title])=><button key={key} className={section===key?'active':''} onClick={()=>openSection(key)}><Users size={17}/>{title}</button>)}{user.role==='admin'&&<><button className={section==='system'?'active':''} onClick={()=>openSection('system')}><Activity size={17}/>{t('مانیتورینگ سامانه')}</button><button className={section==='users'?'active':''} onClick={()=>openSection('users')}><ShieldCheck size={17}/>{t('کاربران و دسترسی')}</button></>}{['admin','executive','auditor'].includes(user.role)&&<button className={section==='audit'?'active':''} onClick={()=>openSection('audit')}><FileClock size={17}/>{t('رویدادها')}</button>}</nav><div className="sidebar-bottom"><span><i className={online?'online':'offline'}/>{online?t('ارتباط برقرار'):t('ارتباط قطع')}<code>{workspace?.sha.slice(0,8)}</code></span><small>{w('دسترسی طبق نقش سازمانی','Access by organisational role','الوصول وفق الدور المؤسسي','Kurumsal role göre erişim')}</small></div></aside><div className="workspace-main"><header className="workspace-top"><button className="icon-button mobile-menu" aria-label={t('باز کردن منو')} onClick={()=>setMobile(!mobile)}><Menu size={21}/></button><span className="breadcrumb">{t('کارخانه فنر لول ایران')} <ChevronLeft size={15}/> <b>{selected?t(selected.title):displayTitle}</b></span><button className="global-search" onClick={()=>setCommandOpen(true)} disabled={!workspace}><Search size={16}/><span>{w('جستجوی پرونده‌ها','Search records','البحث في السجلات','Kayıt ara')}</span><kbd>Ctrl K</kbd></button><div className="account"><LanguageSelector/><button className="account-profile" onClick={()=>openSection('profile')} aria-label={t('پروفایل من')}><span className="account-avatar">{user.name.trim().slice(0,1)}</span><span><strong>{user.name}</strong><small>{t(user.roleLabel)}</small></span></button><button className="icon-button" disabled={workspace?.mode==='demo'} onClick={()=>setChangeMode(true)} aria-label={t('تغییر رمز')}><LockKeyhole size={17}/></button><button className="icon-button" onClick={logout} aria-label={t('خروج')}><LogOut size={17}/></button></div></header><main className="workspace-content"><div className="page-heading"><div><span className="eyebrow">FANARLOOL / {t(user.roleLabel)}</span><h1>{selected?t(selected.title):displayTitle}</h1>{(selected||section==='overview')&&<p>{t(selected?.description||descriptions[user.role])}</p>}</div><button className="secondary" disabled={busy||!online} onClick={()=>run(async()=>{await load();if(section==='audit')setEvents((await api<any>('/audit')).events);if(section==='users')setUsers((await api<any>('/users')).users);setNotice('اطلاعات به‌روز شد.');})}><RefreshCw size={16}/>{t('به‌روزرسانی')}</button></div>{workspace?.mode==='demo'&&<details className="trial-context"><summary><ShieldCheck size={15}/><strong>{w('محیط ارزیابی مستقل','Isolated evaluation workspace','مساحة تقييم مستقلة','Yalıtılmış değerlendirme alanı')}</strong><span>{w('سوابق آموزشی؛ جدا از داده کارخانه','Training records, separate from factory data','سجلات تدريبية منفصلة عن بيانات المصنع','Eğitim kayıtları, fabrika verisinden ayrı')}</span></summary><p>{t('داده‌ها آموزشی و مختص این مرورگرند؛ تغییرات به کارخانه واقعی منتقل نمی‌شوند. حساب‌های نمونه ثابت‌اند و داده‌ها پس از پایان فضای دمو پاک می‌شوند.')}</p></details>}{!online&&<div className="notice amber" role="status">{t('اتصال قطع است؛ داده‌ها آخرین دریافت هستند. هیچ تغییر آفلاینی ارسال نمی‌شود.')}</div>}{error&&<div className="notice error" role="alert"><AlertCircle size={18}/>{t(error)}</div>}{notice&&prefs.notifications&&<div className="notice success" role="status"><Check size={18}/>{t(notice)}</div>}{workspace?.limited&&!['execution','reports'].includes(section)&&<div className="notice amber">{t('نمایش و شاخص‌ها به ۲۰۰۰ رکورد آخر محدود است.')}</div>}{!workspace&&<Empty title={t('فضای کاری دریافت نشد')} text={t('به‌روزرسانی را انتخاب کنید؛ خطای ارتباط باعث تولید داده نمونه نمی‌شود.')}/>}
+ {section==='overview'&&workspace&&<OperationsDashboard user={user} workspace={workspace} onOpen={openSection} onRecord={openRecord} onCreate={openCreate}/>}
+ {section==='execution'&&workspace&&<Suspense fallback={<div className="panel">{t('در حال بارگذاری ابزار…')}</div>}><ExecutionWorkspace user={user} workspace={workspace} onOpenRecord={openRecord} onChanged={load} onSessionExpired={expireSession}/></Suspense>}{section==='reports'&&workspace&&<Suspense fallback={<div className="panel">{t('در حال بارگذاری ابزار…')}</div>}><ReportingWorkspace workspace={workspace} onOpen={openRecord} onSessionExpired={expireSession}/></Suspense>}{section==='security'&&<Suspense fallback={<div className="panel">{t('در حال بارگذاری ابزار…')}</div>}><AccountSecurity onExpired={expireSession}/></Suspense>}{selected&&workspace&&<RecordWorkspace kind={selected.kind} workspace={workspace} user={user} focusId={focusId} onFocus={focusRecord} onEdit={startEdit} onCreate={()=>startEdit(null)} onCopy={startCorrection} onTransition={transition} busy={busy} online={online}/>}
+ {section==='users'&&workspace&&<UserDirectory accounts={users} roles={workspace.roles} current={user} demo={workspace.mode==='demo'} busy={busy} onCreate={()=>setNewUser(true)} onReset={async(id,password,reason)=>{let success=false;await run(async()=>{await api(`/users/${id}/reset-password`,'POST',{password,reason});setUsers((await api<any>('/users')).users);setNotice('رمز موقت بازنشانی شد؛ همه نشست‌های کاربر باطل شدند.');success=true;});return success;}} onUpdate={async(id,role,active)=>{let success=false;await run(async()=>{await api(`/users/${id}`,'PATCH',{role,active});setUsers((await api<any>('/users')).users);success=true;});return success;}}/>}
+ {section==='audit'&&<section className="panel"><div className="panel-title"><h2>{t("رویدادهای سامانه")}</h2><span>{t("۳۰۰ رویداد آخر · فقط خواندنی")}</span></div><EventTable events={events}/></section>}
+ {['profile','settings','activity'].includes(section)&&<PersonalWorkspace page={section} user={user} catalog={workspace?.catalog||[]} onUpdate={(next,preferences)=>{setUser(next);setPrefs(preferences);}}/>}{section==='system'&&user.role==='admin'&&<SystemMonitor/>}{section==='knowledge'&&<Suspense fallback={<div className="panel">{t('در حال بارگذاری ابزار…')}</div>}><ExecutionGuide onOpen={openGuide}/><PlatformGuide userRole={user.role} onOpen={openGuide} canOpen={key=>key.startsWith('lab:')||['profile','settings','activity','models','execution','reports','security'].includes(key)||!!workspace?.catalog.some(c=>c.kind===key)||(key==='system'&&user.role==='admin')}/></Suspense>}{section==='models'&&<Suspense fallback={<div className="panel">{t('در حال بارگذاری ابزار…')}</div>}><ModelRegistry/></Suspense>}{section==='simulator'&&<ErrorBoundary><Suspense fallback={<div className="panel">{t("در حال آماده‌سازی آزمایشگاه…")}</div>}>{labTool==='twin'&&workspace?<DigitalTwinWorkspace user={user} workspace={workspace}/>:<Simulator active={labTool} onChange={setLabTool}/>}</Suspense></ErrorBoundary>}{commandOpen&&workspace&&<CommandSearch workspace={workspace} onRecord={openRecord} onClose={()=>setCommandOpen(false)}/>}<footer className="workspace-footer"><span>{t("شبکه هوشمند ابتکار ویستا · ثبت مستند عملیات")}</span><span dir="ltr">{workspace?.sha.slice(0,8)} / {new Intl.DateTimeFormat(locale+'-u-ca-persian',{year:'numeric'}).format(new Date())}</span></footer></main></div>
+ {editing!==undefined&&selected&&<RecordDialog catalog={selected} row={editing} user={user} records={records} sourceId={sourceId} values={values} setValues={setValues} close={()=>setEditing(undefined)} save={saveRecord} error={t(error)} busy={busy||!online}/>}
+ {newUser&&<div className="modal-backdrop"><section className="record-modal narrow" role="dialog" aria-modal="true" aria-labelledby="new-user-title"><div className="panel-title"><h2 id="new-user-title">{t("حساب جدید")}</h2><button className="icon-button" aria-label={t("بستن")} onClick={()=>setNewUser(false)}><X size={20}/></button></div><form onSubmit={e=>{e.preventDefault();run(async()=>{await api('/users','POST',userDraft);setNewUser(false);setUserDraft({username:'',name:'',role:'production',password:''});setUsers((await api<any>('/users')).users);setNotice('کاربر ایجاد شد؛ رمز موقت را از مسیر امن به همان شخص تحویل دهید.');});}}><label>{t("نام و نام خانوادگی")}<input required value={userDraft.name} onChange={e=>setUserDraft(d=>({...d,name:e.target.value}))}/></label><label>{t("شناسه لاتین")}<input required pattern="[a-z0-9._-]{3,64}" dir="ltr" value={userDraft.username} onChange={e=>setUserDraft(d=>({...d,username:e.target.value}))}/></label><label>{t("نقش")}<select value={userDraft.role} onChange={e=>setUserDraft(d=>({...d,role:e.target.value}))}>{Object.entries(workspace?.roles||{}).map(([key,title])=><option key={key} value={key}>{t(title)}</option>)}</select></label><label>{t("رمز موقت")}<input type="password" autoComplete="new-password" required minLength={12} maxLength={128} value={userDraft.password} onChange={e=>setUserDraft(d=>({...d,password:e.target.value}))}/></label>{error&&<div className="notice error" role="alert">{t(error)}</div>}<button className="primary" disabled={busy}>{t("ایجاد حساب")}</button></form></section></div>}</div>;
+}
+function Empty({title,text}:{title:string;text:string}){return <div className="empty-state"><ClipboardList size={32}/><h3>{t(title)}</h3><p>{t(text)}</p></div>;}
 export default App;

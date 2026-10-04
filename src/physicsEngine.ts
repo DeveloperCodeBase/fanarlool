@@ -66,16 +66,17 @@ export function calculateSpringPhysics(
   // Allowable torsional shear stress for 54SiCr6
   // With shot peening, allowable stress increases from ~850 MPa to ~1100 MPa
   const allowableStress_MPa = shotPeened ? 1120 : 880;
-  const stressRatioPercent = Math.min(100, Math.round((shearStress_MPa / allowableStress_MPa) * 100));
-  const safetyFactor = Math.max(0.5, Number((allowableStress_MPa / (shearStress_MPa || 1)).toFixed(2)));
+  // Do not conceal overload by clipping the stress ratio or safety factor.
+  const stressRatioPercent = Math.round((shearStress_MPa / allowableStress_MPa) * 100);
+  const safetyFactor = F === 0 ? Infinity : Number((allowableStress_MPa / shearStress_MPa).toFixed(2));
   
   // Fundamental natural frequency: f = (1 / 2) * sqrt(k / m) or 0.5 * (d / (pi * D^2 * na)) * sqrt(G / (2 * rho))
   const wireLength = Math.PI * D * na;
   const activeMass = (Math.PI * Math.pow(d / 2, 2) * wireLength) * density; // in kg
   const naturalFrequency_Hz = activeMass > 0 ? (0.5 * Math.sqrt((k * 1000) / activeMass)) / (2 * Math.PI) : 45;
   
-  // Estimated fatigue cycles using modified Goodman / Basquin approximation
-  // Automotive suspension requirement: usually > 300,000 to 500,000 cycles
+  // Historical teaching heuristic, not a validated Goodman/Basquin model.
+  // Do not use this output for manufacturing acceptance or a claimed fatigue life.
   let estimatedCycles = 800000;
   if (stressRatioPercent > 90) {
     estimatedCycles = Math.round(150000 * Math.pow((100 / stressRatioPercent), 3));

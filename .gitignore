@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+output/
+tmp/
+*.tsbuildinfo
+# Remote release validation evidence (outside the served dist).
+/VALIDATED
+/BUNDLE.sha256
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm

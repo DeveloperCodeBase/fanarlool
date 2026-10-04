@@ -1,3 +1,4 @@
+// Legacy screens retain their original contract; production uses platform/i18n.Language.
 export type Language = 'fa' | 'en';
 
 export type TabId = 
